@@ -97,6 +97,9 @@ const CONFIG={
   tenantId:'d3ab4c65-3ba1-4c04-98fd-66a0c7730cdf',     // Entra ID > App registrations > Directory (tenant) ID
   // SharePoint / OneDrive folder that holds the shared database files
   folderUrl:'https://syayasanedu-my.sharepoint.com/personal/it_helpdesk_syayasan_edu_bn/Documents/SYSHHB-IT-Inventory',
+  // Exact location of that folder (used first; folderUrl is the fallback)
+  driveId:'b!R_lPWUdjfEuqzVrRupLxSE47Uqs5BWdEtWJhDv2jn1e619-HvmPEQrnstLIZc1T6',
+  folderId:'01O26XY4UPLKR2CPIGTBGYHTJIGF27RAND',
   // Optional: list emails that may edit. Leave empty = everyone who can open the folder can edit.
   adminEmails:[]
 };
@@ -117,10 +120,20 @@ async function gfetch(path,opts={}){
 }
 const graphStore={
   async init(){
-    const enc='u!'+btoa(unescape(encodeURIComponent(CONFIG.folderUrl))).replace(/=+$/,'').replace(/\//g,'_').replace(/\+/g,'-');
-    const r=await gfetch('/shares/'+enc+'/driveItem');
-    if(!r.ok)throw httpErr(r,r.status===404||r.status===403?'You do not have access to the inventory folder, or the folder link in CONFIG is wrong':'Could not open the inventory folder');
-    const j=await r.json();this.driveId=j.parentReference.driveId;this.folderId=j.id;this.webUrl=j.webUrl;
+    let r=null;
+    if(CONFIG.driveId&&CONFIG.folderId){
+      r=await gfetch(`/drives/${CONFIG.driveId}/items/${CONFIG.folderId}?$select=id,webUrl,parentReference,name`);
+      if(r.ok){const j=await r.json();this.driveId=CONFIG.driveId;this.folderId=j.id;this.webUrl=j.webUrl;return}
+    }
+    if(!r||!r.ok){
+      const enc='u!'+btoa(unescape(encodeURIComponent(CONFIG.folderUrl))).replace(/=+$/,'').replace(/\//g,'_').replace(/\+/g,'-');
+      const r2=await gfetch('/shares/'+enc+'/driveItem');
+      if(r2.ok){const j=await r2.json();this.driveId=j.parentReference.driveId;this.folderId=j.id;this.webUrl=j.webUrl;return}
+      r=r||r2;
+    }
+    let detail='';try{const e=await r.json();detail=e.error?(' – '+e.error.code+': '+e.error.message):''}catch(e){}
+    const who=account&&account.username?account.username:'this account';
+    const e=new Error((r.status===403||r.status===404?`${who} cannot open the inventory folder. Ask the folder owner to share “SYSHHB-IT-Inventory” with this account, and check the app has Files.ReadWrite.All permission`:'Could not open the inventory folder')+` (HTTP ${r.status}${detail})`);e.status=r.status;throw e;
   },
   path(name){return `/drives/${this.driveId}/items/${this.folderId}:/${encodeURIComponent(name)}`},
   async stat(name){const r=await gfetch(this.path(name)+'?$select=id,eTag');if(r.status===404)return null;if(!r.ok)throw httpErr(r);return (await r.json()).eTag},
