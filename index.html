@@ -96,10 +96,11 @@ const CONFIG={
   clientId:'598ea952-e9df-4684-a109-85832dc34e59',   // Entra ID > App registrations > Application (client) ID
   tenantId:'d3ab4c65-3ba1-4c04-98fd-66a0c7730cdf',     // Entra ID > App registrations > Directory (tenant) ID
   // SharePoint / OneDrive folder that holds the shared database files
-  folderUrl:'https://syayasanedu-my.sharepoint.com/personal/it_helpdesk_syayasan_edu_bn/Documents/SYSHHB-IT-Inventory',
-  // Exact location of that folder (used first; folderUrl is the fallback)
-  driveId:'b!R_lPWUdjfEuqzVrRupLxSE47Uqs5BWdEtWJhDv2jn1e619-HvmPEQrnstLIZc1T6',
-  folderId:'01O26XY4UPLKR2CPIGTBGYHTJIGF27RAND',
+  folderUrl:'https://syayasanedu-my.sharepoint.com/personal/zulfa_zaini_syayasan_edu_bn/Documents/SYSHHB-IT-Inventory',
+  // Exact location of that folder (owner: zulfa.zaini). folderUrl is only a fallback.
+  driveId:'b!ufLqeN0q20WP4FnBjKNv8oZKiBeoKNBPgl9xGgjSezCxqEz464FNTqdymbTJigm0',
+  folderPath:'SYSHHB-IT-Inventory',
+  folderId:'',
   // Optional: list emails that may edit. Leave empty = everyone who can open the folder can edit.
   adminEmails:[]
 };
@@ -121,8 +122,9 @@ async function gfetch(path,opts={}){
 const graphStore={
   async init(){
     let r=null;
-    if(CONFIG.driveId&&CONFIG.folderId){
-      r=await gfetch(`/drives/${CONFIG.driveId}/items/${CONFIG.folderId}?$select=id,webUrl,parentReference,name`);
+    if(CONFIG.driveId&&(CONFIG.folderId||CONFIG.folderPath)){
+      const loc=CONFIG.folderId?`/items/${CONFIG.folderId}`:`/root:/${CONFIG.folderPath.split('/').map(encodeURIComponent).join('/')}:`;
+      r=await gfetch(`/drives/${CONFIG.driveId}${loc}?$select=id,webUrl,parentReference,name`);
       if(r.ok){const j=await r.json();this.driveId=CONFIG.driveId;this.folderId=j.id;this.webUrl=j.webUrl;return}
     }
     if(!r||!r.ok){
@@ -133,7 +135,7 @@ const graphStore={
     }
     let detail='';try{const e=await r.json();detail=e.error?(' – '+e.error.code+': '+e.error.message):''}catch(e){}
     const who=account&&account.username?account.username:'this account';
-    const e=new Error((r.status===403||r.status===404?`${who} cannot open the inventory folder. Ask the folder owner to share “SYSHHB-IT-Inventory” with this account, and check the app has Files.ReadWrite.All permission`:'Could not open the inventory folder')+` (HTTP ${r.status}${detail})`);e.status=r.status;throw e;
+    const e=new Error((r.status===403||r.status===404?`${who} cannot open the inventory folder. Ask the folder owner (zulfa.zaini) to share “SYSHHB-IT-Inventory” with this account, and check the app has Files.ReadWrite.All permission`:'Could not open the inventory folder')+` (HTTP ${r.status}${detail})`);e.status=r.status;throw e;
   },
   path(name){return `/drives/${this.driveId}/items/${this.folderId}:/${encodeURIComponent(name)}`},
   async stat(name){const r=await gfetch(this.path(name)+'?$select=id,eTag');if(r.status===404)return null;if(!r.ok)throw httpErr(r);return (await r.json()).eTag},
