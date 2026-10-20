@@ -257,7 +257,85 @@ table.grid input[type=checkbox]{width:16px;height:16px;accent-color:var(--brand)
   .kv{grid-template-columns:120px 1fr}
   .table-wrap{max-height:none}
 }
+/* ---------- phone ---------- */
+.bottom-nav,.filter-toggle,.scrim-nav{display:none}
+@media(max-width:700px){
+  body{font-size:14.5px}
+  input,select,textarea{font-size:16px!important}
+  .content{padding:12px 12px 96px}
+  .topbar{padding:10px 12px;gap:8px;backdrop-filter:none;background:#fff}
+  .toolbar .count{white-space:nowrap}
+  .sidebar{z-index:55}
+  body.nav-open::after{content:"";position:fixed;inset:0;background:#06241866;z-index:50}
+  .topbar h1{font-size:17px}
+  #addBtn{position:fixed;right:14px;bottom:82px;z-index:45;border-radius:40px;padding:13px 18px;box-shadow:0 8px 24px #0004;font-size:14px}
+  .kpis{gap:10px}
+  .kpi{padding:13px 14px}
+  .kpi .k-num{font-size:25px}
+  .kpi .k-sub{font-size:11px}
+  .kpi .k-go{display:none}
+  .kpi .k-ico{width:28px;height:28px}
+  .chartbox{height:230px!important}
+  .card-h{padding:13px 14px 0}.card-b{padding:12px 14px 14px}
+  /* filters collapse */
+  .filters{grid-template-columns:1fr;padding:12px;gap:8px}
+  [data-view=inventory] .filters .f-search{display:none}
+  .filter-toggle{display:inline-flex;justify-content:center}
+  [data-view=inventory] .filters select{display:none}
+  [data-view=inventory].show-filters .filters select{display:block}
+  .chips{padding:0 12px 10px}
+  .toolbar{flex-wrap:nowrap;overflow-x:auto;padding:8px 12px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .toolbar::-webkit-scrollbar{display:none}
+  .toolbar .spacer{display:none}
+  /* table -> cards */
+  .table-wrap{overflow:visible;min-height:0}
+  table.grid,table.grid tbody,table.grid tr,table.grid td{display:block;width:100%}
+  table.grid thead{display:none}
+  table.grid tbody tr{position:relative;background:#fff;border:1px solid var(--line);border-radius:12px;margin:10px 12px;width:auto;padding:10px 12px 8px;box-shadow:var(--shadow)}
+  table.grid tbody tr:hover td{background:transparent}
+  table.grid tbody tr.selected{border-color:var(--brand);background:#f2faf5}
+  table.grid td{border:0;padding:3px 0;max-width:none;white-space:normal;display:flex;gap:10px;align-items:baseline;font-size:13.5px}
+  table.grid td[data-label]::before{content:attr(data-label);flex:0 0 92px;color:var(--muted);font-size:11.5px;font-weight:600}
+  table.grid td .sub{display:inline;margin-left:4px}
+  table.grid td.tag{font-size:15.5px;padding:0 34px 4px 0}
+  table.grid td.cb{position:absolute;top:8px;right:6px;width:auto;padding:4px}
+  table.grid input[type=checkbox]{width:20px;height:20px}
+  table.grid td.hide-m{display:none}
+  .pager{justify-content:center}.pager .pg{min-width:38px;height:38px}
+  .pager #pageInfo{width:100%;text-align:center}
+  .seg{flex-wrap:nowrap;overflow-x:auto;max-width:100%;scrollbar-width:none}
+  .seg button{white-space:nowrap}
+  [data-view=warranty] .card-h{flex-direction:column;align-items:stretch}
+  /* drawer & modal full screen */
+  .drawer{width:100vw}
+  .dr-head{padding:14px 16px 12px}.dr-body{padding:4px 16px 16px}
+  .dr-foot{padding:10px 12px calc(10px + env(safe-area-inset-bottom));gap:6px}
+  .dr-foot .btn{flex:1;justify-content:center;padding:10px 8px}
+  .dr-foot .spacer{display:none}
+  .kv{grid-template-columns:108px 1fr}
+  .modal{padding:0}
+  .dialog{border-radius:0;min-height:100vh;width:100%}
+  .confirm .dialog{min-height:0;border-radius:16px;margin:auto 14px;width:calc(100% - 28px)}
+  .confirm{align-items:center}
+  .dialog-head{position:sticky;top:0;background:#fff;z-index:2;padding:14px 16px}
+  .dialog-body{padding:4px 16px 16px}
+  .formgrid{grid-template-columns:1fr}.field.wide{grid-column:span 1}
+  .dialog-actions{position:sticky;bottom:0;padding:12px 16px calc(12px + env(safe-area-inset-bottom))}
+  .dialog-actions>span{display:none}
+  .dialog-actions .row{width:100%}.dialog-actions .row .btn{flex:1;justify-content:center;padding:12px}
+  .report-cards{grid-template-columns:1fr}
+  .map-frame{height:65vh;min-height:380px}
+  .toasts{bottom:150px;left:14px;right:14px;max-width:none}
+  /* bottom navigation */
+  .bottom-nav{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:0;right:0;bottom:0;z-index:44;background:#fff;border-top:1px solid var(--line);box-shadow:0 -4px 18px #0b2a1d14;padding:4px 4px calc(4px + env(safe-area-inset-bottom))}
+  .bottom-nav button{border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:2px;padding:7px 2px;font-size:10.5px;font-weight:650;color:var(--muted);border-radius:10px;position:relative;cursor:pointer}
+  .bottom-nav button svg{width:21px;height:21px}
+  .bottom-nav button.active{color:var(--brand);background:var(--brand-soft)}
+  .bottom-nav .dot{position:absolute;top:3px;left:55%;background:var(--bad);color:#fff;font-size:9.5px;border-radius:10px;padding:0 5px;line-height:15px}
+  .side-foot{padding-bottom:calc(14px + env(safe-area-inset-bottom))}
+}
 @media print{.sidebar,.topbar,.toasts{display:none}}
+
 </style></head>
 <body>
 <div class="auth-overlay" id="authOverlay">
@@ -326,6 +404,7 @@ table.grid input[type=checkbox]{width:16px;height:16px;accent-color:var(--brand)
       <section class="view card" data-view="inventory" hidden>
         <div class="filters">
           <input class="f-search" id="search" placeholder="Search tag, serial, model, user, location…" aria-label="Search">
+          <button type="button" class="btn filter-toggle" id="filterToggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>Filters</button>
           <select id="typeFilter" data-field="Asset Type"></select>
           <select id="subtypeFilter" data-field="Sub-type"></select>
           <select id="schoolFilter" data-field="School / Division"></select>
@@ -411,6 +490,13 @@ table.grid input[type=checkbox]{width:16px;height:16px;accent-color:var(--brand)
 <!-- Confirm dialog -->
 <div class="modal confirm" id="confirmModal"><div class="dialog"><div class="dialog-head"><h2 id="cfTitle">Confirm</h2></div><div class="dialog-body" id="cfBody"></div><div class="dialog-actions" style="justify-content:flex-end" id="cfActions"></div></div></div>
 
+<nav class="bottom-nav" id="bottomNav" aria-label="Main">
+  <button data-view="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Home</button>
+  <button data-view="inventory"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.3 7 12 12l8.7-5M12 22V12"/></svg>Assets</button>
+  <button data-view="warranty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>Alerts<span class="dot" id="bnAlerts" hidden></span></button>
+  <button data-view="map"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m1 6 7-3 8 3 7-3v15l-7 3-8-3-7 3z"/><path d="M8 3v15M16 6v15"/></svg>Map</button>
+  <button id="bnMore"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>More</button>
+</nav>
 <div class="toasts" id="toasts" aria-live="polite"></div>
 
 <script>
@@ -707,7 +793,7 @@ function renderChips(){
   FILTER_IDS.forEach(id=>{const v=$(id).value;if(v)chips.push([id,`${$(id).dataset.field}: ${v==='__none__'?'(Not set)':v}`])});
   if(quick)chips.push(['quick',QUICK[quick]]);
   $('chips').innerHTML=chips.map(([k,l])=>`<span class="chip">${escapeHtml(l)}<button type="button" data-chip="${k}" aria-label="Remove filter">✕</button></span>`).join('');
-  $('chips').hidden=!chips.length;
+  $('chips').hidden=!chips.length;const nf=FILTER_IDS.filter(id=>$(id).value).length;$('filterToggle').lastChild.textContent=nf?`Filters (${nf})`:'Filters';
 }
 function clearFilters(){$('search').value='';$('globalSearch').value='';FILTER_IDS.forEach(id=>$(id).value='');quick='';page=1}
 function applyFilter(field,value){clearFilters();const id=FILTER_IDS.find(i=>$(i).dataset.field===field);if(id){fillFilters();const v=value==='Not set'?'__none__':value;if(![...$(id).options].some(o=>o.value===v))$(id).insertAdjacentHTML('beforeend',`<option value="${escapeHtml(v)}">${escapeHtml(value)}</option>`);$(id).value=v}showView('inventory')}
@@ -718,8 +804,8 @@ const COLS=[
   {k:'Asset Tag',label:'Asset tag',cls:'tag'},
   {k:'Asset Type',label:'Type',sub:'Sub-type'},
   {k:'Brand',label:'Brand / model',sub:'Model'},
-  {k:'Serial Number',label:'Serial no.'},
-  {k:'School / Division',label:'School'},
+  {k:'Serial Number',label:'Serial no.',m:'Serial'},
+  {k:'School / Division',label:'School',hideM:true},
   {k:'Location',label:'Location',sub:'Room Code'},
   {k:'Assigned User',label:'Assigned to'},
   {k:'Status',label:'Status',html:a=>badge(val(a,'Status'))},
@@ -737,7 +823,7 @@ function renderTable(){
   const start=(page-1)*pageSize,shown=list.slice(start,start+pageSize);
   const allOn=shown.length&&shown.every(a=>selectedAssets.has(a._id));
   $('tableHead').innerHTML=`<th style="width:38px"><input type="checkbox" id="selectPage" aria-label="Select page" ${allOn?'checked':''}></th>`+COLS.map(c=>`<th class="sortable ${sortKey===c.k?'sorted':''}" data-sort="${c.k}">${escapeHtml(c.label)}<span class="arrow">${sortKey===c.k?(sortDir===1?'▲':'▼'):'↕'}</span></th>`).join('');
-  $('tableBody').innerHTML=shown.map(a=>`<tr data-id="${escapeHtml(a._id)}" class="${selectedAssets.has(a._id)?'selected':''}"><td><input type="checkbox" data-select-asset="${escapeHtml(a._id)}" ${selectedAssets.has(a._id)?'checked':''} aria-label="Select"></td>${COLS.map(c=>`<td class="${c.cls||''}" title="${escapeHtml(c.html?'':val(a,c.k))}">${c.html?c.html(a):escapeHtml(val(a,c.k)||'—')}${c.sub&&val(a,c.sub)?`<span class="sub">${escapeHtml(val(a,c.sub))}</span>`:''}</td>`).join('')}</tr>`).join('');
+  $('tableBody').innerHTML=shown.map(a=>`<tr data-id="${escapeHtml(a._id)}" class="${selectedAssets.has(a._id)?'selected':''}"><td class="cb"><input type="checkbox" data-select-asset="${escapeHtml(a._id)}" ${selectedAssets.has(a._id)?'checked':''} aria-label="Select"></td>${COLS.map(c=>`<td class="${c.cls||''}${c.hideM?' hide-m':''}" ${c.cls==='tag'?'':`data-label="${escapeHtml(c.m||c.label)}"`} title="${escapeHtml(c.html?'':val(a,c.k))}">${c.html?c.html(a):escapeHtml(val(a,c.k)||'—')}${c.sub&&val(a,c.sub)?`<span class="sub">${escapeHtml(val(a,c.sub))}</span>`:''}</td>`).join('')}</tr>`).join('');
   $('empty').hidden=shown.length>0;
   $('resultCount').innerHTML=`<b>${fmtNum(list.length)}</b> of ${fmtNum(assets.length)} assets`;
   $('pageInfo').textContent=list.length?`Showing ${start+1}–${Math.min(start+pageSize,list.length)} of ${fmtNum(list.length)}`:'No results';
@@ -753,7 +839,7 @@ function chart(id,type,labels,data,{horizontal=false,colors=null,field=null}={})
   if(!window.Chart||!$(id))return;if(charts[id])charts[id].destroy();
   charts[id]=new Chart($(id),{type,data:{labels,datasets:[{data,backgroundColor:colors||'#00824f',hoverBackgroundColor:colors?undefined:'#f3c61f',borderRadius:type==='bar'?6:0,borderWidth:type==='doughnut'?2:0,borderColor:'#fff',maxBarThickness:34}]},
     options:{responsive:true,maintainAspectRatio:false,indexAxis:horizontal?'y':'x',cutout:type==='doughnut'?'62%':undefined,
-      plugins:{legend:{display:type==='doughnut',position:'right',labels:{boxWidth:10,boxHeight:10,usePointStyle:true,font:{size:11.5}}},tooltip:{callbacks:{footer:()=>'Click to filter'}}},
+      plugins:{legend:{display:type==='doughnut',position:innerWidth<700?'bottom':'right',labels:{boxWidth:10,boxHeight:10,usePointStyle:true,font:{size:11.5}}},tooltip:{callbacks:{footer:()=>'Click to filter'}}},
       scales:type==='bar'?{x:{grid:{display:horizontal,color:'#eef3f0'},ticks:{font:{size:11},autoSkip:false,maxRotation:40,callback:function(v){const l=horizontal?v:this.getLabelForValue(v);return horizontal?l:String(l).length>14?String(l).slice(0,13)+'…':l}}},y:{grid:{display:!horizontal,color:'#eef3f0'},ticks:{font:{size:11},callback:function(v){if(!horizontal)return v;const l=this.getLabelForValue(v);return String(l).length>26?String(l).slice(0,25)+'…':l}}}}:{},
       onHover:(e,els)=>{e.native.target.style.cursor=els.length?'pointer':'default'},
       onClick:(e,els,c)=>{if(els.length&&field)applyFilter(field,c.data.labels[els[0].index])}}});
@@ -782,14 +868,14 @@ const WTABS=[['soon','Expiring ≤ 90 days'],['expired','Expired'],['attention',
 function wGroups(){const g={soon:[],expired:[],attention:[],active:[],none:[]};assets.forEach(a=>{const w=wInfo(a);if(w.key==='soon30'||w.key==='soon90')g.soon.push(a);else g[w.key].push(a);if(needsAttention(a))g.attention.push(a)});g.soon.sort((a,b)=>wInfo(a).days-wInfo(b).days);g.expired.sort((a,b)=>wInfo(b).days-wInfo(a).days);g.active.sort((a,b)=>wInfo(a).days-wInfo(b).days);return g}
 function renderWarranty(){
   const g=wGroups(),s30=g.soon.filter(a=>wInfo(a).key==='soon30').length;
-  $('navCountAlerts').textContent=g.soon.length+g.attention.length;$('navCountAlerts').hidden=!(g.soon.length+g.attention.length);
+  $('navCountAlerts').textContent=g.soon.length+g.attention.length;$('bnAlerts').textContent=g.soon.length+g.attention.length>99?'99+':g.soon.length+g.attention.length;$('bnAlerts').hidden=!(g.soon.length+g.attention.length);$('navCountAlerts').hidden=!(g.soon.length+g.attention.length);
   if(currentView!=='warranty')return;
   const k=(tab,label,n,sub,accent,soft,icon)=>`<button class="kpi" data-wtab="${tab}" style="--accent:${accent};--accent-soft:${soft}"><div class="k-top">${label}<span class="k-ico">${icon}</span></div><div class="k-num">${fmtNum(n)}</div><div class="k-sub">${sub}</div></button>`;
   $('wKpis').innerHTML=k('soon','Expiring ≤ 90 days',g.soon.length,`${s30} within 30 days`,'#b7791f','#fff5dd','⏳')+k('expired','Warranty expired',g.expired.length,'Past end date','#c53f4e','#fdecee','⛔')+k('attention','Needs attention',g.attention.length,'Faulty, repair, verify','#c53f4e','#fdecee','⚠️')+k('active','Under warranty',g.active.length,'More than 90 days left','#14915a','#e3f6ec','✅')+k('none','No warranty info',g.none.length,'Add start date & period','#5f7a70','#eef2f0','❔');
   $('wTabs').innerHTML=WTABS.map(([t,l])=>`<button class="${t===wTab?'on':''}" data-wtab="${t}">${l}<span class="n">${g[t].length}</span></button>`).join('');
   const list=g[wTab];$('wHint').textContent=list.length>300?'Showing first 300 – use Inventory filters for more':'';
   $('wHead').innerHTML=['Asset tag','Type / model','Location','Assigned to','Status','Warranty end','Remaining'].map(h=>`<th>${h}</th>`).join('');
-  $('wBody').innerHTML=list.slice(0,300).map(a=>{const w=wInfo(a);return `<tr data-id="${escapeHtml(a._id)}"><td class="tag">${escapeHtml(val(a,'Asset Tag')||'—')}</td><td>${escapeHtml(val(a,'Asset Type')||'—')}<span class="sub">${escapeHtml([val(a,'Brand'),val(a,'Model')].filter(Boolean).join(' '))}</span></td><td>${escapeHtml(val(a,'Location')||'—')}</td><td>${escapeHtml(val(a,'Assigned User')||'—')}</td><td>${badge(val(a,'Status'))}</td><td>${escapeHtml(w.end?formatDisplayDate(w.end):'—')}</td><td>${wPill(a)}</td></tr>`}).join('');
+  $('wBody').innerHTML=list.slice(0,300).map(a=>{const w=wInfo(a);return `<tr data-id="${escapeHtml(a._id)}"><td class="tag">${escapeHtml(val(a,'Asset Tag')||'—')}</td><td data-label="Type">${escapeHtml(val(a,'Asset Type')||'—')}<span class="sub">${escapeHtml([val(a,'Brand'),val(a,'Model')].filter(Boolean).join(' '))}</span></td><td data-label="Location">${escapeHtml(val(a,'Location')||'—')}</td><td data-label="Assigned to">${escapeHtml(val(a,'Assigned User')||'—')}</td><td data-label="Status">${badge(val(a,'Status'))}</td><td data-label="Warranty end">${escapeHtml(w.end?formatDisplayDate(w.end):'—')}</td><td data-label="Remaining">${wPill(a)}</td></tr>`}).join('');
   $('wEmpty').hidden=list.length>0;$('wEmpty').textContent={soon:'🎉 No warranties ending in the next 90 days.',expired:'No expired warranties.',attention:'🎉 Nothing needs attention.',active:'No assets with more than 90 days of warranty.',none:'Every asset has warranty information.'}[wTab];
   drawerList=list.map(a=>a._id);
 }
@@ -909,7 +995,7 @@ function renderAudit(){const logs=filteredAudit();$('auditTableBody').innerHTML=
 function showView(v){
   if(!VIEWS[v]||(v==='audit'&&currentRole!=='admin'))v='dashboard';currentView=v;if(drawerId)closeDrawer();
   document.querySelectorAll('section.view').forEach(s=>s.hidden=s.dataset.view!==v);
-  document.querySelectorAll('.nav-item[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===v));
+  document.querySelectorAll('.nav-item[data-view],.bottom-nav [data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===v));
   $('viewTitle').textContent=VIEWS[v][0];$('viewSub').textContent=VIEWS[v][1];document.body.classList.remove('nav-open');
   try{sessionStorage.setItem('syshhb_view',v)}catch(e){}
   if(v==='map')loadFloorPlan();
@@ -921,8 +1007,11 @@ async function loadFloorPlan(){const fr=$('floorPlanFrame');if(fr.dataset.loaded
 function onRoleChange(){const u=currentUsername||'';$('roleBadge').textContent=currentRole==='admin'?'Editor · full access':'View only';$('userName').textContent=u||'Not signed in';$('avatar').textContent=(u[0]||'?').toUpperCase();let v='dashboard';try{v=sessionStorage.getItem('syshhb_view')||'dashboard'}catch(e){}showView(v)}
 
 /* ---------- events ---------- */
-document.querySelectorAll('.nav-item[data-view]').forEach(b=>b.onclick=()=>showView(b.dataset.view));
+document.querySelectorAll('.nav-item[data-view],.bottom-nav [data-view]').forEach(b=>b.onclick=()=>showView(b.dataset.view));
+$('bnMore').onclick=()=>document.body.classList.toggle('nav-open');
+$('filterToggle').onclick=()=>{const sec=document.querySelector('section[data-view=inventory]');sec.classList.toggle('show-filters')};
 $('menuBtn').onclick=()=>document.body.classList.toggle('nav-open');
+document.querySelector('.main').addEventListener('click',e=>{if(document.body.classList.contains('nav-open')&&!e.target.closest('#menuBtn'))document.body.classList.remove('nav-open')});
 document.querySelectorAll('[data-kpi]').forEach(b=>b.onclick=()=>{const k=b.dataset.kpi;if(k==='all'){clearFilters();showView('inventory')}else if(k==='active'||k==='attention')applyQuick(k);else if(k==='expiring'){wTab='soon';showView('warranty')}else if(k==='locations')showView('map')});
 document.querySelectorAll('[data-goto-quick]').forEach(b=>b.onclick=()=>applyQuick(b.dataset.gotoQuick));
 document.addEventListener('click',e=>{
