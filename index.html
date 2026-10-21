@@ -222,6 +222,9 @@ table.grid input[type=checkbox]{width:16px;height:16px;accent-color:var(--brand)
 .seg button{border:0;background:transparent;padding:7px 12px;border-radius:8px;cursor:pointer;font-weight:600;font-size:12.5px;color:var(--muted)}
 .seg button.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px #0002}
 .seg button .n{margin-left:5px;font-size:11px;background:#0000000f;padding:0 6px;border-radius:10px}
+.add-user{display:grid;grid-template-columns:2fr 1fr auto auto;gap:10px;align-items:center}
+.add-user .notify{display:flex;gap:6px;align-items:center;white-space:nowrap}
+#accessBody select{min-width:170px}
 .report-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
 .rcard{padding:18px;display:flex;flex-direction:column;gap:8px}
 .rcard .r-ico{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;background:var(--brand-soft);color:var(--brand)}
@@ -325,6 +328,8 @@ table.grid input[type=checkbox]{width:16px;height:16px;accent-color:var(--brand)
   .dialog-actions>span{display:none}
   .dialog-actions .row{width:100%}.dialog-actions .row .btn{flex:1;justify-content:center;padding:12px}
   .report-cards{grid-template-columns:1fr}
+  .add-user{grid-template-columns:1fr}
+  .add-user .btn{justify-content:center}
   .map-frame{height:65vh;min-height:380px}
   .toasts{bottom:150px;left:14px;right:14px;max-width:none}
   /* bottom navigation */
@@ -414,7 +419,7 @@ table.grid input[type=checkbox]{width:16px;height:16px;accent-color:var(--brand)
       <button class="nav-item" data-view="map"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m1 6 7-3 8 3 7-3v15l-7 3-8-3-7 3z"/><path d="M8 3v15M16 6v15"/></svg>Location Map</button>
       <button class="nav-item" data-view="reports"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h8"/></svg>Reports &amp; Export</button>
       <button class="nav-item admin-only" data-view="audit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>Audit Logs</button>
-      <button class="nav-item admin-only" id="manageUsersBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>Manage Access</button>
+      <button class="nav-item admin-only" data-view="access"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>Manage Access</button>
     </nav>
     <div class="side-foot">
       <div class="user-chip"><div class="avatar" id="avatar">?</div><div class="who"><b id="userName" data-noi18n>Not signed in</b><span id="roleBadge" data-noi18n>—</span></div></div>
@@ -509,11 +514,31 @@ table.grid input[type=checkbox]{width:16px;height:16px;accent-color:var(--brand)
         </div>
       </section>
 
+      <!-- ACCESS -->
+      <section class="view" data-view="access" hidden>
+        <div class="card" style="margin-bottom:14px">
+          <div class="card-h"><h3>Add user</h3></div>
+          <div class="card-b">
+            <form id="addUserForm" class="add-user">
+              <input id="newUserEmail" type="email" placeholder="name@syayasan.edu.bn" required aria-label="Email">
+              <select id="newUserRole" aria-label="Role"><option value="viewer">View only</option><option value="admin">Admin (can edit)</option></select>
+              <label class="small notify"><input type="checkbox" id="newUserNotify"> <span>Send email invitation</span></label>
+              <button class="btn primary" type="submit" id="addUserBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Add user</button>
+            </form>
+            <p class="small muted" style="margin:10px 0 0">Admins can add, edit, delete and import assets and manage users. View users can only search, view and print.</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-h" style="padding-bottom:12px;border-bottom:1px solid var(--line)"><h3>Users with access</h3><div class="row"><button class="btn sm" id="accessRefreshBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.5 9a9 9 0 0 1 14.9-3.4L23 10M1 14l4.6 4.4A9 9 0 0 0 20.5 15"/></svg>Refresh</button><button class="btn sm" id="manageUsersBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>Open OneDrive folder</button></div></div>
+          <div class="table-wrap" style="max-height:none;min-height:0"><table class="grid"><thead><tr><th>User</th><th>Role</th><th>Added</th><th></th></tr></thead><tbody id="accessBody" data-noi18n></tbody></table></div>
+        </div>
+      </section>
+
       <!-- AUDIT -->
       <section class="view card" data-view="audit" hidden>
         <div class="filters" style="grid-template-columns:repeat(4,minmax(0,1fr))">
           <input id="auditUserFilter" placeholder="Filter by user">
-          <select id="auditEventFilter"><option value="">All events</option><option value="Sign in">Sign in</option><option value="Sign out">Sign out</option><option value="Asset added">Asset added</option><option value="Asset edited">Asset edited</option><option value="Asset deleted">Asset deleted</option><option value="Import">Import</option><option value="User report">User report</option></select>
+          <select id="auditEventFilter"><option value="">All events</option><option value="Sign in">Sign in</option><option value="Sign out">Sign out</option><option value="Asset added">Asset added</option><option value="Asset edited">Asset edited</option><option value="Asset deleted">Asset deleted</option><option value="Import">Import</option><option value="User report">User report</option><option value="User added">User added</option><option value="User removed">User removed</option><option value="Role changed">Role changed</option></select>
           <input type="date" id="auditFromDate" aria-label="From date"><input type="date" id="auditToDate" aria-label="To date">
         </div>
         <div class="toolbar"><span class="count" id="auditSummary" data-noi18n></span><span class="spacer"></span><button class="btn sm" id="auditRefreshBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.5 9a9 9 0 0 1 14.9-3.4L23 10M1 14l4.6 4.4A9 9 0 0 0 20.5 15"/></svg>Refresh</button><button class="btn sm" id="auditReportBtn">User report</button><button class="btn sm" id="auditExportBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Export CSV</button><button class="btn sm danger" id="auditClearBtn">Clear logs</button></div>
@@ -613,6 +638,10 @@ const graphStore={
     const r=await gfetch(this.path(name)+':/content'+(etag?'':'?@microsoft.graph.conflictBehavior=fail'),{method:'PUT',headers,body:JSON.stringify(data)});
     if(!r.ok)throw httpErr(r,'Could not save '+name);return {etag:(await r.json()).eTag};
   },
+  folderPath(){return `/drives/${this.driveId}/items/${this.folderId}`},
+  async share(email,role,notify,message){const r=await gfetch(this.folderPath()+'/invite',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({recipients:[{email}],requireSignIn:true,sendInvitation:!!notify,message:message||'',roles:[role==='admin'?'write':'read']})});if(!r.ok){let d='';try{const e=await r.json();d=e.error&&e.error.message||''}catch(e){}const er=new Error((d||'Could not share the folder')+' (HTTP '+r.status+')');er.status=r.status;throw er}const j=await r.json();return (j.value&&j.value[0]&&j.value[0].id)||''},
+  async listPerms(){const r=await gfetch(this.folderPath()+'/permissions');if(!r.ok)throw httpErr(r,'Could not read folder sharing');const j=await r.json();return (j.value||[]).map(p=>{const u=(p.grantedToV2&&(p.grantedToV2.user||p.grantedToV2.siteUser))||(p.grantedTo&&p.grantedTo.user)||{};return {id:p.id,roles:p.roles||[],email:String(u.email||u.loginName||'').toLowerCase().replace(/^.*\|/,''),name:u.displayName||'',link:!!p.link,inherited:!!p.inheritedFrom}})},
+  async unshare(id){const r=await gfetch(this.folderPath()+'/permissions/'+encodeURIComponent(id),{method:'DELETE'});if(!r.ok&&r.status!==404)throw httpErr(r,'Could not remove access')},
   async blob(name){const j=await this.meta(name);if(!j)return null;const c=await fetch(j['@microsoft.graph.downloadUrl']);if(!c.ok)throw httpErr(c);return c.blob()}
 };
 /* Test-only store (open the page with ?mock=1). Simulates SharePoint using this browser's storage. */
@@ -624,8 +653,19 @@ const mockStore={
   async write(n,data,etag){await new Promise(r=>setTimeout(r,30));const x=this._get(n);if(window.__mockForbidden){const e=new Error('forbidden');e.status=403;throw e}
     if((x&&x.etag!==etag)||(!x&&etag)){const e=new Error('conflict');e.status=412;throw e}
     const ne='"'+newId()+'"';localStorage.setItem('mock_'+n,JSON.stringify({etag:ne,body:JSON.stringify(data)}));return {etag:ne}},
-  async blob(){return null}
+  async blob(){return null},
+  _perms(){try{return JSON.parse(localStorage.getItem('mock_perms')||'[]')}catch(e){return []}},
+  async share(email,role){const ps=this._perms().filter(p=>p.email!==email);const id='perm-'+newId();ps.push({id,roles:[role==='admin'?'write':'read'],email,name:email.split('@')[0]});localStorage.setItem('mock_perms',JSON.stringify(ps));return id},
+  async listPerms(){return [{id:'owner',roles:['owner'],email:(CONFIG.adminEmails[0]||'').toLowerCase(),name:'Owner'},...this._perms()]},
+  async unshare(id){localStorage.setItem('mock_perms',JSON.stringify(this._perms().filter(p=>p.id!==id)))}
 };
+
+/* ---------- user access list (access.json) ---------- */
+const ACCESS_FILE='access.json';let accessList=[];
+async function loadAccess(){try{const r=await store.read(ACCESS_FILE);accessList=r&&Array.isArray(r.data.users)?r.data.users:[]}catch(e){console.warn(e);accessList=[]}return accessList}
+async function updateAccess(fn){for(let i=0;i<5;i++){const r=await store.read(ACCESS_FILE);const users=r&&Array.isArray(r.data.users)?r.data.users:[];const next=fn(users.slice());try{await store.write(ACCESS_FILE,{format:'SYSHHB_ACCESS',users:next,updatedAt:new Date().toISOString(),updatedBy:currentUsername},r?r.etag:null);accessList=next;return next}catch(e){if(e.status===412||e.status===409)continue;throw e}}throw new Error('Could not save the user list')}
+function ownerEmails(){return CONFIG.adminEmails.map(x=>x.toLowerCase())}
+function roleFor(email){email=(email||'').toLowerCase();if(ownerEmails().includes(email))return 'admin';const u=accessList.find(x=>x.email===email);if(u)return u.role==='admin'?'admin':'viewer';return CONFIG.adminEmails.length?'viewer':'admin'}
 
 /* ---------- inventory sync (merge-safe for several editors) ---------- */
 let baseline=new Map(), invEtag=null, invDirty=false, saving=false, saveChain=Promise.resolve();
@@ -735,8 +775,7 @@ async function afterLogin(){
   try{
     await store.init();
     const email=(account.username||'').toLowerCase();
-    const role=!CONFIG.adminEmails.length||CONFIG.adminEmails.map(x=>x.toLowerCase()).includes(email)?'admin':'viewer';
-    currentUsername=email;currentRole=role;
+    currentUsername=email;await loadAccess();const role=roleFor(email);currentRole=role;
     await Promise.all([loadInventory(),loadAudit()]);
     setRole(role,email);render();setSync('ok','✓ Connected');
     let sid=null;try{sid=sessionStorage.getItem('syshhb_active_session_id')}catch(e){}
@@ -752,6 +791,14 @@ window.addEventListener('beforeunload',e=>{if(invDirty||saving){e.preventDefault
 /* =================== Language (EN / BM) & theme =================== */
 let LANG=(()=>{try{return localStorage.getItem('syshhb_lang')}catch(e){return null}})()||'en';
 const MS={
+
+'Add users and choose Admin or View access':'Tambah pengguna dan pilih akses Admin atau Lihat','Add user':'Tambah pengguna','Admin (can edit)':'Admin (boleh ubah)','Send email invitation':'Hantar jemputan e-mel',
+'Admins can add, edit, delete and import assets and manage users. View users can only search, view and print.':'Admin boleh tambah, ubah, padam dan import aset serta mengurus pengguna. Pengguna Lihat hanya boleh mencari, melihat dan mencetak.',
+'Users with access':'Pengguna dengan akses','Open OneDrive folder':'Buka folder OneDrive','Owner':'Pemilik','Remove':'Buang','Added':'Ditambah','You':'Anda','Admin':'Admin','No users yet.':'Belum ada pengguna.',
+'Shared directly in OneDrive':'Dikongsi terus di OneDrive','Enter a valid email address.':'Masukkan alamat e-mel yang sah.','That user is the owner and already has full access.':'Pengguna itu ialah pemilik dan sudah ada akses penuh.',
+'{e} now has {r} access':'{e} kini mempunyai akses {r}','Could not update access: ':'Tidak dapat mengemas kini akses: ','Could not read folder sharing: ':'Tidak dapat membaca perkongsian folder: ',
+'Remove access?':'Buang akses?','{e} will no longer be able to open the inventory.':'{e} tidak lagi boleh membuka inventori.','Access removed for {e}':'Akses dibuang untuk {e}',
+'User added':'Pengguna ditambah','User removed':'Pengguna dibuang','Role changed':'Peranan ditukar','You have been given access to the SYSHHB IT Asset Inventory: ':'Anda telah diberi akses kepada Inventori Aset IT SYSHHB: ',
 // navigation & layout
 'Overview':'Gambaran Keseluruhan','Tools':'Alatan','Dashboard':'Papan Pemuka','Inventory':'Inventori','Warranty & Alerts':'Waranti & Amaran','Location Map':'Peta Lokasi','Reports & Export':'Laporan & Eksport','Audit Logs':'Log Audit','Manage Access':'Urus Akses',
 'Inventory Control Center':'Pusat Kawalan Inventori','Refresh':'Muat Semula','Sign out':'Log Keluar','Add asset':'Tambah aset','Not signed in':'Belum log masuk',
@@ -845,7 +892,7 @@ const KEY='it_asset_inventory_v2_excel_master', AUDIT_KEY='syshhb_inventory_audi
 const PERIODS=['1 Month','3 Months','6 Months','9 Months','1 Year','2 Years','3 Years','4 Years','5 Years'];
 const PERIOD_MONTHS={'1 Month':1,'3 Months':3,'6 Months':6,'9 Months':9,'1 Year':12,'2 Years':24,'3 Years':36,'4 Years':48,'5 Years':60};
 const FILTER_IDS=['typeFilter','subtypeFilter','schoolFilter','statusFilter','locationFilter','ownershipFilter'];
-const VIEWS={dashboard:['Dashboard','Overview of all IT assets'],inventory:['Inventory','Search, filter and manage asset records'],warranty:['Warranty & Alerts','Warranties ending soon and assets that need attention'],map:['Location Map','Floor plan and room finder'],reports:['Reports & Export','Printable reports, Excel export and backups'],audit:['Audit Logs','Sign-ins and changes by every user']};
+const VIEWS={dashboard:['Dashboard','Overview of all IT assets'],inventory:['Inventory','Search, filter and manage asset records'],warranty:['Warranty & Alerts','Warranties ending soon and assets that need attention'],map:['Location Map','Floor plan and room finder'],reports:['Reports & Export','Printable reports, Excel export and backups'],audit:['Audit Logs','Sign-ins and changes by every user'],access:['Manage Access','Add users and choose Admin or View access']};
 let assets=[], page=1, pageSize=25, sortKey='Asset Tag', sortDir=1, selectedAssets=new Set(), quick='', charts={}, editId=null, currentView='dashboard', drawerId=null, drawerList=[], wTab='soon', activeSessionId=null;
 
 const $=id=>document.getElementById(id);
@@ -1131,13 +1178,14 @@ function renderAudit(){const logs=filteredAudit();$('auditTableBody').innerHTML=
 
 /* ---------- views & render ---------- */
 function showView(v){
-  if(!VIEWS[v]||(v==='audit'&&currentRole!=='admin'))v='dashboard';currentView=v;if(drawerId)closeDrawer();
+  if(!VIEWS[v]||((v==='audit'||v==='access')&&currentRole!=='admin'))v='dashboard';currentView=v;if(drawerId)closeDrawer();
   document.querySelectorAll('section.view').forEach(s=>s.hidden=s.dataset.view!==v);
   document.querySelectorAll('.nav-item[data-view],.bottom-nav [data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===v));
   $('viewTitle').textContent=T(VIEWS[v][0]);$('viewSub').textContent=T(VIEWS[v][1]);document.body.classList.remove('nav-open');
   try{sessionStorage.setItem('syshhb_view',v)}catch(e){}
   if(v==='map')loadFloorPlan();
   if(v==='audit'){renderAudit();loadAudit().then(renderAudit)}
+  if(v==='access')renderAccess(true);
   render();window.scrollTo({top:0});
 }
 function render(){fillFilters();renderDashboard();renderTable();renderWarranty()}
@@ -1206,6 +1254,54 @@ document.addEventListener('keydown',e=>{
   if(e.key==='/'&&!/input|textarea|select/i.test(document.activeElement.tagName)){e.preventDefault();$('globalSearch').focus()}
   if(drawerId&&!$('assetModal').classList.contains('open')&&!/input|textarea|select/i.test(document.activeElement.tagName)){if(e.key==='ArrowRight')$('drNext').click();if(e.key==='ArrowLeft')$('drPrev').click()}
 });
+
+/* ---------- manage access ---------- */
+let permCache=[];
+const isEmail=e=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+function accessRows(){
+  const owners=ownerEmails(),rows=[];
+  owners.forEach(e=>{const p=permCache.find(x=>x.email===e);rows.push({email:e,role:'owner',name:p&&p.name})});
+  accessList.forEach(u=>{if(!owners.includes(u.email)){const p=permCache.find(x=>x.email===u.email);rows.push({...u,name:u.name||(p&&p.name)||'',src:'app'})}});
+  permCache.filter(p=>!p.link&&!p.inherited&&p.email&&!p.roles.includes('owner')&&!owners.includes(p.email)&&!accessList.some(u=>u.email===p.email)).forEach(p=>rows.push({email:p.email,name:p.name,role:p.roles.includes('write')?'admin':'viewer',permId:p.id,src:'onedrive'}));
+  return rows;
+}
+async function renderAccess(refresh){
+  if(currentView!=='access')return;const body=$('accessBody');
+  if(refresh){body.innerHTML=`<tr style="cursor:default"><td colspan="4" class="empty-state">${T('Loading…')}</td></tr>`;try{await loadAccess();permCache=await store.listPerms()}catch(e){console.warn(e);toast(T('Could not read folder sharing: ')+e.message,'error',6000)}}
+  const rows=accessRows();
+  body.innerHTML=rows.map(u=>{const em=escapeHtml(u.email),me=u.email===currentUsername;
+    const role=u.role==='owner'?`<span class="pill ok plain">${T('Owner')}</span>`:`<select data-role-email="${em}" ${me?'disabled':''}><option value="admin" ${u.role==='admin'?'selected':''}>${T('Admin (can edit)')}</option><option value="viewer" ${u.role!=='admin'?'selected':''}>${T('View only')}</option></select>`;
+    return `<tr style="cursor:default"><td data-label="${T('User')}"><b>${escapeHtml(u.name||u.email)}${me?` <span class="pill info plain">${T('You')}</span>`:''}</b>${u.name?`<span class="sub">${em}</span>`:''}${u.src==='onedrive'?`<span class="sub">${T('Shared directly in OneDrive')}</span>`:''}</td><td data-label="${T('Role')}">${role}</td><td data-label="${T('Added')}">${u.addedAt?escapeHtml(new Date(u.addedAt).toLocaleDateString()+(u.addedBy?' · '+u.addedBy:'')):'—'}</td><td>${u.role==='owner'||me?'':`<button class="btn sm danger" data-remove-email="${em}">${T('Remove')}</button>`}</td></tr>`}).join('')||`<tr style="cursor:default"><td colspan="4" class="empty-state">${T('No users yet.')}</td></tr>`;
+}
+async function findPermIds(email){let ids=[];const u=accessList.find(x=>x.email===email);if(u&&u.permId)ids.push(u.permId);try{permCache=await store.listPerms()}catch(e){}permCache.filter(p=>p.email===email&&!p.roles.includes('owner')&&!p.inherited).forEach(p=>{if(!ids.includes(p.id))ids.push(p.id)});return ids}
+async function grantAccess(email,role,notify){
+  for(const id of await findPermIds(email)){try{await store.unshare(id)}catch(e){console.warn(e)}}
+  const permId=await store.share(email,role,notify,T('You have been given access to the SYSHHB IT Asset Inventory: ')+location.origin+location.pathname);
+  const prev=accessList.find(x=>x.email===email);
+  await updateAccess(users=>{const rest=users.filter(x=>x.email!==email);rest.push({email,role,permId,addedBy:prev&&prev.addedBy||currentUsername,addedAt:prev&&prev.addedAt||new Date().toISOString(),changedAt:new Date().toISOString()});return rest});
+}
+$('addUserForm').onsubmit=async e=>{
+  e.preventDefault();const email=$('newUserEmail').value.trim().toLowerCase(),role=$('newUserRole').value,notify=$('newUserNotify').checked;
+  if(!isEmail(email)){toast(T('Enter a valid email address.'),'error');return}
+  if(ownerEmails().includes(email)){toast(T('That user is the owner and already has full access.'),'warn');return}
+  const btn=$('addUserBtn');btn.disabled=true;
+  try{await grantAccess(email,role,notify);addAuditEvent('User added',currentUsername,currentRole,{detail:`${email} (${role==='admin'?'Admin':'View'})`});$('newUserEmail').value='';$('newUserRole').value='viewer';$('newUserNotify').checked=false;toast(T('{e} now has {r} access',{e:email,r:role==='admin'?T('Admin'):T('View only')}));await renderAccess(true)}
+  catch(err){console.error(err);toast(T('Could not update access: ')+err.message,'error',7000)}
+  finally{btn.disabled=false}
+};
+$('accessBody').addEventListener('change',async e=>{
+  const sel=e.target.closest('[data-role-email]');if(!sel)return;const email=sel.dataset.roleEmail,role=sel.value;sel.disabled=true;
+  try{await grantAccess(email,role,false);addAuditEvent('Role changed',currentUsername,currentRole,{detail:`${email} → ${role==='admin'?'Admin':'View'}`});toast(T('{e} now has {r} access',{e:email,r:role==='admin'?T('Admin'):T('View only')}));await renderAccess(true)}
+  catch(err){console.error(err);toast(T('Could not update access: ')+err.message,'error',7000);await renderAccess(true)}
+});
+$('accessBody').addEventListener('click',async e=>{
+  const b=e.target.closest('[data-remove-email]');if(!b)return;const email=b.dataset.removeEmail;
+  if(!await confirmDialog(T('Remove access?'),T('{e} will no longer be able to open the inventory.',{e:email}),T('Remove'),true))return;
+  b.disabled=true;
+  try{for(const id of await findPermIds(email))await store.unshare(id);await updateAccess(users=>users.filter(x=>x.email!==email));addAuditEvent('User removed',currentUsername,currentRole,{detail:email});toast(T('Access removed for {e}',{e:email}),'warn');await renderAccess(true)}
+  catch(err){console.error(err);toast(T('Could not update access: ')+err.message,'error',7000);b.disabled=false}
+});
+$('accessRefreshBtn').onclick=()=>renderAccess(true);
 function chartDefaults(){if(window.Chart&&Chart.defaults){Chart.defaults.color=cssVar('--muted');Chart.defaults.borderColor=cssVar('--line')}}
 function onLangChange(){const ss=$('syncStatus');if(ss.dataset.raw)ss.textContent=T(ss.dataset.raw);const d=drawerId;showView(currentView);if(d)openDrawer(d)}
 function onThemeChange(){chartDefaults();if(currentView==='dashboard'){Object.values(charts).forEach(c=>c&&c.destroy&&c.destroy());charts={};renderDashboard()}}
