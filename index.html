@@ -260,6 +260,15 @@ td.bp-act{white-space:nowrap;text-align:right}td.bp-act .btn{margin-left:4px}
 .plan-view.dragging{cursor:grabbing}
 .plan-view img{display:block;width:100%;max-width:none;user-select:none}
 .plan-view:fullscreen{height:100vh;border-radius:0}
+.plan-wrap{position:relative}
+.plan-float{display:none}
+.plan-hint{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);background:#132a22e6;color:#fff;font-size:12px;padding:6px 12px;border-radius:20px;pointer-events:none;opacity:0;transition:opacity .4s;white-space:nowrap}
+.plan-hint.on{opacity:1}
+.plan-wrap.max{position:fixed;inset:0;z-index:95;background:#fff}
+.plan-wrap.max .plan-view{height:100vh;height:100dvh;min-height:0;border-radius:0}
+.plan-wrap.max .plan-float{display:flex;position:fixed;left:10px;right:10px;top:calc(10px + env(safe-area-inset-top));gap:8px;align-items:center;z-index:96}
+.plan-float .btn{width:44px;height:44px;justify-content:center;padding:0;font-size:20px;box-shadow:0 4px 14px #0003;background:#fff;color:#132a22;border-color:#cfdfd6}
+.plan-float .pf-title{flex:1;font-weight:700;font-size:14px;background:#ffffffe6;color:#132a22;padding:10px 12px;border-radius:10px;box-shadow:0 4px 14px #0002;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .map-frame{display:block;width:100%;height:74vh;min-height:520px;border:0;background:#fff;border-radius:0 0 var(--radius) var(--radius)}
 
 /* ---------- auth ---------- */
@@ -361,8 +370,17 @@ td.bp-act{white-space:nowrap;text-align:right}td.bp-act .btn{margin-left:4px}
   td.bp-act{text-align:left;white-space:normal}td.bp-act .btn{margin:4px 4px 0 0}
   .add-user .btn{justify-content:center}
   .map-frame{height:65vh;min-height:380px}
-  .plan-view{height:62vh;min-height:320px}
-  .plan-bar .seg{max-width:100%}
+  .plan-view{height:64vh;height:64dvh;min-height:320px;touch-action:pan-x pan-y}
+  .plan-bar{flex-direction:column;align-items:stretch;padding:10px 12px;gap:8px}
+  .plan-bar .seg#planTabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;max-width:none;width:100%;overflow:visible;padding:4px}
+  #planTabs button{padding:11px 6px;font-size:13.5px;white-space:normal;line-height:1.2}
+  .plan-tools{display:grid!important;grid-template-columns:44px 1fr 44px 1fr 1fr 1fr;gap:6px;align-items:center}
+  .plan-tools .btn{justify-content:center;padding:9px 4px;min-height:40px}
+  .plan-tools #zoomOut,.plan-tools #zoomIn{font-size:18px}
+  .plan-tools .btn svg{margin:0}
+  #planDownload,#planFull{font-size:0;gap:0}#planDownload svg,#planFull svg{width:19px;height:19px}
+  #zoomLbl{font-weight:700}
+  body[data-view=map] #addBtn{display:none!important}
   .toasts{bottom:150px;left:14px;right:14px;max-width:none}
   /* bottom navigation */
   .bottom-nav{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:0;right:0;bottom:0;z-index:44;background:#fff;border-top:1px solid var(--line);box-shadow:0 -4px 18px #0b2a1d14;padding:4px 4px calc(4px + env(safe-area-inset-bottom))}
@@ -449,7 +467,7 @@ td.bp-act{white-space:nowrap;text-align:right}td.bp-act .btn{margin-left:4px}
       <button class="nav-item" data-view="warranty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>Warranty &amp; Alerts<span class="count" id="navCountAlerts" hidden>0</span></button>
       <div class="nav-label">Tools</div>
       <button class="nav-item" data-view="map"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m1 6 7-3 8 3 7-3v15l-7 3-8-3-7 3z"/><path d="M8 3v15M16 6v15"/></svg>Location Map</button>
-      <button class="nav-item" data-view="borang"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M9 12h6M9 16h6"/></svg>Borang Penyerahan</button>
+      <button class="nav-item" data-view="borang"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M9 12h6M9 16h6"/></svg>Handover Form</button>
       <button class="nav-item" data-view="reports"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h8"/></svg>Reports &amp; Export</button>
       <button class="nav-item entry-ok" data-view="requests"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Requests<span class="count" id="navCountReq" hidden>0</span></button>
       <button class="nav-item admin-only" data-view="audit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>Audit Logs</button>
@@ -535,8 +553,8 @@ td.bp-act{white-space:nowrap;text-align:right}td.bp-act .btn{margin-left:4px}
       <section class="view card" data-view="map" hidden>
         <div class="card-h" style="padding-bottom:12px"><div class="row" style="flex:1"><input id="mapLocationSearch" placeholder="Room code or location, e.g. COM LAB 1, SM.GF.01" style="flex:1;min-width:220px"><button class="btn primary" id="mapSearchBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>Find assets here</button></div></div>
         <div class="small muted" id="mapSearchHint" data-noi18n style="padding:0 18px 10px">The school floor plan loads from SharePoint.</div>
-        <div class="plan-bar"><div class="seg" id="planTabs" data-noi18n></div><div class="row plan-tools"><button class="btn sm" id="zoomOut" aria-label="Zoom out">−</button><span id="zoomLbl" class="small muted" data-noi18n>100%</span><button class="btn sm" id="zoomIn" aria-label="Zoom in">+</button><button class="btn sm" id="zoomFit">Fit</button><button class="btn sm" id="planDownload"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Download</button><button class="btn sm" id="planFull">Full screen</button></div></div>
-        <div class="plan-view" id="planView"><img id="planImg" alt="Floor plan" draggable="false"></div>
+        <div class="plan-bar"><div class="seg" id="planTabs" data-noi18n></div><div class="row plan-tools"><button class="btn sm" id="zoomOut" aria-label="Zoom out">−</button><span id="zoomLbl" class="small muted" data-noi18n>100%</span><button class="btn sm" id="zoomIn" aria-label="Zoom in">+</button><button class="btn sm" id="zoomFit">Fit</button><button class="btn sm" id="planDownload"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Download</button><button class="btn sm" id="planFull"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></svg><span class="lbl">Full screen</span></button></div></div>
+        <div class="plan-wrap" id="planWrap"><div class="plan-view" id="planView"><img id="planImg" alt="Floor plan" draggable="false"></div><div class="plan-float"><span class="pf-title" id="pfTitle" data-noi18n></span><button class="btn" id="pfOut" aria-label="Zoom out">−</button><button class="btn" id="pfIn" aria-label="Zoom in">+</button><button class="btn" id="pfClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div><div class="plan-hint" id="planHint" data-noi18n></div></div>
         <iframe title="YSHHB floor plan" id="floorPlanFrame" class="map-frame" hidden></iframe>
       </section>
 
@@ -632,27 +650,13 @@ td.bp-act{white-space:nowrap;text-align:right}td.bp-act .btn{margin-left:4px}
       <div class="field"><label>JENIS PERALATAN</label><div class="bp-checks"><label><input type="checkbox" id="bp_j_laptop"> LAPTOP</label><label><input type="checkbox" id="bp_j_komputer"> KOMPUTER</label><label><input type="checkbox" id="bp_j_printer"> PRINTER</label></div></div>
       <div class="field"><label>JENIS PERKHIDMATAN</label><div class="bp-checks"><label><input type="radio" name="bp_perk" value="pembelian"> PEMBELIAN</label><label><input type="radio" name="bp_perk" value="sewa"> SEWA</label><label><input type="radio" name="bp_perk" value=""> —</label></div></div>
     </div></div>
-    <div class="form-sec"><h4>Peralatan</h4>
+    <div class="form-sec"><h4>Equipment</h4>
       <div id="bpItems"></div>
       <div class="small" id="bpItemWarn" hidden style="color:var(--warn);margin:6px 0">The original form has 4 rows. More items may push the form onto a second page.</div>
       <div class="row" style="margin-top:8px"><button type="button" class="btn sm" id="bpAddItem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Add row</button><button type="button" class="btn sm" id="bpPickBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>Add from inventory</button></div>
       <div id="bpPick" hidden class="bp-pick"><input id="bpPickQ" placeholder="Search tag, serial, model, location…"><div id="bpPickList" data-noi18n></div></div>
     </div>
-    <div class="form-sec"><h4>Pengakuan</h4><div class="formgrid">
-      <div class="field"><label>PERSETUJUAN</label><div class="bp-checks"><label><input type="radio" name="bp_setuju" value="setuju"> Bersetuju</label><label><input type="radio" name="bp_setuju" value="tidak"> Tidak bersetuju</label><label><input type="radio" name="bp_setuju" value=""> —</label></div></div>
-      <div class="field" style="grid-column:span 2"><label for="bp_ulasan">Ulasan tidak Bersetuju</label><input id="bp_ulasan"></div>
-      <div class="field"><label for="bp_tarikhPeminjam">TARIKH (Peminjam/Penerima)</label><input id="bp_tarikhPeminjam" placeholder="DD/MM/YYYY"></div>
-      <div class="field"><label for="bp_tarikhKetua">TARIKH (Ketua Bahagian)</label><input id="bp_tarikhKetua" placeholder="DD/MM/YYYY"></div>
-    </div></div>
-    <div class="form-sec"><h4>Pengesahan peralatan diterima semasa dikembalikan</h4><div class="formgrid">
-      <div class="field"><label for="bp_retNamaBtm">NAMA (Bahagian Teknologi Maklumat)</label><input id="bp_retNamaBtm"></div>
-      <div class="field"><label for="bp_retTarikhBtm">TARIKH (Bahagian Teknologi Maklumat)</label><input id="bp_retTarikhBtm" placeholder="DD/MM/YYYY"></div>
-      <div class="field"></div>
-      <div class="field"><label for="bp_retNamaPeminjam">NAMA (Peminjam/Penerima)</label><input id="bp_retNamaPeminjam"></div>
-      <div class="field"><label for="bp_retTarikhPeminjam">TARIKH (Peminjam/Penerima)</label><input id="bp_retTarikhPeminjam" placeholder="DD/MM/YYYY"></div>
-      <div class="field"></div>
-      <div class="field wide"><label for="bp_nota">NOTA</label><input id="bp_nota"></div>
-    </div></div>
+    <p class="small muted" style="margin:14px 0 0">The declaration, signatures, dates and the return confirmation section are left blank to be filled in by pen after printing.</p>
   </div>
   <div class="dialog-actions"><button type="button" class="btn" id="bpPreview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg>Preview</button><div class="row"><button type="button" class="btn" id="bpCancel">Cancel</button><button type="submit" class="btn primary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Save form</button></div></div></form>
 </div></div>
@@ -908,7 +912,7 @@ const MS={
 'Floor plan not found. Upload floorplan-1.png to floorplan-4.png to the inventory folder.':'Pelan lantai tidak dijumpai. Muat naik floorplan-1.png hingga floorplan-4.png ke folder inventori.',
 'Checked by (name / signature / date)':'Disemak oleh (nama / tandatangan / tarikh)','Verified by (name / signature / date)':'Disahkan oleh (nama / tandatangan / tarikh)',
 
-'Borang Penyerahan':'Borang Penyerahan','IT equipment handover forms (BTM-02 V.2)':'Borang penyerahan peralatan IT (BTM-02 V.2)','New form':'Borang baharu','Edit form':'Ubah borang','Duplicate form':'Salin borang','Duplicate':'Salin',
+'Handover Form':'Borang Penyerahan','The declaration, signatures, dates and the return confirmation section are left blank to be filled in by pen after printing.':'Pengakuan, tandatangan, tarikh dan bahagian pengesahan dikembalikan dibiarkan kosong untuk diisi dengan pen selepas dicetak.','IT equipment handover forms (BTM-02 V.2)':'Borang penyerahan peralatan IT (BTM-02 V.2)','New form':'Borang baharu','Edit form':'Ubah borang','Duplicate form':'Salin borang','Duplicate':'Salin',
 'Search name, location, equipment, serial…':'Cari nama, lokasi, peralatan, no. siri…','{n} of {t} forms':'{n} daripada {t} borang','Print selected ({n})':'Cetak terpilih ({n})',
 'No.':'No.','Department / location':'Bahagian / lokasi','Equipment':'Peralatan','Name':'Nama','Returned':'Dikembalikan','Handed over':'Diserahkan','Draft':'Draf',
 'No forms yet. Click New form to create one.':'Belum ada borang. Klik Borang baharu untuk mula.','Equipment (brand, model, notes)':'Peralatan (jenama, model, catatan)','Serial number':'Nombor siri',
@@ -918,6 +922,8 @@ const MS={
 'Delete form?':'Padam borang?','Form #{n} ({b}) will be deleted for everyone.':'Borang #{n} ({b}) akan dipadam untuk semua pengguna.','Form deleted':'Borang dipadam','Forms refreshed':'Borang dimuat semula',
 'Tick one or more forms first.':'Tandakan satu atau lebih borang dahulu.','Form added':'Borang ditambah','Form edited':'Borang diubah',
 'In the print window choose Paper: A4, Margins: None, Scale: 100%, and turn off Headers and footers.':'Dalam tetingkap cetak pilih Kertas: A4, Margin: Tiada, Skala: 100%, dan matikan Pengepala dan pengaki.',
+'Pengakuan, tandatangan, tarikh dan bahagian pengesahan dikembalikan dibiarkan kosong untuk diisi dengan pen selepas dicetak.':'Pengakuan, tandatangan, tarikh dan bahagian pengesahan dikembalikan dibiarkan kosong untuk diisi dengan pen selepas dicetak.',
+'Pinch or use + / − to zoom · drag to move':'Cubit atau guna + / − untuk zum · seret untuk alih',
 // navigation & layout
 'Overview':'Gambaran Keseluruhan','Tools':'Alatan','Dashboard':'Papan Pemuka','Inventory':'Inventori','Warranty & Alerts':'Waranti & Amaran','Location Map':'Peta Lokasi','Reports & Export':'Laporan & Eksport','Audit Logs':'Log Audit','Manage Access':'Urus Akses',
 'Inventory Control Center':'Pusat Kawalan Inventori','Refresh':'Muat Semula','Sign out':'Log Keluar','Add asset':'Tambah aset','Not signed in':'Belum log masuk',
@@ -1011,7 +1017,7 @@ const KEY='it_asset_inventory_v2_excel_master', AUDIT_KEY='syshhb_inventory_audi
 const PERIODS=['1 Month','3 Months','6 Months','9 Months','1 Year','2 Years','3 Years','4 Years','5 Years'];
 const PERIOD_MONTHS={'1 Month':1,'3 Months':3,'6 Months':6,'9 Months':9,'1 Year':12,'2 Years':24,'3 Years':36,'4 Years':48,'5 Years':60};
 const FILTER_IDS=['typeFilter','subtypeFilter','schoolFilter','statusFilter','locationFilter','ownershipFilter'];
-const VIEWS={dashboard:['Dashboard','Overview of all IT assets'],inventory:['Inventory','Search, filter and manage asset records'],warranty:['Warranty & Alerts','Warranties ending soon and assets that need attention'],map:['Location Map','Floor plan and room finder'],reports:['Reports & Export','Printable reports, Excel export and backups'],audit:['Audit Logs','Sign-ins and changes by every user'],access:['Manage Access','Add users and choose Admin or View access'],requests:['Requests','Edit and delete requests that need admin approval'],borang:['Borang Penyerahan','IT equipment handover forms (BTM-02 V.2)']};
+const VIEWS={dashboard:['Dashboard','Overview of all IT assets'],inventory:['Inventory','Search, filter and manage asset records'],warranty:['Warranty & Alerts','Warranties ending soon and assets that need attention'],map:['Location Map','Floor plan and room finder'],reports:['Reports & Export','Printable reports, Excel export and backups'],audit:['Audit Logs','Sign-ins and changes by every user'],access:['Manage Access','Add users and choose Admin or View access'],requests:['Requests','Edit and delete requests that need admin approval'],borang:['Handover Form','IT equipment handover forms (BTM-02 V.2)']};
 let assets=[], page=1, pageSize=25, sortKey='Asset Tag', sortDir=1, selectedAssets=new Set(), quick='', charts={}, editId=null, currentView='dashboard', drawerId=null, drawerList=[], wTab='soon', activeSessionId=null;
 
 const $=id=>document.getElementById(id);
@@ -1349,7 +1355,7 @@ function renderAudit(){const logs=filteredAudit();$('auditTableBody').innerHTML=
 
 /* ---------- views & render ---------- */
 function showView(v){
-  if(!VIEWS[v]||((v==='audit'||v==='access')&&currentRole!=='admin')||(v==='requests'&&currentRole==='viewer'))v='dashboard';currentView=v;if(drawerId)closeDrawer();
+  if(!VIEWS[v]||((v==='audit'||v==='access')&&currentRole!=='admin')||(v==='requests'&&currentRole==='viewer'))v='dashboard';currentView=v;document.body.dataset.view=v;if(drawerId)closeDrawer();if(v!=='map'&&$('planWrap').classList.contains('max'))planMax(false);
   document.querySelectorAll('section.view').forEach(s=>s.hidden=s.dataset.view!==v);
   document.querySelectorAll('.nav-item[data-view],.bottom-nav [data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===v));
   $('viewTitle').textContent=T(VIEWS[v][0]);$('viewSub').textContent=T(VIEWS[v][1]);document.body.classList.remove('nav-open');
@@ -1368,11 +1374,12 @@ function renderPlanTabs(){$('planTabs').innerHTML=PLANS.map((p,i)=>`<button clas
 function setZoom(z){const v=$('planView'),img=$('planImg'),cx=(v.scrollLeft+v.clientWidth/2)/Math.max(1,img.clientWidth),cy=(v.scrollTop+v.clientHeight/2)/Math.max(1,img.clientHeight);planZoom=Math.min(5,Math.max(1,Math.round(z*100)/100));img.style.width=planZoom*100+'%';$('zoomLbl').textContent=Math.round(planZoom*100)+'%';v.scrollLeft=cx*img.clientWidth-v.clientWidth/2;v.scrollTop=cy*img.clientHeight-v.clientHeight/2}
 async function loadFloorPlan(){
   renderPlanTabs();if(!store)return;const p=PLANS[planIdx];
-  if(planUrls[p.file]){$('planImg').src=planUrls[p.file];return}
+  $('pfTitle').textContent=T(p.label);
+  if(planUrls[p.file]){$('planImg').src=planUrls[p.file];planStartZoom();return}
   $('mapSearchHint').textContent=T('Loading floor plan from SharePoint…');
   try{
     const b=await store.blob(p.file);
-    if(b){planUrls[p.file]=URL.createObjectURL(new Blob([b],{type:'image/png'}));if(PLANS[planIdx]===p){$('planImg').src=planUrls[p.file];setZoom(1)}$('mapSearchHint').textContent=T('Search a room code or location to list the assets there.');$('planView').hidden=false;$('floorPlanFrame').hidden=true;return}
+    if(b){planUrls[p.file]=URL.createObjectURL(new Blob([b],{type:'image/png'}));if(PLANS[planIdx]===p){$('planImg').src=planUrls[p.file];planStartZoom()}$('mapSearchHint').textContent=T('Search a room code or location to list the assets there.');$('planView').hidden=false;$('floorPlanFrame').hidden=true;return}
     const fr=$('floorPlanFrame');
     if(!fr.dataset.loaded){const pdf=await store.blob(PLAN_FILE);if(pdf){fr.src=URL.createObjectURL(new Blob([pdf],{type:'application/pdf'}));fr.dataset.loaded='1'}}
     if(fr.dataset.loaded){fr.hidden=false;$('planView').hidden=true;$('mapSearchHint').textContent=T('Floor plan images not found, showing the PDF. Upload floorplan-1.png to floorplan-4.png to the inventory folder.')}
@@ -1382,10 +1389,22 @@ async function loadFloorPlan(){
 $('planTabs').addEventListener('click',e=>{const b=e.target.closest('[data-plan]');if(b){planIdx=Number(b.dataset.plan);loadFloorPlan()}});
 $('zoomIn').onclick=()=>setZoom(planZoom*1.25);$('zoomOut').onclick=()=>setZoom(planZoom/1.25);$('zoomFit').onclick=()=>setZoom(1);
 $('planView').addEventListener('wheel',e=>{if(e.ctrlKey||e.metaKey){e.preventDefault();setZoom(planZoom*(e.deltaY<0?1.15:1/1.15))}},{passive:false});
-$('planImg').addEventListener('dblclick',()=>setZoom(planZoom>=2?1:planZoom*2));
+$('planImg').addEventListener('dblclick',()=>{if(!isPhone())setZoom(planZoom>=2?1:planZoom*2)});
 (()=>{const v=$('planView');let d=null;v.addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse')return;d={x:e.clientX,y:e.clientY,l:v.scrollLeft,t:v.scrollTop};v.classList.add('dragging')});window.addEventListener('pointermove',e=>{if(!d)return;v.scrollLeft=d.l-(e.clientX-d.x);v.scrollTop=d.t-(e.clientY-d.y)});window.addEventListener('pointerup',()=>{d=null;v.classList.remove('dragging')})})();
 $('planDownload').onclick=()=>{const p=PLANS[planIdx];if(!planUrls[p.file])return;const a=document.createElement('a');a.href=planUrls[p.file];a.download=`YSHHB_${p.label.replace(/\W+/g,'_')}_Floor_Plan.png`;a.click()};
-$('planFull').onclick=()=>{const v=$('planView');if(document.fullscreenElement)document.exitFullscreen();else if(v.requestFullscreen)v.requestFullscreen()};
+const isPhone=()=>innerWidth<=700||matchMedia('(pointer:coarse)').matches;
+function planStartZoom(){const img=$('planImg'),go=()=>{const v=$('planView');if(isPhone()){setZoom(Math.min(3,Math.max(1,(v.clientHeight*img.naturalWidth/img.naturalHeight)/v.clientWidth)));v.scrollLeft=(img.clientWidth-v.clientWidth)/2;v.scrollTop=0;planHint(T('Pinch or use + / − to zoom · drag to move'))}else setZoom(1)};if(img.complete&&img.naturalWidth)requestAnimationFrame(go);else img.onload=()=>{img.onload=null;go()}}
+let hintT;function planHint(t){const h=$('planHint');h.textContent=t;h.classList.add('on');clearTimeout(hintT);hintT=setTimeout(()=>h.classList.remove('on'),2600)}
+function planMax(on){$('planWrap').classList.toggle('max',on);document.body.style.overflow=on?'hidden':'';if(on){planStartZoom()}else setTimeout(()=>planStartZoom(),50)}
+$('planFull').onclick=()=>{const w=$('planWrap');if(isPhone()||!w.requestFullscreen){planMax(!w.classList.contains('max'));return}if(document.fullscreenElement)document.exitFullscreen();else $('planView').requestFullscreen()};
+$('pfClose').onclick=()=>planMax(false);$('pfIn').onclick=()=>setZoom(planZoom*1.3);$('pfOut').onclick=()=>setZoom(planZoom/1.3);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('planWrap').classList.contains('max'))planMax(false)});
+(()=>{const v=$('planView');let p0=null;const dist=t=>Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY);
+  v.addEventListener('touchstart',e=>{if(e.touches.length===2){p0={d:dist(e.touches),z:planZoom}}},{passive:true});
+  v.addEventListener('touchmove',e=>{if(p0&&e.touches.length===2){e.preventDefault();setZoom(p0.z*dist(e.touches)/p0.d)}},{passive:false});
+  v.addEventListener('touchend',e=>{if(e.touches.length<2)p0=null});
+  let lastTap=0;v.addEventListener('touchend',e=>{if(e.changedTouches.length!==1||e.touches.length)return;const now=Date.now();if(now-lastTap<300){setZoom(planZoom>=2.5?1:planZoom*1.8);lastTap=0}else lastTap=now});
+})();
 function onRoleChange(){const u=currentUsername||'';$('roleBadge').textContent=currentRole==='admin'?T('Editor · full access'):currentRole==='dataentry'?T('Data entry · add only'):T('View only');if(currentRole!=='viewer'&&!window.__reqTimer){window.__reqTimer=setInterval(()=>{if(store)loadRequests().then(()=>{if(currentView==='requests')renderRequests()})},60000);loadRequests()}$('userName').textContent=u||T('Not signed in');$('avatar').textContent=(u[0]||'?').toUpperCase();let v='dashboard';try{v=sessionStorage.getItem('syshhb_view')||'dashboard'}catch(e){}showView(v)}
 
 /* ---------- events ---------- */
@@ -1564,7 +1583,7 @@ const BP_IMG_CREST='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEA3ADcAAD/2wBDAAIBA
 function bpBlank(){return {nama:'',jawatan:'',bahagian:'',jenis:{laptop:false,komputer:false,printer:false},lainLain:'',perkhidmatan:'',items:[{peralatan:'',siri:''},{peralatan:'',siri:''},{peralatan:'',siri:''},{peralatan:'',siri:''}],persetujuan:'',ulasan:'',tarikhPeminjam:'',tarikhKetua:'',retNamaBtm:'',retNamaPeminjam:'',retTarikhBtm:'',retTarikhPeminjam:'',nota:''}}
 async function bpLoad(){try{const r=await store.read(BP_FILE);bpForms=r&&Array.isArray(r.data.forms)?r.data.forms:[];bpLoaded=true}catch(e){console.warn(e)}return bpForms}
 async function bpUpdate(fn){for(let i=0;i<5;i++){const r=await store.read(BP_FILE);const list=r&&Array.isArray(r.data.forms)?r.data.forms:[];const next=fn(list.slice());try{await store.write(BP_FILE,{format:'SYSHHB_BORANG_PENYERAHAN',forms:next},r?r.etag:null);bpForms=next;return next}catch(e){if(e.status===412||e.status===409)continue;throw e}}throw new Error('Could not save the form')}
-function bpStatus(f){if(f.retTarikhBtm||f.retTarikhPeminjam||f.retNamaBtm)return ['ok',T('Returned')];if(f.nama)return ['info',T('Handed over')];return ['plain',T('Draft')]}
+function bpStatus(f){if(f.nama)return ['info',T('Handed over')];return ['plain',T('Draft')]}
 function bpCanEdit(){return currentRole==='admin'||currentRole==='dataentry'}
 function bpFiltered(){const q=norm($('bpSearch').value);return bpForms.filter(f=>!q||norm([f.nama,f.jawatan,f.bahagian,f.lainLain,f.nota,...(f.items||[]).map(i=>i.peralatan+' '+i.siri)].join(' ')).includes(q))}
 function renderBorang(){
@@ -1594,8 +1613,7 @@ function bpOpen(id,dup){
 function bpCollect(){
   const g=k=>$('bp_'+k).value.trim();
   return {nama:g('nama'),jawatan:g('jawatan'),bahagian:g('bahagian'),jenis:{laptop:$('bp_j_laptop').checked,komputer:$('bp_j_komputer').checked,printer:$('bp_j_printer').checked},lainLain:g('lainLain'),
-    perkhidmatan:(document.querySelector('[name=bp_perk]:checked')||{}).value||'',items:bpReadItems().filter((it,i,a)=>it.peralatan||it.siri||i<1),persetujuan:(document.querySelector('[name=bp_setuju]:checked')||{}).value||'',
-    ulasan:g('ulasan'),tarikhPeminjam:g('tarikhPeminjam'),tarikhKetua:g('tarikhKetua'),retNamaBtm:g('retNamaBtm'),retNamaPeminjam:g('retNamaPeminjam'),retTarikhBtm:g('retTarikhBtm'),retTarikhPeminjam:g('retTarikhPeminjam'),nota:g('nota')};
+    perkhidmatan:(document.querySelector('[name=bp_perk]:checked')||{}).value||'',items:bpReadItems().filter((it,i,a)=>it.peralatan||it.siri||i<1)};
 }
 async function bpSave(e){
   e.preventDefault();const data=bpCollect(),now=new Date().toISOString();let saved;
@@ -1615,6 +1633,7 @@ function bpPickRender(){const q=norm($('bpPickQ').value);const res=(q?assets.fil
 const bpE=s=>escapeHtml(s||'').replace(/\n/g,'<br>');
 const BOX='<span class="bx">☐</span>',BOXC='<span class="bx on">🗹</span>';
 function bpPage(f){
+  f={...f,persetujuan:'',ulasan:'',tarikhPeminjam:'',tarikhKetua:'',retNamaBtm:'',retNamaPeminjam:'',retTarikhBtm:'',retTarikhPeminjam:'',nota:''};
   const cb=v=>v?BOXC:BOX,items=(f.items&&f.items.length?f.items:[{peralatan:'',siri:''}]);
   return `<div class="pg">
 <div class="btm">BTM-02 V.2</div><img class="crest" src="${BP_IMG_CREST}" alt=""><img class="jawi" src="${BP_IMG_JAWI}" alt=""><div class="ysh">YAYASAN SULTAN<br>HAJI HASSANAL BOLKIAH</div>
@@ -1630,7 +1649,7 @@ function bpPage(f){
 </table>
 <table class="t2"><colgroup><col style="width:7.9mm"><col style="width:97.5mm"><col></colgroup>
 <tr><td colspan="3" class="h hg h10">PERALATAN</td></tr>
-<tr class="ch"><td>BIL</td><td class="c">PERALATAN</td><td>NOMBOR SIRI</td></tr>
+<tr class="ch"><td>BIL</td><td class="c">PERALATAN</td><td class="c">NOMBOR SIRI</td></tr>
 ${items.map((it,i)=>`<tr class="it"><td>${i+1}</td><td class="c">${bpE(it.peralatan)}</td><td class="c b">${bpE(it.siri)}</td></tr>`).join('')}
 </table>
 <div class="rest"><div class="agr">
