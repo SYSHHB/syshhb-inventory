@@ -1618,15 +1618,15 @@ function bpPage(f){
   const cb=v=>v?BOXC:BOX,items=(f.items&&f.items.length?f.items:[{peralatan:'',siri:''}]);
   return `<div class="pg">
 <div class="btm">BTM-02 V.2</div><img class="crest" src="${BP_IMG_CREST}" alt=""><img class="jawi" src="${BP_IMG_JAWI}" alt=""><div class="ysh">YAYASAN SULTAN<br>HAJI HASSANAL BOLKIAH</div>
-<table class="t1"><colgroup><col style="width:32.4mm"><col style="width:100.5mm"><col></colgroup>
-<tr><td colspan="2" class="h hb">BAHAGIAN TEKNOLOGI MAKLUMAT</td><td></td></tr>
-<tr><td colspan="2" class="h hg">BORANG PENYERAHAN PERALATAN TEKNOLOGI MAKLUMAT</td><td></td></tr>
-<tr class="r"><td class="lb">NAMA :</td><td class="v ul">${bpE(f.nama)}</td><td></td></tr>
-<tr class="r"><td class="lb">JAWATAN :</td><td class="v ul">${bpE(f.jawatan)}</td><td></td></tr>
-<tr class="r"><td class="lb">BAHAGIAN :</td><td class="v ul">${bpE(f.bahagian)}</td><td></td></tr>
-<tr class="r"><td class="lb">JENIS PERALATAN :</td><td class="v">${cb(f.jenis&&f.jenis.laptop)} LAPTOP<span class="sp"></span>${cb(f.jenis&&f.jenis.komputer)}KOMPUTER<span class="sp"></span>${cb(f.jenis&&f.jenis.printer)} PRINTER</td><td></td></tr>
-<tr class="r"><td class="lb">LAIN-LAIN :</td><td class="v ul">${bpE(f.lainLain)}</td><td></td></tr>
-<tr class="r"><td class="lb">JENIS PERKHIDMATAN :</td><td class="v">${cb(f.perkhidmatan==='pembelian')} PEMBELIAN<span class="sp"></span>${cb(f.perkhidmatan==='sewa')} SEWA</td><td></td></tr>
+<table class="t1"><colgroup><col style="width:44.3mm"><col></colgroup>
+<tr><td colspan="2" class="h hb">BAHAGIAN TEKNOLOGI MAKLUMAT</td></tr>
+<tr><td colspan="2" class="h hg">BORANG PENYERAHAN PERALATAN TEKNOLOGI MAKLUMAT</td></tr>
+<tr class="r"><td class="lb">NAMA :</td><td class="v ul">${bpE(f.nama)}</td></tr>
+<tr class="r"><td class="lb">JAWATAN :</td><td class="v ul">${bpE(f.jawatan)}</td></tr>
+<tr class="r"><td class="lb">BAHAGIAN :</td><td class="v ul">${bpE(f.bahagian)}</td></tr>
+<tr class="r"><td class="lb">JENIS PERALATAN :</td><td class="v">${cb(f.jenis&&f.jenis.laptop)} LAPTOP<span class="sp"></span>${cb(f.jenis&&f.jenis.komputer)}KOMPUTER<span class="sp"></span>${cb(f.jenis&&f.jenis.printer)} PRINTER</td></tr>
+<tr class="r"><td class="lb">LAIN-LAIN :</td><td class="v ul">${bpE(f.lainLain)}</td></tr>
+<tr class="r"><td class="lb">JENIS PERKHIDMATAN :</td><td class="v">${cb(f.perkhidmatan==='pembelian')} PEMBELIAN<span class="sp"></span>${cb(f.perkhidmatan==='sewa')} SEWA</td></tr>
 </table>
 <table class="t2"><colgroup><col style="width:7.9mm"><col style="width:97.5mm"><col></colgroup>
 <tr><td colspan="3" class="h hg h10">PERALATAN</td></tr>
@@ -1663,14 +1663,14 @@ html{background:#e6e9e8}body{margin:0;padding:18px 0;font-family:Calibri,Carlito
 .bar{text-align:center;margin-bottom:12px}.bar button{background:#f3d83d;border:0;padding:9px 18px;border-radius:6px;font-weight:bold;cursor:pointer;font-size:14px}.bar span{display:block;font:12px Arial;color:#555;margin-top:6px}
 .pg{position:relative;width:210mm;height:297mm;margin:0 auto 16px;background:#fff;box-shadow:0 2px 12px #0003;padding:25.4mm 10mm 4.76mm 17.46mm;overflow:hidden}
 .btm{position:absolute;left:167.1mm;top:21.8mm;width:31.5mm;height:8.5mm;border:1.2pt solid #000;border-radius:2.2mm;box-shadow:1.2mm 1.2mm 1.2mm #9a9a9a;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:13pt;background:#fff}
-.crest{position:absolute;left:96.9mm;top:23.4mm;width:23.6mm;height:24.1mm}
-.jawi{position:absolute;left:145mm;top:33.6mm;width:50.5mm;height:11.7mm}
-.ysh{position:absolute;left:22.8mm;top:36mm;width:58.7mm;text-align:center;font-size:14pt;line-height:7mm}
+.crest{position:absolute;left:96.6mm;top:20.3mm;width:23.6mm;height:24.6mm}
+.jawi{position:absolute;left:143.5mm;top:33.5mm;width:51.8mm;height:12.8mm}
+.ysh{position:absolute;left:22.8mm;top:32.4mm;width:58.7mm;text-align:center;font-size:14pt;line-height:6.4mm}
 table{border-collapse:collapse;table-layout:fixed}
 td{padding:0 1.9mm;vertical-align:bottom;font-size:11pt;line-height:1.15}
-.t1{position:absolute;left:17.46mm;top:53.3mm;width:182.5mm}
+.t1{position:absolute;left:17.46mm;top:51.2mm;width:182.5mm}
 .h{color:#fff;font-family:Corbel,Calibri,Carlito,sans-serif;font-weight:bold;text-align:center;vertical-align:middle;border:.5pt solid #000;letter-spacing:.2px}
-.hb{background:#0d0d0d;height:6.6mm}.hg{background:#7f7f7f;height:6.9mm}.h10{font-size:10pt;height:7.4mm}.h9{font-size:9pt;height:6.2mm}
+.hb{background:#0d0d0d;height:6.4mm}.hg{background:#7f7f7f;height:7.1mm}.h10{font-size:10pt;height:7.4mm}.h9{font-size:9pt;height:6.2mm}
 .t1 .r td{height:7.2mm}.t1 .lb{white-space:normal;padding:0}.t1 .v{padding-top:2.1mm}.t1 .ul{border-bottom:.5pt solid #000}
 .bx{font-family:"Segoe UI Symbol","Segoe UI",Arial,sans-serif;font-size:10.5pt}.bx.on{font-size:11pt}.sp{display:inline-block;width:11mm}
 .t2{position:absolute;left:17.46mm;top:123.7mm;width:182.5mm}
