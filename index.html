@@ -925,7 +925,7 @@ async function cloudStart(){
   await afterLogin();
 }
 async function afterLogin(){
-  $('msSignInBtn').hidden=true;authMsg('Connecting to SharePoint…');
+  $('msSignInBtn').hidden=true;authMsg('Thank you for your patience');
   try{
     await store.init();
     const email=(account.username||'').toLowerCase();
@@ -1007,7 +1007,7 @@ const MS={
 'Stored in SharePoint · Last saved:':'Disimpan di SharePoint · Kali terakhir disimpan:','not saved yet':'belum disimpan',
 // auth & sync
 'Sign in with your school Microsoft 365 account.':'Log masuk dengan akaun Microsoft 365 sekolah anda.','Sign in with Microsoft':'Log masuk dengan Microsoft','Loading…':'Memuatkan…','Try again':'Cuba lagi',
-'Loading Microsoft sign-in…':'Memuatkan log masuk Microsoft…','Connecting to SharePoint…':'Menyambung ke SharePoint…','Use your school Microsoft 365 account.':'Gunakan akaun Microsoft 365 sekolah anda.',
+'Loading Microsoft sign-in…':'Memuatkan log masuk Microsoft…','Connecting to SharePoint…':'Menyambung ke SharePoint…','Thank you for your patience':'Terima kasih atas kesabaran anda','Use your school Microsoft 365 account.':'Gunakan akaun Microsoft 365 sekolah anda.',
 'Could not reach Microsoft sign-in. Check the internet connection, or turn off strict tracking prevention for this site, then try again.':'Tidak dapat menghubungi log masuk Microsoft. Semak sambungan internet, atau matikan pencegahan penjejakan ketat untuk laman ini, kemudian cuba lagi.',
 'Setup needed: the IT admin must enter the App (client) ID and Tenant ID in the CONFIG section of this file.':'Persediaan diperlukan: pentadbir IT perlu memasukkan App (client) ID dan Tenant ID dalam bahagian CONFIG fail ini.',
 '✓ Connected':'✓ Disambungkan','✓ Saved':'✓ Disimpan','Saving…':'Menyimpan…','Refreshing…':'Memuat semula…','✓ Up to date':'✓ Terkini','⚠ Refresh failed':'⚠ Gagal memuat semula','⚠ Not saved – retrying':'⚠ Belum disimpan – mencuba semula','✓ Updated with latest changes':'✓ Dikemas kini dengan perubahan terkini','✓ Saved (merged with a colleague’s changes)':'✓ Disimpan (digabung dengan perubahan rakan)','Offline':'Luar talian',
