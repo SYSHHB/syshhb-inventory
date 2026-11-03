@@ -1,6 +1,6 @@
 {
   "name": "SYSHHB IT Asset Inventory",
-  "short_name": "SYSHHB Assets",
+  "short_name": "SYSHHB Inventory",
   "description": "SYSHHB IT asset inventory, warranty alerts, floor plans and handover forms.",
   "id": "./",
   "start_url": "./",
