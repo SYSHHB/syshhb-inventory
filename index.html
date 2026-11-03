@@ -1102,7 +1102,7 @@ const MS={
 'Excel file downloaded':'Fail Excel dimuat turun','JSON backup downloaded':'Sandaran JSON dimuat turun','Excel backup downloaded':'Sandaran Excel dimuat turun','JSON + Excel backups downloaded':'Sandaran JSON + Excel dimuat turun','Tick one or more assets in the table first.':'Tandakan satu atau lebih aset dalam jadual dahulu.','Allow pop-ups for this site to open reports.':'Benarkan pop-up untuk laman ini bagi membuka laporan.',
 'Inventory is up to date':'Inventori terkini','Refresh failed: ':'Gagal memuat semula: ',
 // printable reports
-'Print / Save as PDF':'Cetak / Simpan sebagai PDF','Generated {d} by {u}':'Dijana {d} oleh {u}','Overall Inventory Report':'Laporan Inventori Keseluruhan','Warranty Report':'Laporan Waranti','Needs-Attention Report':'Laporan Perlu Perhatian','Asset Report':'Laporan Aset','Selected Asset Report · {n} asset(s)':'Laporan Aset Terpilih · {n} aset',
+'Save as image':'Simpan sebagai imej','Print / Save as PDF':'Cetak / Simpan sebagai PDF','Generated {d} by {u}':'Dijana {d} oleh {u}','Overall Inventory Report':'Laporan Inventori Keseluruhan','Warranty Report':'Laporan Waranti','Needs-Attention Report':'Laporan Perlu Perhatian','Asset Report':'Laporan Aset','Selected Asset Report · {n} asset(s)':'Laporan Aset Terpilih · {n} aset',
 'Category':'Kategori','Count':'Bilangan','By type':'Mengikut jenis','By status':'Mengikut status','All records ({n})':'Semua rekod ({n})','Expiring within 90 days ({n})':'Tamat dalam 90 hari ({n})','Expired ({n})':'Tamat tempoh ({n})','Assets needing attention':'Aset perlu perhatian','Assets ({n})':'Aset ({n})','Asset {n}: ':'Aset {n}: '
 };
 const MONTHS_MS=['Jan','Feb','Mac','Apr','Mei','Jun','Jul','Ogo','Sep','Okt','Nov','Dis'];
@@ -1474,6 +1474,31 @@ function downloadFile(name,content,type='application/json'){const url=URL.create
 function backupJson(){downloadFile(`SYSHHB_IT_Inventory_Backup_${stamp()}.json`,JSON.stringify({format:'SYSHHB_IT_ASSET_INVENTORY_BACKUP',version:2,createdAt:new Date().toISOString(),createdBy:currentUsername,assets,auditLogs:readAuditLogs()},null,2))}
 
 /* ---------- printable reports ---------- */
+
+const REPORT_IMG_JS=`
+function saveImg(){
+  var b=document.getElementById('imgBtn'),old=b.textContent;
+  var sheets=[].filter.call(document.querySelectorAll('.sheet'),function(e){return e.offsetParent!==null||e.getClientRects().length});
+  if(!sheets.length)return;b.disabled=true;b.textContent='...';
+  var css=[].map.call(document.querySelectorAll('style'),function(x){return x.textContent}).join('\\n');
+  var title=(document.title||'report').replace(/[^\\w\\-]+/g,'_').slice(0,50);
+  var cs=getComputedStyle(document.body),bf=cs.font.replace(/"/g,"'"),bc=cs.color,i=0;
+  (function next(){
+    if(i>=sheets.length){b.disabled=false;b.textContent=old;return}
+    var el=sheets[i++],w=Math.ceil(el.offsetWidth),mh=el.style.minHeight;el.style.minHeight='0';var h=Math.ceil(el.offsetHeight);el.style.minHeight=mh;
+    var c=el.cloneNode(true);c.style.cssText='margin:0;box-shadow:none;width:'+w+'px;min-height:0';
+    var xml=new XMLSerializer().serializeToString(c);
+    var svg='<svg xmlns="http://www.w3.org/2000/svg" width="'+w+'" height="'+h+'"><foreignObject width="100%" height="100%"><div xmlns="http://www.w3.org/1999/xhtml" style="background:#fff;font:'+bf+';color:'+bc+'"><style>'+css.replace(/</g,'&lt;')+'*{box-sizing:border-box}body{margin:0}</style>'+xml+'</div></foreignObject></svg>';
+    var img=new Image();
+    img.onload=function(){
+      var sc=Math.min(2,15000/h),cv=document.createElement('canvas');cv.width=Math.round(w*sc);cv.height=Math.round(h*sc);
+      var x=cv.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,cv.width,cv.height);x.scale(sc,sc);x.drawImage(img,0,0);
+      cv.toBlob(function(bl){var a=document.createElement('a');a.href=URL.createObjectURL(bl);a.download=title+(sheets.length>1?'_'+i:'')+'.png';document.body.appendChild(a);a.click();a.remove();setTimeout(next,350)},'image/png');
+    };
+    img.onerror=function(){alert('Could not create the image. Use Print / Save as PDF instead.');b.disabled=false;b.textContent=old};
+    img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+  })();
+}`;
 function openReportWindow(title,body,opts={}){
   const w=window.open('','_blank');if(!w){toast(T('Allow pop-ups for this site to open reports.'),'error');return}
   const logo=document.querySelector('.side-brand img').src,gen=escapeHtml(T('Generated {d} by {u}',{d:new Date().toLocaleString(),u:currentUsername}));
@@ -1501,10 +1526,10 @@ td.remarks{white-space:pre-wrap;min-height:28px}
 .sign{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:22px;font-size:9pt}
 .sign div{border-top:1px solid #8aa79a;padding-top:4px;color:#567467}
 .bar{position:sticky;top:0;text-align:center;margin-bottom:14px}
-.bar button{background:#f3d83d;border:0;padding:9px 18px;border-radius:6px;font-weight:bold;cursor:pointer;font-size:10.5pt}
+.bar button{margin:0 3px;background:#f3d83d;border:0;padding:9px 18px;border-radius:6px;font-weight:bold;cursor:pointer;font-size:10.5pt}
 @media print{html{background:#fff}body{padding:0}.bar{display:none}.sheet{width:auto;min-height:0;margin:0;padding:0;box-shadow:none}.sheet+.sheet{break-before:page}tr{break-inside:avoid}}`;
   const pages=opts.pages?opts.pages.map(pg=>`<div class="sheet">${head}${pg}</div>`).join(''):`<div class="sheet">${head}${body}</div>`;
-  w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>${escapeHtml(title)}</title><style>${css}${opts.css||''}</style></head><body><div class="bar"><button onclick="window.print()">${T('Print / Save as PDF')}</button></div>${pages}${opts.extra||''}</body></html>`);
+  w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>${escapeHtml(title)}</title><style>${css}${opts.css||''}</style></head><body><div class="bar"><button onclick="window.print()">${T('Print / Save as PDF')}</button> <button id="imgBtn" onclick="saveImg()">${T('Save as image')}</button></div>${pages}${opts.extra||''}<script>${REPORT_IMG_JS}</`+`script></body></html>`);
   w.document.close();
 }
 const rEsc=v=>escapeHtml(clean(v)||'—');
