@@ -1038,7 +1038,7 @@ const MS={
 'Restore to inventory':'Pulihkan ke inventori','Remove remaining?':'Keluarkan baki?','{n} asset(s) will be removed from the inventory.':'{n} aset akan dikeluarkan dari inventori.','Remove':'Keluarkan','Restore':'Pulihkan',
 '{n} asset(s) will be put back into the inventory and the form set to Submitted.':'{n} aset akan dikembalikan ke inventori dan borang ditetapkan Dihantar.','{n} asset(s) restored':'{n} aset dipulihkan',
 'Assets disposed':'Aset dilupuskan','Disposal reverted':'Pelupusan dibatalkan',
-'Delete form?':'Padam borang?','Form #{n} ({b}) will be deleted for everyone.':'Borang #{n} ({b}) akan dipadam untuk semua pengguna.','Form deleted':'Borang dipadam','Forms refreshed':'Borang dimuat semula',
+'One at a time':'Satu demi satu','Show all':'Papar semua','Hide empty fields':'Sembunyi medan kosong','Previous':'Sebelumnya','Next':'Seterusnya','Copied':'Disalin','All':'Semua','Warranties ending in the next 12 months':'Waranti tamat dalam 12 bulan akan datang','Delete form?':'Padam borang?','Form #{n} ({b}) will be deleted for everyone.':'Borang #{n} ({b}) akan dipadam untuk semua pengguna.','Form deleted':'Borang dipadam','Forms refreshed':'Borang dimuat semula',
 'Tick one or more forms first.':'Tandakan satu atau lebih borang dahulu.','Form added':'Borang ditambah','Form edited':'Borang diubah',
 'In the print window choose Paper: A4, Margins: None, Scale: 100%, and turn off Headers and footers.':'Dalam tetingkap cetak pilih Kertas: A4, Margin: Tiada, Skala: 100%, dan matikan Pengepala dan pengaki.',
 'Pengakuan, tandatangan, tarikh dan bahagian pengesahan dikembalikan dibiarkan kosong untuk diisi dengan pen selepas dicetak.':'Pengakuan, tandatangan, tarikh dan bahagian pengesahan dikembalikan dibiarkan kosong untuk diisi dengan pen selepas dicetak.',
@@ -1133,6 +1133,7 @@ const GROUPS=[
   ['Notes',["Remarks"]]
 ];
 const KEY='it_asset_inventory_v2_excel_master', AUDIT_KEY='syshhb_inventory_audit_logs_v1';
+function periodLabel(p){const m=String(p).match(/^(\d+)\s*Years?$/i);if(!m)return p;const y=Number(m[1]),ms=LANG==='ms';return ms?`${y*12} Bulan atau ${y} Tahun`:`${y*12} Months or ${y} ${y===1?'Year':'Years'}`}
 const PERIODS=['1 Month','3 Months','6 Months','9 Months','1 Year','2 Years','3 Years','4 Years','5 Years'];
 const PERIOD_MONTHS={'1 Month':1,'3 Months':3,'6 Months':6,'9 Months':9,'1 Year':12,'2 Years':24,'3 Years':36,'4 Years':48,'5 Years':60};
 const FILTER_IDS=['typeFilter','subtypeFilter','schoolFilter','statusFilter','locationFilter','ownershipFilter'];
@@ -1332,17 +1333,21 @@ function closeDrawer(){$('drawer').classList.remove('on');$('scrim').classList.r
 function fieldHtml(k){
   const i=FIELDS.indexOf(k),item=editId?byId(editId)||{}:{};let v=val(item,k);const name=escapeHtml(k),lbl=escapeHtml(T(k));
   if(k==='Warranty Start Date')return `<div class="field"><label for="f${i}">${lbl}</label><input id="f${i}" name="${name}" type="date" value="${escapeHtml(toISO(v))}"></div>`;
-  if(k==='Warranty Period')return `<div class="field"><label for="f${i}">${lbl}</label><select id="f${i}" name="${name}"><option value="">${T('Select period')}</option>${[...new Set([...PERIODS,v].filter(Boolean))].map(x=>`<option ${v===x?'selected':''}>${escapeHtml(x)}</option>`).join('')}</select></div>`;
+  if(k==='Warranty Period')return `<div class="field"><label for="f${i}">${lbl}</label><select id="f${i}" name="${name}"><option value="">${T('Select period')}</option>${[...new Set([...PERIODS,v].filter(Boolean))].map(x=>`<option value="${escapeHtml(x)}" ${v===x?'selected':''}>${escapeHtml(periodLabel(x))}</option>`).join('')}</select></div>`;
   if(k==='Warranty End Date'||k==='Warranty Remaining')return `<div class="field"><label for="f${i}">${lbl}</label><input id="f${i}" name="${name}" value="${escapeHtml(v)}" readonly placeholder="${T('Calculated automatically')}"></div>`;
   if(k==='Remarks')return `<div class="field wide"><label for="f${i}">${lbl}</label><textarea id="f${i}" name="${name}" rows="3">${escapeHtml(v)}</textarea></div>`;
   const noList=['Asset Tag','Serial Number','IP Address','PO No.','Invoice No.','DO No.'].includes(k);
   let opts=noList?[]:unique(k).slice(0,400);
   if(k==='Status')opts=[...new Set([...['Active','In Use','In Storage','To Verify','Under Repair','Faulty','To Dispose','Pulled Out'],...opts])];
   comboOpts[i]=opts;
+  if(k==='PO No.'&&!editId&&!v)v=PO_PREFIX;
+  if(k==='Asset Tag'&&!editId&&!v)v=TAG_PREFIX;
   if(noList)return `<div class="field"><label for="f${i}">${lbl}</label><input id="f${i}" name="${name}" value="${escapeHtml(v)}" autocomplete="off"></div>`;
   return `<div class="field"><label for="f${i}">${lbl}${k==='Asset Type'?' *':''}</label><div class="combo"><input id="f${i}" name="${name}" value="${escapeHtml(v)}" autocomplete="off" role="combobox" aria-expanded="false" ${k==='Asset Type'?'required':''} placeholder="${T('Choose or type new')}" data-combo="${i}"><button type="button" class="combo-btn" tabindex="-1" aria-label="Show options" data-combo-btn="${i}"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button><div class="combo-list" hidden></div></div></div>`;
 }
 const comboOpts={};
+const PO_PREFIX='YSHHB-PO-S-',TAG_PREFIX='YSHHB/';
+document.addEventListener('focusin',e=>{const el=e.target;if(el&&(el.name==='PO No.'&&el.value===PO_PREFIX||el.name==='Asset Tag'&&el.value===TAG_PREFIX))setTimeout(()=>el.setSelectionRange(el.value.length,el.value.length),0)});
 /* ---------- dropdown + editable (combobox) ---------- */
 (function(){
   let openEl=null,hi=-1;
@@ -1381,12 +1386,17 @@ const comboOpts={};
 })();
 
 /* Computer Name / Linked PC only for CPU, LCD, notebook, tablet */
+const NO_CONN=/projector|cpu|desktop|\bpc\b|lcd|monitor|notebook|laptop|tablet|\btv\b|television/i;
+const NO_CONN_NEG={test:v=>!NO_CONN.test(v)};
 const PC_TYPES=/cpu|desktop|\bpc\b|computer|lcd|monitor|notebook|laptop|tablet/i;
 function syncPcField(first){
-  const t=document.querySelector('#assetForm [name="Asset Type"]'),pc=document.querySelector('#assetForm [name="Computer Name / Linked PC"]');if(!t||!pc)return;
-  const f=pc.closest('.field'),show=PC_TYPES.test(t.value);
-  if(show&&f.hidden){f.hidden=false;f.classList.remove('pop');void f.offsetWidth;f.classList.add('pop');if(!first)setTimeout(()=>pc.focus(),260)}
-  else if(!show)f.hidden=true;
+  const t=document.querySelector('#assetForm [name="Asset Type"]');if(!t)return;
+  [['Computer Name / Linked PC',PC_TYPES],['IP Address',/printer/i],['Connection',NO_CONN_NEG]].forEach(([name,rx])=>{
+    const el=document.querySelector(`#assetForm [name="${name}"]`);if(!el)return;
+    const f=el.closest('.field'),show=rx.test(t.value);
+    if(show&&f.hidden){f.hidden=false;f.classList.remove('pop');void f.offsetWidth;f.classList.add('pop')}
+    else if(!show)f.hidden=true;
+  });
 }
 document.addEventListener('input',e=>{if(e.target&&e.target.name==='Asset Type')syncPcField()});
 document.addEventListener('change',e=>{if(e.target&&e.target.name==='Asset Type')syncPcField()});
@@ -1399,7 +1409,7 @@ function openModal(id=null){
 }
 function closeModal(){if(window.closeCombos)closeCombos();$('assetModal').classList.remove('open')}
 async function saveAsset(e){
-  e.preventDefault();const obj={};FIELDS.forEach((k,i)=>{const el=$('f'+i);obj[k]=el?el.value.trim():''});
+  e.preventDefault();const obj={};FIELDS.forEach((k,i)=>{const el=$('f'+i);obj[k]=el?el.value.trim():''});if(obj['PO No.']===PO_PREFIX||obj['PO No.']===PO_PREFIX.replace(/-$/,''))obj['PO No.']='';if(obj['Asset Tag']===TAG_PREFIX||obj['Asset Tag']===TAG_PREFIX.replace(/\/$/,''))obj['Asset Tag']='';
   const w=warrantyDetails(obj['Warranty Start Date'],obj['Warranty Period']);if(w.end){obj['Warranty End Date']=w.end;obj['Warranty Remaining']=w.remaining}else{const cur=editId?byId(editId):null;obj['Warranty End Date']=cur?val(cur,'Warranty End Date'):'';obj['Warranty Remaining']=cur?val(cur,'Warranty Remaining'):''}
   if(obj['Serial Number']){const dup=assets.find(a=>a._id!==editId&&norm(a['Serial Number'])===norm(obj['Serial Number']));if(dup&&!await confirmDialog(T('Duplicate serial number'),T('Serial {s} is already used by {t} ({l}).\nSave anyway?',{s:obj['Serial Number'],t:val(dup,'Asset Tag')||T('another asset'),l:val(dup,'Location')||T('no location')}),T('Save anyway')))return}
   if(editId!==null&&currentRole!=='admin'){
@@ -1493,17 +1503,18 @@ td.remarks{white-space:pre-wrap;min-height:28px}
 .bar button{background:#f3d83d;border:0;padding:9px 18px;border-radius:6px;font-weight:bold;cursor:pointer;font-size:10.5pt}
 @media print{html{background:#fff}body{padding:0}.bar{display:none}.sheet{width:auto;min-height:0;margin:0;padding:0;box-shadow:none}.sheet+.sheet{break-before:page}tr{break-inside:avoid}}`;
   const pages=opts.pages?opts.pages.map(pg=>`<div class="sheet">${head}${pg}</div>`).join(''):`<div class="sheet">${head}${body}</div>`;
-  w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>${escapeHtml(title)}</title><style>${css}${opts.css||''}</style></head><body><div class="bar"><button onclick="window.print()">${T('Print / Save as PDF')}</button></div>${pages}</body></html>`);
+  w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>${escapeHtml(title)}</title><style>${css}${opts.css||''}</style></head><body><div class="bar"><button onclick="window.print()">${T('Print / Save as PDF')}</button></div>${pages}${opts.extra||''}</body></html>`);
   w.document.close();
 }
 const rEsc=v=>escapeHtml(clean(v)||'—');
 function breakdown(obj){return `<table><thead><tr><th>${T('Category')}</th><th style="width:90px">${T('Count')}</th></tr></thead><tbody>${Object.entries(obj).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<tr><td>${rEsc(k)}</td><td>${v}</td></tr>`).join('')}</tbody></table>`}
 function shortTable(list,extra){return `<table><thead><tr>${['Asset tag','Type','Brand / model','Serial','Location','Assigned to','Status'].map(h=>`<th>${T(h)}</th>`).join('')}${extra?extra.map(e=>`<th>${T(e[0])}</th>`).join(''):''}</tr></thead><tbody>${list.map(a=>`<tr><td>${rEsc(a['Asset Tag'])}</td><td>${rEsc(a['Asset Type'])}</td><td>${rEsc([val(a,'Brand'),val(a,'Model')].filter(Boolean).join(' '))}</td><td>${rEsc(a['Serial Number'])}</td><td>${rEsc(a['Location'])}</td><td>${rEsc(a['Assigned User'])}</td><td>${rEsc(a['Status'])}</td>${extra?extra.map(e=>`<td>${rEsc(e[1](a))}</td>`).join(''):''}</tr>`).join('')}</tbody></table>`}
+function assetSummary(a){const w=wInfo(a),pct=w.pct==null?0:Math.round(w.pct);return `<div class="asum"><span class="pill ${statusClass(val(a,'Status'))}">${escapeHtml(val(a,'Status')||T('Not set'))}</span><span class="asub">${escapeHtml([val(a,'Asset Type'),val(a,'Brand'),val(a,'Model')].filter(Boolean).join(' · '))}</span><span class="agz"><span class="agb"><i class="${w.cls}" style="width:${pct}%"></i></span><small>${escapeHtml(T('Warranty'))}: ${escapeHtml(w.label)}${w.end?' · '+escapeHtml(formatDisplayDate(w.end)):''}</small></span></div>`}
 function assetPage(a,i,n){
   const cell=k=>{let v=val(a,k);if(k==='Warranty End Date')v=toISO(v)||wInfo(a).end||v;if(k==='Warranty Start Date'||k==='Warranty End Date')v=formatDisplayDate(toISO(v)||v);if(k==='Warranty Remaining')v=wInfo(a).label;return `<th>${escapeHtml(T(k))}</th><td>${escapeHtml(v||'—')}</td>`};
   const rows=(title,keys)=>{let h=`<tr class="sec"><td colspan="4">${escapeHtml(T(title))}</td></tr>`;for(let j=0;j<keys.length;j+=2)h+=`<tr>${cell(keys[j])}${keys[j+1]?cell(keys[j+1]):'<th></th><td></td>'}</tr>`;return h};
   return `<div class="asset-title"><h2>${rEsc(val(a,'Asset Tag')||val(a,'Serial Number'))}</h2><span>${n>1?escapeHtml(T('Asset {n}: ',{n:i+1}).replace(/:\s*$/,''))+' / '+n:''}</span></div>
-<table class="kv"><tbody>
+${assetSummary(a)}<table class="kv"><tbody>
 ${rows('Identification',['Asset Tag','Asset Type','Sub-type','Brand','Model','Serial Number','Status','Computer Name / Linked PC','IP Address','Connection'])}
 ${rows('Location & assignment',['School / Division','Location','Room Code','Assigned User','Previous Location'])}
 ${rows('Purchase',['Ownership','Vendor','Year Acquired','PO No.','Invoice No.','DO No.'])}
@@ -1618,7 +1629,18 @@ $('importFile').onchange=async e=>{const f=e.target.files[0];e.target.value='';a
 $('exportBtn').onclick=()=>{if(writeXlsx(sortList(filtered()),`SYSHHB_IT_Assets_View_${stamp()}.xlsx`))toast(T('Excel file downloaded'))};
 if($('exportAllBtn'))$('exportAllBtn').onclick=()=>{if(writeXlsx(assets,`SYSHHB_IT_Assets_All_${stamp()}.xlsx`))toast(T('Excel file downloaded'))};
 $('templateBtn').onclick=()=>{if(!window.XLSX){toast(T('Excel library did not load.'),'error');return}const sample={};FIELDS.forEach(k=>sample[k]='');Object.assign(sample,{'Asset Tag':'Enter asset tag','Asset Type':'Laptop','Brand':'Dell','Model':'Enter model','Serial Number':'Enter serial number','Status':'In Use','Warranty Start Date':'2026-01-15','Warranty Period':'3 Years'});const ws=XLSX.utils.json_to_sheet([sample],{header:FIELDS});ws['!cols']=FIELDS.map(k=>({wch:Math.min(30,Math.max(14,k.length+3))}));const guide=XLSX.utils.aoa_to_sheet([['SYSHHB IT ASSET INVENTORY — BULK ADD TEMPLATE'],['1. Keep the column headers unchanged.'],['2. One asset per row; replace the sample row.'],['3. Warranty Start Date as YYYY-MM-DD; Warranty Period e.g. 1 Year, 3 Years.'],['4. In the system: Inventory → Import → Append.'],['5. Never include passwords or credentials.']]);guide['!cols']=[{wch:90}];const book=XLSX.utils.book_new();XLSX.utils.book_append_sheet(book,ws,'Bulk Add Template');XLSX.utils.book_append_sheet(book,guide,'Instructions');XLSX.writeFile(book,'SYSHHB_IT_Asset_Bulk_Template.xlsx')};
-$('selectedReportBtn').onclick=()=>{const list=assets.filter(a=>selectedAssets.has(a._id));if(!list.length){toast(T('Tick one or more assets in the table first.'),'warn');return}openReportWindow(T('Selected Asset Report · {n} asset(s)',{n:list.length}),'',{pages:detailBlocks(list)})};
+$('selectedReportBtn').onclick=()=>{const list=assets.filter(a=>selectedAssets.has(a._id));if(!list.length){toast(T('Tick one or more assets in the table first.'),'warn');return}openReportWindow(T('Selected Asset Report · {n} asset(s)',{n:list.length}),'',{pages:detailBlocks(list),css:`
+.pill{display:inline-block;padding:2px 9px;border-radius:20px;font-size:8.5pt;font-weight:700;background:#e8eeea;color:#456}.pill.ok{background:#d9f3e4;color:#006b45}.pill.warn{background:#fff0cc;color:#8a5a00}.pill.bad{background:#fde0e3;color:#b52b3b}.pill.info{background:#dfeaff;color:#1f4fa8}
+.asum{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:0 0 8px}.asub{color:#567467;font-size:9pt}.agz{margin-left:auto;min-width:200px}.agb{display:block;height:7px;background:#e6efe9;border-radius:6px;overflow:hidden}.agb i{display:block;height:100%;border-radius:6px;background:#6c8a7b}.agb i.ok{background:#1f9d62}.agb i.warn{background:#f3b61f}.agb i.bad{background:#e4572e}.agz small{font-size:8pt;color:#567467}
+.rtools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;max-width:210mm;margin:0 auto 12px;padding:0 4px}.rtools button,.rtools label{font:600 9.5pt "Segoe UI",Arial;border:1px solid #bcd6c6;background:#fff;color:#006b45;border-radius:20px;padding:5px 12px;cursor:pointer}.rtools button:hover{background:#eaf6ee}.rtools button.on{background:#006b45;color:#fff;border-color:#006b45}
+.chips{display:flex;gap:6px;overflow-x:auto;max-width:210mm;margin:0 auto 12px;padding:2px 4px 6px}.chips button{flex:none;border:1px solid #bcd6c6;background:#fff;border-radius:16px;padding:3px 10px;font:600 8.5pt "Segoe UI",Arial;cursor:pointer;color:#18382b}.chips button.on{background:#f3d83d;border-color:#d4b800}
+tr.sec td{cursor:pointer;user-select:none}tr.sec td::after{content:" ▾";float:right}tr.sec.cl td::after{content:" ▸"}
+.kv td{cursor:copy}.kv td.copied{background:#d9f3e4!important}
+.tab{cursor:pointer;transition:transform .12s,box-shadow .12s}.tab:hover{transform:translateY(-2px);box-shadow:0 4px 12px #0002}.tab.on{border-color:#006b45;box-shadow:0 0 0 2px #006b45 inset}
+.mb{display:flex;align-items:flex-end;gap:5px;height:110px;padding:6px 2px 0;border-bottom:1px solid #d7e7dc}.mb div{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;font-size:7.5pt;color:#567467}.mb i{display:block;width:100%;background:#f3b61f;border-radius:4px 4px 0 0;min-height:2px;transition:height .5s}.mb b{font-size:8pt;color:#18382b}.mlab{display:flex;gap:5px;font-size:7.5pt;color:#567467;text-align:center}.mlab span{flex:1}
+@media screen{body.one .sheet:not(.cur){display:none}body.he tr.empty{display:none}tr.hid{display:none}}
+@media print{.rtools,.chips{display:none!important}tr.hid,tr.empty{display:table-row!important}.sheet{display:block!important}tr.sec td::after{content:""!important}}
+`,extra:assetReportExtra(list)})};
 
 function interactiveOverallBody(){
   const active=assets.filter(isActive).length,att=assets.filter(needsAttention).length;
@@ -1663,6 +1685,47 @@ donut();bars('bStatus','status',D.status);bars('bSchool','school',D.school,'#2f9
 })();<\/script>`;
 }
 
+function rptJson(o){return JSON.stringify(o).replace(/</g,'\\u003c')}
+function assetReportExtra(list){
+  const tags=list.map(a=>val(a,'Asset Tag')||val(a,'Serial Number')||'?');
+  const L={one:T('One at a time'),all:T('Show all'),he:T('Hide empty fields'),prev:T('Previous'),next:T('Next'),copied:T('Copied')};
+  return `<div class="rtools" id="rt"><button id="bPrev">‹ ${escapeHtml(L.prev)}</button><button id="bNext">${escapeHtml(L.next)} ›</button><button id="bMode" class="on">${escapeHtml(L.one)}</button><label><input type="checkbox" id="cHe"> ${escapeHtml(L.he)}</label><span id="pos" style="font:600 9pt Segoe UI;color:#567467"></span></div><div class="chips" id="chips"></div>
+<script type="application/json" id="rd">${rptJson({tags,L})}<\/script>
+<script>(function(){var D=JSON.parse(document.getElementById('rd').textContent),S=[].slice.call(document.querySelectorAll('.sheet')),cur=0,B=document.body,one=true,$=function(i){return document.getElementById(i)};
+B.classList.add('one');S[0]&&S[0].classList.add('cur');
+S.forEach(function(s){[].slice.call(s.querySelectorAll('table.kv tr')).forEach(function(r){if(r.classList.contains('sec'))return;var tds=[].slice.call(r.querySelectorAll('td'));if(tds.length&&tds.every(function(t){var x=t.textContent.trim();return x===''||x==='—'}))r.classList.add('empty')});
+  s.querySelectorAll('tr.sec').forEach(function(h){h.onclick=function(){var c=h.classList.toggle('cl'),n=h.nextElementSibling;while(n&&!n.classList.contains('sec')){n.classList.toggle('hid',c);n=n.nextElementSibling}}});
+  s.querySelectorAll('table.kv td').forEach(function(t){t.onclick=function(){var x=t.textContent.trim();if(!x||x==='—')return;try{navigator.clipboard.writeText(x)}catch(e){}t.classList.add('copied');t.title=D.L.copied;setTimeout(function(){t.classList.remove('copied')},700)}})});
+D.tags.forEach(function(t,i){var b=document.createElement('button');b.textContent=t;b.onclick=function(){go(i)};$('chips').appendChild(b)});
+function go(i){cur=(i+S.length)%S.length;S.forEach(function(s,j){s.classList.toggle('cur',j===cur)});[].forEach.call($('chips').children,function(b,j){b.classList.toggle('on',j===cur)});$('pos').textContent=(cur+1)+' / '+S.length;if(one)window.scrollTo({top:0,behavior:'smooth'});else S[cur].scrollIntoView({behavior:'smooth',block:'start'})}
+$('bPrev').onclick=function(){go(cur-1)};$('bNext').onclick=function(){go(cur+1)};
+$('bMode').onclick=function(){one=!one;B.classList.toggle('one',one);$('bMode').classList.toggle('on',one);$('bMode').textContent=one?D.L.one:D.L.all;go(cur)};
+$('cHe').onchange=function(){B.classList.toggle('he',this.checked)};
+document.addEventListener('keydown',function(e){if(e.target.tagName==='INPUT')return;if(e.key==='ArrowRight')go(cur+1);if(e.key==='ArrowLeft')go(cur-1)});
+if(S.length<2){$('bPrev').style.display=$('bNext').style.display=$('bMode').style.display=$('chips').style.display='none'}go(0);
+})();<\/script>`;
+}
+function interactiveListBody(cfg){
+  const json=rptJson(cfg);
+  return `<div class="kpis" id="tabs"></div>${cfg.chart?`<div class="cbox" style="margin:8px 0"><h2>${escapeHtml(cfg.chart.title)}</h2><div class="${cfg.chart.type==='months'?'mb':'hb'}" id="ch"></div>${cfg.chart.type==='months'?'<div class="mlab" id="chl"></div>':''}</div>`:''}
+<div class="fbar"><input id="q" type="search"><span class="cnt" id="cnt"></span></div><table><thead id="rh"></thead><tbody id="rec"></tbody></table><div class="tip" id="tip"></div>
+<script type="application/json" id="dat">${json}<\/script>
+<script>(function(){var D=JSON.parse(document.getElementById('dat').textContent),$=function(i){return document.getElementById(i)},tab=D.tabs[0].key,tip=$('tip');
+function esc(s){return String(s==null||s===''?'—':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function tabs(){$('tabs').innerHTML=D.tabs.map(function(t){return'<div class="tile tab'+(t.key===tab?' on':'')+'" data-k="'+esc(t.key)+'">'+esc(t.label)+'<strong>'+t.n+'</strong></div>'}).join('');}
+$('tabs').onclick=function(e){var t=e.target.closest('.tab');if(t){tab=t.dataset.k;draw()}};
+if(D.chart){var c=$('ch'),mx=Math.max.apply(null,D.chart.items.map(function(x){return x[1]}).concat([1]));
+ if(D.chart.type==='months'){c.innerHTML=D.chart.items.map(function(x){return'<div title="'+esc(x[0])+': '+x[1]+'"><b>'+x[1]+'</b><i style="height:'+(x[1]/mx*84)+'px;background:'+(x[2]||'#f3b61f')+'"></i></div>'}).join('');$('chl').innerHTML=D.chart.items.map(function(x){return'<span>'+esc(x[0])+'</span>'}).join('')}
+ else{c.innerHTML=D.chart.items.map(function(x,i){return'<div class="r" data-k="'+esc(x[0])+'"><span class="l">'+esc(x[0])+'</span><span class="t"><i style="background:'+(x[2]||'#2f9e6f')+';width:'+(x[1]/mx*100)+'%"></i></span><span class="n">'+x[1]+'</span></div>'}).join('');c.onclick=function(e){var r=e.target.closest('.r');if(r){tab=r.dataset.k;draw()}}}}
+function table(){var q=$('q').value.trim().toLowerCase(),rows=D.rows.filter(function(r){return(tab==='*'||r.t===tab)&&(!q||r.c.join(' ').toLowerCase().indexOf(q)>=0)});
+ $('rh').innerHTML='<tr>'+D.hdr.map(function(h){return'<th>'+esc(h)+'</th>'}).join('')+'</tr>';
+ $('rec').innerHTML=rows.length?rows.map(function(r){return'<tr>'+r.c.map(function(x){return'<td>'+esc(x)+'</td>'}).join('')+'</tr>'}).join(''):'<tr><td colspan="'+D.hdr.length+'">'+D.L.none+'</td></tr>';
+ $('cnt').textContent=D.L.shown.replace('{n}',rows.length).replace('{t}',D.rows.length)}
+function draw(){tabs();document.querySelectorAll('#ch .r').forEach(function(r){r.classList.toggle('on',r.dataset.k===tab)});table()}
+$('q').placeholder=D.L.search;$('q').oninput=table;draw();
+})();<\/script>`;
+}
+
 $('overallReportBtn').onclick=()=>{openReportWindow(T('Overall Inventory Report'),interactiveOverallBody(),{css:`
 .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0}.kpis .tile{min-width:0}
 .charts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:8px 0}.cbox{border:1px solid #cfe6d7;border-radius:8px;padding:10px 12px;break-inside:avoid}.cbox.wide{grid-column:1/-1}
@@ -1680,7 +1743,40 @@ $('overallReportBtn').onclick=()=>{openReportWindow(T('Overall Inventory Report'
 @media print{.fbar input,.chip button{display:none}.tip{display:none!important}.kpis{grid-template-columns:repeat(4,1fr)}.charts{gap:8px}}
 @media(max-width:700px){.kpis{grid-template-columns:1fr 1fr}.charts{grid-template-columns:1fr}.donut-wrap{flex-direction:column}}
 `})};
-$('warrantyReportBtn').onclick=()=>{const g=wGroups();const ex=[['Warranty end',a=>formatDisplayDate(wInfo(a).end)],['Remaining',a=>wInfo(a).label]];openReportWindow(T('Warranty Report'),`<div class="summary"><div class="tile">${T('Expiring ≤ 90 days')}<strong>${g.soon.length}</strong></div><div class="tile">${T('Expired')}<strong>${g.expired.length}</strong></div><div class="tile">${T('Under warranty')}<strong>${g.active.length}</strong></div><div class="tile">${T('No info')}<strong>${g.none.length}</strong></div></div><h2>${T('Expiring within 90 days ({n})',{n:g.soon.length})}</h2>${shortTable(g.soon,ex)}<h2>${T('Expired ({n})',{n:g.expired.length})}</h2>${shortTable(g.expired,ex)}`)};
+$('warrantyReportBtn').onclick=()=>{const g=wGroups();const row=(a,t)=>({t,c:[val(a,'Asset Tag'),val(a,'Asset Type'),[val(a,'Brand'),val(a,'Model')].filter(Boolean).join(' '),val(a,'Serial Number'),val(a,'Location'),formatDisplayDate(wInfo(a).end),wInfo(a).label]});
+  const rows=[...g.soon.map(a=>row(a,'soon')),...g.expired.map(a=>row(a,'expired')),...g.active.map(a=>row(a,'active')),...g.none.map(a=>row(a,'none'))];
+  const months=[];const now=new Date();for(let m=0;m<12;m++){const d=new Date(now.getFullYear(),now.getMonth()+m,1);months.push({y:d.getFullYear(),m:d.getMonth(),l:d.toLocaleString(LANG==='ms'?'ms':'en',{month:'short'}),n:0})}
+  assets.forEach(a=>{const e=wInfo(a).end;if(!e)return;const d=new Date(e+'T00:00:00');const x=months.find(k=>k.y===d.getFullYear()&&k.m===d.getMonth());if(x)x.n++});
+  const cfg={tabs:[{key:'*',label:T('All'),n:rows.length},{key:'soon',label:T('Expiring ≤ 90 days'),n:g.soon.length},{key:'expired',label:T('Expired'),n:g.expired.length},{key:'active',label:T('Under warranty'),n:g.active.length},{key:'none',label:T('No info'),n:g.none.length}],rows,hdr:['Asset tag','Type','Brand / model','Serial','Location','Warranty end','Remaining'].map(h=>T(h)),
+    chart:{type:'months',title:T('Warranties ending in the next 12 months'),items:months.map(x=>[x.l+' '+String(x.y).slice(2),x.n,x.n&&x===months[0]?'#e4572e':'#f3b61f'])},L:{search:T('Search records…'),shown:T('{n} of {t} shown'),none:T('No matching records.')}};
+  openReportWindow(T('Warranty Report'),interactiveListBody(cfg),{css:`
+.pill{display:inline-block;padding:2px 9px;border-radius:20px;font-size:8.5pt;font-weight:700;background:#e8eeea;color:#456}.pill.ok{background:#d9f3e4;color:#006b45}.pill.warn{background:#fff0cc;color:#8a5a00}.pill.bad{background:#fde0e3;color:#b52b3b}.pill.info{background:#dfeaff;color:#1f4fa8}
+.asum{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:0 0 8px}.asub{color:#567467;font-size:9pt}.agz{margin-left:auto;min-width:200px}.agb{display:block;height:7px;background:#e6efe9;border-radius:6px;overflow:hidden}.agb i{display:block;height:100%;border-radius:6px;background:#6c8a7b}.agb i.ok{background:#1f9d62}.agb i.warn{background:#f3b61f}.agb i.bad{background:#e4572e}.agz small{font-size:8pt;color:#567467}
+.rtools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;max-width:210mm;margin:0 auto 12px;padding:0 4px}.rtools button,.rtools label{font:600 9.5pt "Segoe UI",Arial;border:1px solid #bcd6c6;background:#fff;color:#006b45;border-radius:20px;padding:5px 12px;cursor:pointer}.rtools button:hover{background:#eaf6ee}.rtools button.on{background:#006b45;color:#fff;border-color:#006b45}
+.chips{display:flex;gap:6px;overflow-x:auto;max-width:210mm;margin:0 auto 12px;padding:2px 4px 6px}.chips button{flex:none;border:1px solid #bcd6c6;background:#fff;border-radius:16px;padding:3px 10px;font:600 8.5pt "Segoe UI",Arial;cursor:pointer;color:#18382b}.chips button.on{background:#f3d83d;border-color:#d4b800}
+tr.sec td{cursor:pointer;user-select:none}tr.sec td::after{content:" ▾";float:right}tr.sec.cl td::after{content:" ▸"}
+.kv td{cursor:copy}.kv td.copied{background:#d9f3e4!important}
+.tab{cursor:pointer;transition:transform .12s,box-shadow .12s}.tab:hover{transform:translateY(-2px);box-shadow:0 4px 12px #0002}.tab.on{border-color:#006b45;box-shadow:0 0 0 2px #006b45 inset}
+.mb{display:flex;align-items:flex-end;gap:5px;height:110px;padding:6px 2px 0;border-bottom:1px solid #d7e7dc}.mb div{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;font-size:7.5pt;color:#567467}.mb i{display:block;width:100%;background:#f3b61f;border-radius:4px 4px 0 0;min-height:2px;transition:height .5s}.mb b{font-size:8pt;color:#18382b}.mlab{display:flex;gap:5px;font-size:7.5pt;color:#567467;text-align:center}.mlab span{flex:1}
+@media screen{body.one .sheet:not(.cur){display:none}body.he tr.empty{display:none}tr.hid{display:none}}
+@media print{.rtools,.chips{display:none!important}tr.hid,tr.empty{display:table-row!important}.sheet{display:block!important}tr.sec td::after{content:""!important}}
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:10px 0}.kpis .tile{min-width:0}.cbox{border:1px solid #cfe6d7;border-radius:8px;padding:10px 12px}.cbox h2{margin:0 0 6px;font-size:11pt}.fbar{display:flex;gap:8px;align-items:center;margin:10px 0 6px}.fbar input{flex:1;padding:7px 10px;border:1px solid #cfe6d7;border-radius:6px;font:inherit}.cnt{color:#567467;font-size:8.5pt}.fbar input{}@media print{.fbar input{display:none}}`})};
+$('attentionReportBtn').onclick=()=>{const list=assets.filter(needsAttention),by=countBy('Status',list);const keys=Object.keys(by).sort((x,y)=>by[y]-by[x]);
+  const rows=list.map(a=>({t:val(a,'Status')||'Not set',c:[val(a,'Asset Tag'),val(a,'Asset Type'),[val(a,'Brand'),val(a,'Model')].filter(Boolean).join(' '),val(a,'Serial Number'),val(a,'Location'),val(a,'Assigned User'),val(a,'Status'),val(a,'Remarks')]}));
+  const cfg={tabs:[{key:'*',label:T('All'),n:list.length},...keys.map(k=>({key:k,label:k,n:by[k]}))],rows,hdr:['Asset tag','Type','Brand / model','Serial','Location','Assigned to','Status','Remarks'].map(h=>T(h)),
+    chart:{type:'bars',title:T('By status'),items:keys.map(k=>[k,by[k],'#e4572e'])},L:{search:T('Search records…'),shown:T('{n} of {t} shown'),none:T('No matching records.')}};
+  openReportWindow(T('Needs-Attention Report'),interactiveListBody(cfg),{css:`
+.pill{display:inline-block;padding:2px 9px;border-radius:20px;font-size:8.5pt;font-weight:700;background:#e8eeea;color:#456}.pill.ok{background:#d9f3e4;color:#006b45}.pill.warn{background:#fff0cc;color:#8a5a00}.pill.bad{background:#fde0e3;color:#b52b3b}.pill.info{background:#dfeaff;color:#1f4fa8}
+.asum{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:0 0 8px}.asub{color:#567467;font-size:9pt}.agz{margin-left:auto;min-width:200px}.agb{display:block;height:7px;background:#e6efe9;border-radius:6px;overflow:hidden}.agb i{display:block;height:100%;border-radius:6px;background:#6c8a7b}.agb i.ok{background:#1f9d62}.agb i.warn{background:#f3b61f}.agb i.bad{background:#e4572e}.agz small{font-size:8pt;color:#567467}
+.rtools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;max-width:210mm;margin:0 auto 12px;padding:0 4px}.rtools button,.rtools label{font:600 9.5pt "Segoe UI",Arial;border:1px solid #bcd6c6;background:#fff;color:#006b45;border-radius:20px;padding:5px 12px;cursor:pointer}.rtools button:hover{background:#eaf6ee}.rtools button.on{background:#006b45;color:#fff;border-color:#006b45}
+.chips{display:flex;gap:6px;overflow-x:auto;max-width:210mm;margin:0 auto 12px;padding:2px 4px 6px}.chips button{flex:none;border:1px solid #bcd6c6;background:#fff;border-radius:16px;padding:3px 10px;font:600 8.5pt "Segoe UI",Arial;cursor:pointer;color:#18382b}.chips button.on{background:#f3d83d;border-color:#d4b800}
+tr.sec td{cursor:pointer;user-select:none}tr.sec td::after{content:" ▾";float:right}tr.sec.cl td::after{content:" ▸"}
+.kv td{cursor:copy}.kv td.copied{background:#d9f3e4!important}
+.tab{cursor:pointer;transition:transform .12s,box-shadow .12s}.tab:hover{transform:translateY(-2px);box-shadow:0 4px 12px #0002}.tab.on{border-color:#006b45;box-shadow:0 0 0 2px #006b45 inset}
+.mb{display:flex;align-items:flex-end;gap:5px;height:110px;padding:6px 2px 0;border-bottom:1px solid #d7e7dc}.mb div{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;font-size:7.5pt;color:#567467}.mb i{display:block;width:100%;background:#f3b61f;border-radius:4px 4px 0 0;min-height:2px;transition:height .5s}.mb b{font-size:8pt;color:#18382b}.mlab{display:flex;gap:5px;font-size:7.5pt;color:#567467;text-align:center}.mlab span{flex:1}
+@media screen{body.one .sheet:not(.cur){display:none}body.he tr.empty{display:none}tr.hid{display:none}}
+@media print{.rtools,.chips{display:none!important}tr.hid,tr.empty{display:table-row!important}.sheet{display:block!important}tr.sec td::after{content:""!important}}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin:10px 0}.kpis .tile{min-width:0}.cbox{border:1px solid #cfe6d7;border-radius:8px;padding:10px 12px}.cbox h2{margin:0 0 6px;font-size:11pt}.hb{font-size:8.5pt}.hb div.r{display:grid;grid-template-columns:105px 1fr 36px;gap:6px;align-items:center;padding:2px 3px;border-radius:4px;cursor:pointer}.hb div.r:hover,.hb div.r.on{background:#eaf6ee}.hb .t{height:11px;background:#eef3f0;border-radius:6px;overflow:hidden}.hb .t i{display:block;height:100%;border-radius:6px}.hb .n{text-align:right;font-weight:700}.fbar{display:flex;gap:8px;align-items:center;margin:10px 0 6px}.fbar input{flex:1;padding:7px 10px;border:1px solid #cfe6d7;border-radius:6px;font:inherit}.cnt{color:#567467;font-size:8.5pt}@media print{.fbar input{display:none}}`})};
 $('attentionReportBtn').onclick=()=>{const list=assets.filter(needsAttention);openReportWindow(T('Needs-Attention Report'),`<div class="summary"><div class="tile">${T('Assets needing attention')}<strong>${list.length}</strong></div></div>${breakdown(countBy('Status',list))}<h2>${T('Assets ({n})',{n:list.length})}</h2>${shortTable(list,[['Remarks',a=>a.Remarks]])}`)};
 $('backupDbBtn').onclick=()=>{backupJson();toast(T('JSON backup downloaded'))};
 $('backupExcelBtn').onclick=()=>{if(writeXlsx(assets,`SYSHHB_IT_Inventory_Backup_${stamp()}.xlsx`,'Asset Inventory'))toast(T('Excel backup downloaded'))};
@@ -1816,13 +1912,14 @@ async function bpUpdate(fn){for(let i=0;i<5;i++){const r=await store.read(BP_FIL
 function bpStatus(f){if(f.nama)return ['info',T('Handed over')];return ['plain',T('Draft')]}
 function bpCanEdit(){return currentRole==='admin'||currentRole==='dataentry'}
 function bpFiltered(){const q=norm($('bpSearch').value);return bpForms.filter(f=>!q||norm([f.nama,f.jawatan,f.bahagian,f.lainLain,f.nota,...(f.items||[]).map(i=>i.peralatan+' '+i.siri)].join(' ')).includes(q))}
+function bpTypes(f){const j=f.jenis||{};const a=[];if(j.laptop)a.push('Laptop');if(j.komputer)a.push('Komputer');if(j.printer)a.push('Printer');const o=(f.lainLain||'').trim();if(o&&!/^[-–—]+$/.test(o))a.push(o);return a.join(' · ')||'—'}
 function renderBorang(){
   if(currentView!=='borang')return;
   const list=bpFiltered().slice().sort((a,b)=>(b.no||0)-(a.no||0));
   $('bpCount').innerHTML=T('{n} of {t} forms',{n:`<b>${fmtNum(list.length)}</b>`,t:fmtNum(bpForms.length)});
   $('bpPrintSel').lastChild.textContent=T('Print selected ({n})',{n:bpSel.size});
   $('bpBody').innerHTML=list.map(f=>{const it=(f.items||[]).find(i=>i.peralatan)||{};const [c,l]=bpStatus(f);
-    return `<tr data-bp="${f.id}"><td class="cb"><input type="checkbox" data-bp-sel="${f.id}" ${bpSel.has(f.id)?'checked':''} aria-label="Select"></td><td class="tag">${f.no||'—'}</td><td data-label="${T('Department / location')}">${escapeHtml(f.bahagian||'—')}</td><td data-label="${T('Equipment')}">${escapeHtml((it.peralatan||'—').split('\n')[0])}<span class="sub">${escapeHtml(f.lainLain||'')}</span></td><td data-label="${T('Serial no.')}">${escapeHtml(it.siri||'—')}</td><td data-label="${T('Name')}">${escapeHtml(f.nama||'—')}</td><td data-label="${T('Status')}"><span class="pill ${c}">${l}</span></td><td class="bp-act"><button class="btn sm" data-bp-print="${f.id}">${T('Print')}</button>${bpCanEdit()?`<button class="btn sm" data-bp-edit="${f.id}">${T('Edit')}</button><button class="btn sm" data-bp-dup="${f.id}">${T('Duplicate')}</button>`:''}${currentRole==='admin'?`<button class="btn sm danger" data-bp-del="${f.id}">${T('Delete')}</button>`:''}</td></tr>`}).join('')||`<tr style="cursor:default"><td colspan="8" class="empty-state">${bpLoaded?T('No forms yet. Click New form to create one.'):T('Loading…')}</td></tr>`;
+    return `<tr data-bp="${f.id}"><td class="cb"><input type="checkbox" data-bp-sel="${f.id}" ${bpSel.has(f.id)?'checked':''} aria-label="Select"></td><td class="tag">${f.no||'—'}</td><td data-label="${T('Department / location')}">${escapeHtml(f.bahagian||'—')}</td><td data-label="${T('Equipment')}">${escapeHtml((it.peralatan||'—').split('\n')[0])}<span class="sub">${escapeHtml(bpTypes(f))}</span></td><td data-label="${T('Serial no.')}">${escapeHtml(it.siri||'—')}</td><td data-label="${T('Name')}">${escapeHtml(f.nama||'—')}</td><td data-label="${T('Status')}"><span class="pill ${c}">${l}</span></td><td class="bp-act"><button class="btn sm" data-bp-print="${f.id}">${T('Print')}</button>${bpCanEdit()?`<button class="btn sm" data-bp-edit="${f.id}">${T('Edit')}</button><button class="btn sm" data-bp-dup="${f.id}">${T('Duplicate')}</button>`:''}${currentRole==='admin'?`<button class="btn sm danger" data-bp-del="${f.id}">${T('Delete')}</button>`:''}</td></tr>`}).join('')||`<tr style="cursor:default"><td colspan="8" class="empty-state">${bpLoaded?T('No forms yet. Click New form to create one.'):T('Loading…')}</td></tr>`;
 }
 
 /* ---------- editor ---------- */
