@@ -1309,6 +1309,7 @@ function renderWarranty(){
 
 /* ---------- drawer ---------- */
 function kv(keys,a){return `<div class="kv">${keys.map(k=>{let v=val(a,k);const link=['Location','Assigned User','Asset Type','School / Division','Room Code'].includes(k)&&v;if(k==='Warranty Start Date'||k==='Warranty End Date')v=formatDisplayDate(toISO(v)||v);return `<div>${escapeHtml(T(k))}</div><div>${link?`<a href="#" data-filter-field="${escapeHtml(k)}" data-filter-value="${escapeHtml(v)}" title="${T('Show all assets with this field')}">${escapeHtml(v)}</a>`:escapeHtml(v||'—')}</div>`}).join('')}</div>`}
+function fk(a,keys){const t=val(a,'Asset Type')||'';return keys.filter(k=>k==='IP Address'?/printer/i.test(t)&&!/3\s*-?d/i.test(t):k==='Connection'?!NO_CONN.test(t):k==='Computer Name / Linked PC'?PC_TYPES.test(t):true)}
 function openDrawer(id,list){
   const a=byId(id);if(!a)return;drawerId=id;if(list)drawerList=list;
   const w=wInfo(a);
@@ -1318,7 +1319,7 @@ function openDrawer(id,list){
   const wBar=w.end?`<div class="wbar"><span style="width:${w.pct===null?100:w.pct}%;background:${w.cls==='bad'?'var(--bad)':w.cls==='warn'?'#d99a28':'var(--ok)'}"></span></div><div class="small muted">${w.start?`${formatDisplayDate(w.start)} → `:''}${formatDisplayDate(w.end)} · <b>${escapeHtml(w.label)}</b></div>`:`<div class="small muted">${T('No warranty dates recorded. Add a start date and period to track it.')}</div>`;
   const hist=readAuditLogs().filter(x=>x.assetId===id||(!x.assetId&&x.detail&&val(a,'Asset Tag')&&x.detail===val(a,'Asset Tag')&&/Asset/.test(x.event))).sort((p,q)=>String(q.time).localeCompare(String(p.time)));
   $('drBody').innerHTML=
-    `<div class="dr-sec"><h4>${T('Identification')}</h4>${kv(["Brand","Model","Serial Number","Computer Name / Linked PC","IP Address","Connection"],a)}</div>`+
+    `<div class="dr-sec"><h4>${T('Identification')}</h4>${kv(fk(a,["Brand","Model","Serial Number","Computer Name / Linked PC","IP Address","Connection"]),a)}</div>`+
     `<div class="dr-sec"><h4>${T('Location & assignment')}</h4>${kv(["School / Division","Location","Room Code","Assigned User","Previous Location"],a)}</div>`+
     `<div class="dr-sec"><h4>${T('Warranty')}</h4>${wBar}<div style="margin-top:10px">${kv(["Warranty Start Date","Warranty Period","Warranty End Date"],a)}</div></div>`+
     `<div class="dr-sec"><h4>${T('Purchase')}</h4>${kv(["Ownership","Vendor","Year Acquired","PO No.","Invoice No.","DO No."],a)}</div>`+
@@ -1386,12 +1387,12 @@ document.addEventListener('focusin',e=>{const el=e.target;if(el&&(el.name==='PO 
 })();
 
 /* Computer Name / Linked PC only for CPU, LCD, notebook, tablet */
-const NO_CONN=/projector|cpu|desktop|\bpc\b|lcd|monitor|notebook|laptop|tablet|\btv\b|television/i;
+const NO_CONN=/3\s*-?d\s*printer|scanner|headset|accessor|network|\bups\b|projector|cpu|desktop|\bpc\b|lcd|monitor|notebook|laptop|tablet|\btv\b|television/i;
 const NO_CONN_NEG={test:v=>!NO_CONN.test(v)};
 const PC_TYPES=/cpu|desktop|\bpc\b|computer|lcd|monitor|notebook|laptop|tablet/i;
 function syncPcField(first){
   const t=document.querySelector('#assetForm [name="Asset Type"]');if(!t)return;
-  [['Computer Name / Linked PC',PC_TYPES],['IP Address',/printer/i],['Connection',NO_CONN_NEG]].forEach(([name,rx])=>{
+  [['Computer Name / Linked PC',PC_TYPES],['IP Address',{test:v=>/printer/i.test(v)&&!/3\s*-?d/i.test(v)}],['Connection',NO_CONN_NEG]].forEach(([name,rx])=>{
     const el=document.querySelector(`#assetForm [name="${name}"]`);if(!el)return;
     const f=el.closest('.field'),show=rx.test(t.value);
     if(show&&f.hidden){f.hidden=false;f.classList.remove('pop');void f.offsetWidth;f.classList.add('pop')}
@@ -1515,7 +1516,7 @@ function assetPage(a,i,n){
   const rows=(title,keys)=>{let h=`<tr class="sec"><td colspan="4">${escapeHtml(T(title))}</td></tr>`;for(let j=0;j<keys.length;j+=2)h+=`<tr>${cell(keys[j])}${keys[j+1]?cell(keys[j+1]):'<th></th><td></td>'}</tr>`;return h};
   return `<div class="asset-title"><h2>${rEsc(val(a,'Asset Tag')||val(a,'Serial Number'))}</h2><span>${n>1?escapeHtml(T('Asset {n}: ',{n:i+1}).replace(/:\s*$/,''))+' / '+n:''}</span></div>
 ${assetSummary(a)}<table class="kv"><tbody>
-${rows('Identification',['Asset Tag','Asset Type','Sub-type','Brand','Model','Serial Number','Status','Computer Name / Linked PC','IP Address','Connection'])}
+${rows('Identification',fk(a,['Asset Tag','Asset Type','Sub-type','Brand','Model','Serial Number','Status','Computer Name / Linked PC','IP Address','Connection']))}
 ${rows('Location & assignment',['School / Division','Location','Room Code','Assigned User','Previous Location'])}
 ${rows('Purchase',['Ownership','Vendor','Year Acquired','PO No.','Invoice No.','DO No.'])}
 ${rows('Warranty',['Warranty Start Date','Warranty Period','Warranty End Date','Warranty Remaining'])}
