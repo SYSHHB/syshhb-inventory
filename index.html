@@ -202,6 +202,11 @@ table.grid input[type=checkbox]{width:16px;height:16px;accent-color:var(--brand)
 .kv div:nth-last-child(-n+2){border-bottom:0}
 .wbar{height:9px;background:var(--grey-soft);border-radius:9px;overflow:hidden;margin:8px 0 6px}
 .wbar span{display:block;height:100%;border-radius:9px;background:var(--ok)}
+.fl-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;padding:14px 16px 0}.fl-strip[hidden]{display:none}.fl-strip div,.fl-sum div{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:9px 12px}.fl-strip b,.fl-sum b{display:block;font-size:17px;color:var(--brand)}.fl-strip span,.fl-sum span{font-size:11.5px;color:var(--muted)}
+.fl-sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px;margin-bottom:12px}.fl-sum .bad b{color:#c53f4e}
+.timeline.fl li::before{border-color:#c53f4e}.timeline.fl li.fx::before{border-color:var(--brand);background:var(--brand)}.timeline.fl li span{display:block}.timeline.fl li em{color:#c53f4e;font-style:normal;font-weight:600}.fl-act{margin-top:2px}.fl-act .link{background:none;border:0;color:var(--brand);cursor:pointer;font-size:12px;padding:0 10px 0 0}
+.fl-form{display:grid;gap:8px;background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:12px;margin-top:8px}.fl-form label{display:grid;gap:3px;font-size:12px;color:var(--muted);font-weight:600}.fl-form input{padding:8px 10px;border:1px solid var(--line);border-radius:8px;font:inherit;background:var(--panel);color:inherit}.fl-btns{display:flex;gap:8px}
+.fl-days{display:inline-block;min-width:30px;text-align:center;border-radius:12px;padding:1px 8px;font-weight:700;background:#e3f6ec;color:#14915a}.fl-days.warn{background:#fff5dd;color:#b7791f}.fl-days.bad{background:#fdecee;color:#c53f4e}
 .timeline{list-style:none;margin:0;padding:0;border-left:2px solid var(--line);margin-left:6px}
 .timeline li{position:relative;padding:0 0 12px 16px;font-size:12.5px}
 .timeline li::before{content:"";position:absolute;left:-6px;top:4px;width:10px;height:10px;border-radius:50%;background:#fff;border:2px solid var(--brand)}
@@ -559,6 +564,8 @@ td.bp-act{white-space:nowrap;text-align:right}td.bp-act .btn{margin-left:4px}
           <button type="button" class="btn filter-toggle" id="filterToggle" data-noi18n><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>Filters</button>
           <select id="typeFilter" data-noi18n data-field="Asset Type"></select>
           <select id="subtypeFilter" data-noi18n data-field="Sub-type"></select>
+          <select id="brandFilter" data-noi18n data-field="Brand"></select>
+          <select id="ageFilter" data-noi18n data-field="Age"></select>
           <select id="schoolFilter" data-noi18n data-field="School / Division"></select>
           <select id="statusFilter" data-noi18n data-field="Status"></select>
           <select id="locationFilter" data-noi18n data-field="Location"></select>
@@ -585,6 +592,7 @@ td.bp-act{white-space:nowrap;text-align:right}td.bp-act .btn{margin-left:4px}
       <section class="view" data-view="warranty" hidden>
         <div class="kpis" id="wKpis" data-noi18n></div>
         <div class="card">
+          <div class="fl-strip" id="flStrip" data-noi18n hidden></div>
           <div class="card-h" style="padding-bottom:12px;border-bottom:1px solid var(--line)"><div class="seg" id="wTabs" data-noi18n></div><span class="hint" id="wHint" data-noi18n></span></div>
           <div class="table-wrap" style="max-height:none"><table class="grid"><thead><tr id="wHead" data-noi18n></tr></thead><tbody id="wBody" data-noi18n></tbody></table><div id="wEmpty" data-noi18n class="empty-state" hidden></div></div>
         </div>
@@ -1101,7 +1109,7 @@ const MS={
 'Excel file downloaded':'Fail Excel dimuat turun','JSON backup downloaded':'Sandaran JSON dimuat turun','Excel backup downloaded':'Sandaran Excel dimuat turun','JSON + Excel backups downloaded':'Sandaran JSON + Excel dimuat turun','Tick one or more assets in the table first.':'Tandakan satu atau lebih aset dalam jadual dahulu.','Allow pop-ups for this site to open reports.':'Benarkan pop-up untuk laman ini bagi membuka laporan.',
 'Inventory is up to date':'Inventori terkini','Refresh failed: ':'Gagal memuat semula: ',
 // printable reports
-'Save as image':'Simpan sebagai imej','Print / Save as PDF':'Cetak / Simpan sebagai PDF','Generated {d} by {u}':'Dijana {d} oleh {u}','Overall Inventory Report':'Laporan Inventori Keseluruhan','Warranty Report':'Laporan Waranti','Needs-Attention Report':'Laporan Perlu Perhatian','Asset Report':'Laporan Aset','Selected Asset Report · {n} asset(s)':'Laporan Aset Terpilih · {n} aset',
+'All brands':'Semua jenama','All ages':'Semua umur','Less than 1 year':'Kurang 1 tahun','1 to 3 years':'1 hingga 3 tahun','3 to 5 years':'3 hingga 5 tahun','5 to 8 years':'5 hingga 8 tahun','8 years and older':'8 tahun dan lebih','Year not set':'Tahun tiada','Age':'Umur','Total repair cost':'Jumlah kos pembaikan','Fault records':'Rekod kerosakan','Days faulty now':'Hari rosak kini','Fault':'Kerosakan','Reported':'Dilaporkan','Fixed':'Dibaiki','{n} day(s) down':'{n} hari rosak','Still faulty':'Masih rosak','Repair cost':'Kos pembaikan','Edit':'Sunting','Delete':'Padam','Fault & repair timeline':'Garis masa kerosakan & pembaikan','No fault records yet.':'Belum ada rekod kerosakan.','Add fault record':'Tambah rekod kerosakan','Date reported faulty':'Tarikh dilaporkan rosak','What is wrong?':'Apa kerosakannya?','e.g. No power, lamp blown':'cth. Tiada kuasa, lampu terbakar','Date fixed (leave empty if still faulty)':'Tarikh dibaiki (kosongkan jika masih rosak)','Save':'Simpan','Cancel':'Batal','Enter the date it became faulty.':'Masukkan tarikh ia mula rosak.','Fixed date cannot be before the reported date.':'Tarikh dibaiki tidak boleh sebelum tarikh dilaporkan.','Fault record saved':'Rekod kerosakan disimpan','Delete this fault record?':'Padam rekod kerosakan ini?','This cannot be undone.':'Ini tidak boleh dibatalkan.','Fault record added':'Rekod kerosakan ditambah','Fault record edited':'Rekod kerosakan disunting','Fault record deleted':'Rekod kerosakan dipadam','Repair cost of these assets':'Kos pembaikan aset ini','Repair cost, all assets':'Kos pembaikan, semua aset','With an open fault record':'Dengan rekod rosak terbuka','Average days faulty':'Purata hari rosak','Faulty since':'Rosak sejak','Days faulty':'Hari rosak','Save as image':'Simpan sebagai imej','Print / Save as PDF':'Cetak / Simpan sebagai PDF','Generated {d} by {u}':'Dijana {d} oleh {u}','Overall Inventory Report':'Laporan Inventori Keseluruhan','Warranty Report':'Laporan Waranti','Needs-Attention Report':'Laporan Perlu Perhatian','Asset Report':'Laporan Aset','Selected Asset Report · {n} asset(s)':'Laporan Aset Terpilih · {n} aset',
 'Category':'Kategori','Count':'Bilangan','By type':'Mengikut jenis','By status':'Mengikut status','All records ({n})':'Semua rekod ({n})','Expiring within 90 days ({n})':'Tamat dalam 90 hari ({n})','Expired ({n})':'Tamat tempoh ({n})','Assets needing attention':'Aset perlu perhatian','Assets ({n})':'Aset ({n})','Asset {n}: ':'Aset {n}: '
 };
 const MONTHS_MS=['Jan','Feb','Mac','Apr','Mei','Jun','Jul','Ogo','Sep','Okt','Nov','Dis'];
@@ -1135,7 +1143,7 @@ const KEY='it_asset_inventory_v2_excel_master', AUDIT_KEY='syshhb_inventory_audi
 function periodLabel(p){const m=String(p).match(/^(\d+)\s*Years?$/i);if(!m)return p;const y=Number(m[1]),ms=LANG==='ms';return ms?`${y*12} Bulan atau ${y} Tahun`:`${y*12} Months or ${y} ${y===1?'Year':'Years'}`}
 const PERIODS=['1 Month','3 Months','6 Months','9 Months','1 Year','2 Years','3 Years','4 Years','5 Years'];
 const PERIOD_MONTHS={'1 Month':1,'3 Months':3,'6 Months':6,'9 Months':9,'1 Year':12,'2 Years':24,'3 Years':36,'4 Years':48,'5 Years':60};
-const FILTER_IDS=['typeFilter','subtypeFilter','schoolFilter','statusFilter','locationFilter','ownershipFilter'];
+const FILTER_IDS=['typeFilter','subtypeFilter','brandFilter','ageFilter','schoolFilter','statusFilter','locationFilter','ownershipFilter'];
 const VIEWS={dashboard:['Dashboard','Overview of all IT assets'],inventory:['Inventory','Search, filter and manage asset records'],warranty:['Warranty & Alerts','Warranties ending soon and assets that need attention'],map:['Location Map','Floor plan and room finder'],reports:['Reports & Export','Printable reports, Excel export and backups'],audit:['Audit Logs','Sign-ins and changes by every user'],access:['Manage Access','Add users and choose Admin or View access'],requests:['Requests','Edit and delete requests that need admin approval'],borang:['Handover Form','IT equipment handover forms (BTM-02 V.2)'],disposal:['Disposal Form','Disposal requests (Borang 1) for Faulty and To Dispose assets']};
 let assets=[], page=1, pageSize=25, sortKey='Asset Tag', sortDir=1, selectedAssets=new Set(), quick='', charts={}, editId=null, currentView='dashboard', drawerId=null, drawerList=[], wTab='soon', activeSessionId=null;
 
@@ -1202,13 +1210,17 @@ function confirmDialog(title,body,okLabel='OK',danger=false){return choiceDialog
 
 /* ---------- filters ---------- */
 function options(id,vals,label,hasEmpty){const el=$(id),old=el.value;el.innerHTML=`<option value="">${label}</option>`+vals.map(v=>`<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`).join('')+(hasEmpty?`<option value="__none__">${T('(Not set)')}</option>`:'');if([...el.options].some(o=>o.value===old))el.value=old;else if(old){el.insertAdjacentHTML('beforeend',`<option value="${escapeHtml(old)}">${escapeHtml(old==='__none__'?T('(Not set)'):old)}</option>`);el.value=old}}
-function fillFilters(){const L={typeFilter:'All types',subtypeFilter:'All sub-types',schoolFilter:'All schools',statusFilter:'All statuses',locationFilter:'All locations',ownershipFilter:'All ownership'};FILTER_IDS.forEach(id=>{const k=$(id).dataset.field;options(id,unique(k),T(L[id]),assets.some(a=>!val(a,k)))})}
+const AGE_B=[['lt1','Less than 1 year'],['1-3','1 to 3 years'],['3-5','3 to 5 years'],['5-8','5 to 8 years'],['8p','8 years and older'],['unk','Year not set']];
+function assetAge(a){const y=parseInt(String(val(a,'Year Acquired')).match(/\d{4}/),10);return y?new Date().getFullYear()-y:null}
+function ageKey(a){const g=assetAge(a);if(g===null)return 'unk';if(g<1)return 'lt1';if(g<3)return '1-3';if(g<5)return '3-5';if(g<8)return '5-8';return '8p'}
+function fillAge(){const el=$('ageFilter'),old=el.value;el.innerHTML=`<option value="">${T('All ages')}</option>`+AGE_B.map(([k,l])=>`<option value="${k}">${T(l)}</option>`).join('');el.value=old}
+function fillFilters(){const L={typeFilter:'All types',subtypeFilter:'All sub-types',schoolFilter:'All schools',statusFilter:'All statuses',locationFilter:'All locations',ownershipFilter:'All ownership',brandFilter:'All brands'};FILTER_IDS.forEach(id=>{const k=$(id).dataset.field;if(id==='ageFilter'){fillAge();return}options(id,unique(k),T(L[id]),assets.some(a=>!val(a,k)))})}
 const QUICK={active:'Active / in use',attention:'Needs attention',expiring:'Warranty ≤ 90 days',expired:'Warranty expired'};
 function filtered(){
   const q=norm($('search').value),fs=FILTER_IDS.map(id=>[$(id).dataset.field,$(id).value]).filter(x=>x[1]);
   return assets.filter(a=>{
     if(q&&!FIELDS.some(k=>norm(a[k]).includes(q)))return false;
-    for(const [k,v] of fs){if(v==='__none__'?val(a,k):val(a,k)!==v)return false}
+    for(const [k,v] of fs){if(k==='Age'){if(ageKey(a)!==v)return false;continue}if(v==='__none__'?val(a,k):val(a,k)!==v)return false}
     if(quick==='active'&&!isActive(a))return false;
     if(quick==='attention'&&!needsAttention(a))return false;
     if(quick==='expiring'){const w=wInfo(a);if(!(w.key==='soon30'||w.key==='soon90'))return false}
@@ -1219,7 +1231,7 @@ function filtered(){
 function renderChips(){
   const chips=[];const q=$('search').value.trim();
   if(q)chips.push(['search',T('Search: “{q}”',{q})]);
-  FILTER_IDS.forEach(id=>{const v=$(id).value;if(v)chips.push([id,`${T($(id).dataset.field)}: ${v==='__none__'?T('(Not set)'):v}`])});
+  FILTER_IDS.forEach(id=>{const v=$(id).value;if(v)chips.push([id,`${T($(id).dataset.field)}: ${id==='ageFilter'?$(id).selectedOptions[0].textContent:v==='__none__'?T('(Not set)'):v}`])});
   if(quick)chips.push(['quick',T(QUICK[quick])]);
   $('chips').innerHTML=chips.map(([k,l])=>`<span class="chip">${escapeHtml(l)}<button type="button" data-chip="${k}" aria-label="${T('Remove filter')}">✕</button></span>`).join('');
   $('chips').hidden=!chips.length;const nf=FILTER_IDS.filter(id=>$(id).value).length;$('filterToggle').lastChild.textContent=nf?T('Filters ({n})',{n:nf}):T('Filters');
@@ -1300,8 +1312,11 @@ function renderWarranty(){
   $('wKpis').innerHTML=k('soon','Expiring ≤ 90 days',g.soon.length,T('{n} within 30 days',{n:s30}),'#b7791f','#fff5dd','⏳')+k('expired','Warranty expired',g.expired.length,T('Past end date'),'#c53f4e','#fdecee','⛔')+k('attention','Needs attention',g.attention.length,T('Faulty, repair, verify'),'#c53f4e','#fdecee','⚠️')+k('active','Under warranty',g.active.length,T('More than 90 days left'),'#14915a','#e3f6ec','✅')+k('none','No warranty info',g.none.length,T('Add start date & period'),'#5f7a70','#eef2f0','❔');
   $('wTabs').innerHTML=WTABS.map(([t,l])=>`<button class="${t===wTab?'on':''}" data-wtab="${t}">${T(l)}<span class="n">${g[t].length}</span></button>`).join('');
   const list=g[wTab];$('wHint').textContent=list.length>300?T('Showing first 300 – use Inventory filters for more'):'';
-  $('wHead').innerHTML=['Asset tag','Type / model','Location','Assigned to','Status','Warranty end','Remaining'].map(h=>`<th>${T(h)}</th>`).join('');
-  $('wBody').innerHTML=list.slice(0,300).map(a=>{const w=wInfo(a);return `<tr data-id="${escapeHtml(a._id)}"><td class="tag">${escapeHtml(val(a,'Asset Tag')||'—')}</td><td data-label="${T('Type')}">${escapeHtml(val(a,'Asset Type')||'—')}<span class="sub">${escapeHtml([val(a,'Brand'),val(a,'Model')].filter(Boolean).join(' '))}</span></td><td data-label="${T('Location')}">${escapeHtml(val(a,'Location')||'—')}</td><td data-label="${T('Assigned to')}">${escapeHtml(val(a,'Assigned User')||'—')}</td><td data-label="${T('Status')}">${badge(val(a,'Status'))}</td><td data-label="${T('Warranty end')}">${escapeHtml(w.end?formatDisplayDate(w.end):'—')}</td><td data-label="${T('Remaining')}">${wPill(a)}</td></tr>`}).join('');
+  const att=wTab==='attention';
+  const fs=$('flStrip');if(fs){fs.hidden=!att;if(att){const wl=list.filter(a=>flLog(a).length),open=list.filter(flOpen),tot=list.reduce((n,a)=>n+flCost(a),0),dd=open.map(a=>flDays(flOpen(a).date)).filter(x=>x!==null),avg=dd.length?Math.round(dd.reduce((x,y)=>x+y,0)/dd.length):0,all=assets.reduce((n,a)=>n+flCost(a),0);
+    fs.innerHTML=`<div><b>${money(tot)}</b><span>${T('Repair cost of these assets')}</span></div><div><b>${money(all)}</b><span>${T('Repair cost, all assets')}</span></div><div><b>${open.length}</b><span>${T('With an open fault record')}</span></div><div><b>${avg}</b><span>${T('Average days faulty')}</span></div>`}}
+  $('wHead').innerHTML=(att?['Asset tag','Type / model','Location','Status','Faulty since','Days faulty','Repair cost']:['Asset tag','Type / model','Location','Assigned to','Status','Warranty end','Remaining']).map(h=>`<th>${T(h)}</th>`).join('');
+  $('wBody').innerHTML=att?list.slice(0,300).map(a=>{const op=flOpen(a),dd=op?flDays(op.date):null;return `<tr data-id="${escapeHtml(a._id)}"><td class="tag">${escapeHtml(val(a,'Asset Tag')||'—')}</td><td data-label="${T('Type')}">${escapeHtml(val(a,'Asset Type')||'—')}<span class="sub">${escapeHtml([val(a,'Brand'),val(a,'Model')].filter(Boolean).join(' '))}</span></td><td data-label="${T('Location')}">${escapeHtml(val(a,'Location')||'—')}</td><td data-label="${T('Status')}">${badge(val(a,'Status'))}</td><td data-label="${T('Faulty since')}">${op?escapeHtml(formatDisplayDate(op.date)):'<span class="muted">—</span>'}</td><td data-label="${T('Days faulty')}">${dd===null?'<span class="muted">—</span>':`<span class="fl-days ${dd>30?'bad':dd>7?'warn':''}">${dd}</span>`}</td><td data-label="${T('Repair cost')}">${flLog(a).length?money(flCost(a)):'<span class="muted">—</span>'}</td></tr>`}).join(''):list.slice(0,300).map(a=>{const w=wInfo(a);return `<tr data-id="${escapeHtml(a._id)}"><td class="tag">${escapeHtml(val(a,'Asset Tag')||'—')}</td><td data-label="${T('Type')}">${escapeHtml(val(a,'Asset Type')||'—')}<span class="sub">${escapeHtml([val(a,'Brand'),val(a,'Model')].filter(Boolean).join(' '))}</span></td><td data-label="${T('Location')}">${escapeHtml(val(a,'Location')||'—')}</td><td data-label="${T('Assigned to')}">${escapeHtml(val(a,'Assigned User')||'—')}</td><td data-label="${T('Status')}">${badge(val(a,'Status'))}</td><td data-label="${T('Warranty end')}">${escapeHtml(w.end?formatDisplayDate(w.end):'—')}</td><td data-label="${T('Remaining')}">${wPill(a)}</td></tr>`}).join('');
   $('wEmpty').hidden=list.length>0;$('wEmpty').textContent=T({soon:'🎉 No warranties ending in the next 90 days.',expired:'No expired warranties.',attention:'🎉 Nothing needs attention.',active:'No assets with more than 90 days of warranty.',none:'Every asset has warranty information.'}[wTab]);
   drawerList=list.map(a=>a._id);
 }
@@ -1323,12 +1338,56 @@ function openDrawer(id,list){
     `<div class="dr-sec"><h4>${T('Warranty')}</h4>${wBar}<div style="margin-top:10px">${kv(["Warranty Start Date","Warranty Period","Warranty End Date"],a)}</div></div>`+
     `<div class="dr-sec"><h4>${T('Purchase')}</h4>${kv(["Ownership","Vendor","Year Acquired","PO No.","Invoice No.","DO No."],a)}</div>`+
     `<div class="dr-sec"><h4>${T('Remarks')}</h4><div class="small" style="white-space:pre-wrap;background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:10px 12px">${escapeHtml(val(a,'Remarks')||T('No remarks.'))}</div></div>`+
+    flSection(a)+
     `<div class="dr-sec"><h4>${T('History')}</h4>${hist.length?`<ul class="timeline">${hist.slice(0,20).map(x=>`<li><b>${escapeHtml(T(x.event))}</b><span>${escapeHtml(x.username)} · ${escapeHtml(new Date(x.time).toLocaleString())}</span></li>`).join('')}</ul>`:`<div class="small muted">${T('No changes recorded since the system went online.')}</div>`}</div>`;
   const i=drawerList.indexOf(id);$('drPrev').disabled=i<=0;$('drNext').disabled=i<0||i>=drawerList.length-1;
   $('drawer').classList.add('on');$('scrim').classList.add('on');$('drBody').scrollTop=0;
 }
 function closeDrawer(){$('drawer').classList.remove('on');$('scrim').classList.remove('on');drawerId=null}
 
+/* ---------- fault / repair log ---------- */
+const flLog=a=>Array.isArray(a['Fault Log'])?a['Fault Log']:[];
+const money=n=>'B$ '+Number(n||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+const todayISO=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+const flDays=(f,t)=>{const a=Date.parse(f),b=Date.parse(t||todayISO());return isNaN(a)||isNaN(b)?null:Math.max(0,Math.round((b-a)/864e5))};
+const flCost=a=>flLog(a).reduce((s,e)=>s+(Number(e.cost)||0),0);
+const flOpen=a=>flLog(a).filter(e=>e.date&&!e.fixed).sort((x,y)=>String(x.date).localeCompare(y.date))[0]||null;
+const flCanAdd=()=>currentRole==='admin'||currentRole==='dataentry';
+function flSection(a){
+  const log=flLog(a).slice().sort((x,y)=>String(y.date).localeCompare(String(x.date)));const op=flOpen(a);
+  if(!log.length&&!needsAttention(a)&&!flCanAdd())return '';
+  const chips=`<div class="fl-sum"><div><b>${money(flCost(a))}</b><span>${T('Total repair cost')}</span></div><div><b>${log.length}</b><span>${T('Fault records')}</span></div>${op?`<div class="bad"><b>${flDays(op.date)}</b><span>${T('Days faulty now')}</span></div>`:''}</div>`;
+  const items=log.map(e=>{const d=flDays(e.date,e.fixed);return `<li class="${e.fixed?'fx':'op'}"><b>${escapeHtml(e.issue||T('Fault'))}</b><span>${T('Reported')}: ${escapeHtml(formatDisplayDate(e.date)||'—')} · ${e.fixed?`${T('Fixed')}: ${escapeHtml(formatDisplayDate(e.fixed))} · ${T('{n} day(s) down',{n:d})}`:`<em>${T('Still faulty')} · ${T('{n} day(s) down',{n:d})}</em>`}</span><span>${T('Repair cost')}: <b>${money(e.cost)}</b>${e.by?' · '+escapeHtml(e.by):''}</span>${flCanAdd()?`<div class="fl-act"><button type="button" class="link" data-fl-edit="${escapeHtml(e.id)}">${T('Edit')}</button>${currentRole==='admin'?`<button type="button" class="link" data-fl-del="${escapeHtml(e.id)}">${T('Delete')}</button>`:''}</div>`:''}</li>`}).join('');
+  return `<div class="dr-sec" id="flSec"><h4>${T('Fault & repair timeline')}</h4>${chips}${log.length?`<ul class="timeline fl">${items}</ul>`:`<div class="small muted">${T('No fault records yet.')}</div>`}${flCanAdd()?`<div id="flForm"></div><button type="button" class="btn sm" data-fl-add style="margin-top:8px">+ ${T('Add fault record')}</button>`:''}</div>`;
+}
+function flFormOpen(eid){
+  const a=byId(drawerId);if(!a)return;const e=eid?flLog(a).find(x=>x.id===eid)||{}:{};
+  $('flForm').innerHTML=`<div class="fl-form" data-eid="${escapeHtml(eid||'')}"><label>${T('Date reported faulty')}<input type="date" id="flDate" value="${escapeHtml(e.date||todayISO())}"></label><label>${T('What is wrong?')}<input type="text" id="flIssue" value="${escapeHtml(e.issue||'')}" placeholder="${T('e.g. No power, lamp blown')}"></label><label>${T('Repair cost')} (B$)<input type="number" id="flCost" min="0" step="0.01" value="${e.cost!=null&&e.cost!==''?escapeHtml(String(e.cost)):''}" placeholder="0.00"></label><label>${T('Date fixed (leave empty if still faulty)')}<input type="date" id="flFixed" value="${escapeHtml(e.fixed||'')}"></label><div class="fl-btns"><button type="button" class="btn primary sm" data-fl-save>${T('Save')}</button><button type="button" class="btn sm" data-fl-cancel>${T('Cancel')}</button></div></div>`;
+  const add=document.querySelector('[data-fl-add]');if(add)add.hidden=true;$('flIssue').focus();
+}
+function flSave(){
+  const id=drawerId,a=byId(id);if(!a||!flCanAdd())return;const box=document.querySelector('.fl-form');const eid=box.dataset.eid;
+  const date=$('flDate').value,issue=$('flIssue').value.trim(),cost=parseFloat($('flCost').value),fixed=$('flFixed').value;
+  if(!date){toast(T('Enter the date it became faulty.'),'warn');return}
+  if(fixed&&fixed<date){toast(T('Fixed date cannot be before the reported date.'),'warn');return}
+  const log=flLog(a).map(x=>({...x}));
+  if(eid){const e=log.find(x=>x.id===eid);if(e)Object.assign(e,{date,issue,cost:isNaN(cost)?0:cost,fixed})}
+  else log.push({id:newId(),date,issue,cost:isNaN(cost)?0:cost,fixed,by:currentUsername});
+  a['Fault Log']=log;persist();addAuditEvent(eid?'Fault record edited':'Fault record added',currentUsername,currentRole,{detail:val(a,'Asset Tag')||val(a,'Serial Number'),assetId:id});
+  render();toast(T('Fault record saved'));openDrawer(id);
+}
+async function flDelete(eid){
+  const id=drawerId,a=byId(id);if(!a||currentRole!=='admin')return;
+  if(!await confirmDialog(T('Delete this fault record?'),T('This cannot be undone.'),T('Delete'),true))return;
+  a['Fault Log']=flLog(a).filter(x=>x.id!==eid);persist();addAuditEvent('Fault record deleted',currentUsername,currentRole,{detail:val(a,'Asset Tag')||val(a,'Serial Number'),assetId:id});render();openDrawer(id);
+}
+document.addEventListener('click',e=>{
+  if(e.target.closest('[data-fl-add]'))return flFormOpen();
+  const ed=e.target.closest('[data-fl-edit]');if(ed)return flFormOpen(ed.dataset.flEdit);
+  const dl=e.target.closest('[data-fl-del]');if(dl)return flDelete(dl.dataset.flDel);
+  if(e.target.closest('[data-fl-save]'))return flSave();
+  if(e.target.closest('[data-fl-cancel]')){$('flForm').innerHTML='';const add=document.querySelector('[data-fl-add]');if(add)add.hidden=false}
+});
 /* ---------- add / edit ---------- */
 function fieldHtml(k){
   const i=FIELDS.indexOf(k),item=editId?byId(editId)||{}:{};let v=val(item,k);const name=escapeHtml(k),lbl=escapeHtml(T(k));
@@ -1419,6 +1478,7 @@ async function saveAsset(e){
     return;
   }
   let ev='Asset added';
+  if(editId!==null){const c0=byId(editId);if(c0&&c0['Fault Log'])obj['Fault Log']=c0['Fault Log']}
   if(editId===null){obj._id=newId();assets.unshift(obj)}else{const ix=assets.findIndex(x=>x._id===editId);obj._id=editId;ev='Asset edited';if(ix>=0)assets[ix]=obj;else assets.unshift(obj)}
   persist();addAuditEvent(ev,currentUsername,currentRole,{detail:obj['Asset Tag']||obj['Serial Number']||'',assetId:obj._id});
   closeModal();render();toast(ev==='Asset added'?T('Asset added'):T('Changes saved'));openDrawer(obj._id);
@@ -1787,9 +1847,9 @@ tr.sec td{cursor:pointer;user-select:none}tr.sec td::after{content:" ▾";float:
 @media print{.rtools,.chips{display:none!important}tr.hid,tr.empty{display:table-row!important}.sheet{display:block!important}tr.sec td::after{content:""!important}}
 .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:10px 0}.kpis .tile{min-width:0}.cbox{border:1px solid #cfe6d7;border-radius:8px;padding:10px 12px}.cbox h2{margin:0 0 6px;font-size:11pt}.fbar{display:flex;gap:8px;align-items:center;margin:10px 0 6px}.fbar input{flex:1;padding:7px 10px;border:1px solid #cfe6d7;border-radius:6px;font:inherit}.cnt{color:#567467;font-size:8.5pt}.fbar input{}@media print{.fbar input{display:none}}`})};
 $('attentionReportBtn').onclick=()=>{const list=assets.filter(needsAttention),by=countBy('Status',list);const keys=Object.keys(by).sort((x,y)=>by[y]-by[x]);
-  const rows=list.map(a=>({t:val(a,'Status')||'Not set',c:[val(a,'Asset Tag'),val(a,'Asset Type'),[val(a,'Brand'),val(a,'Model')].filter(Boolean).join(' '),val(a,'Serial Number'),val(a,'Location'),val(a,'Assigned User'),val(a,'Status'),val(a,'Remarks')]}));
-  const cfg={tabs:[{key:'*',label:T('All'),n:list.length},...keys.map(k=>({key:k,label:k,n:by[k]}))],rows,hdr:['Asset tag','Type','Brand / model','Serial','Location','Assigned to','Status','Remarks'].map(h=>T(h)),
-    chart:{type:'bars',title:T('By status'),items:keys.map(k=>[k,by[k],'#e4572e'])},L:{search:T('Search records…'),shown:T('{n} of {t} shown'),none:T('No matching records.')}};
+  const rows=list.map(a=>({t:val(a,'Status')||'Not set',c:[val(a,'Asset Tag'),val(a,'Asset Type'),[val(a,'Brand'),val(a,'Model')].filter(Boolean).join(' '),val(a,'Serial Number'),val(a,'Location'),val(a,'Status'),flOpen(a)?formatDisplayDate(flOpen(a).date):'—',flOpen(a)?String(flDays(flOpen(a).date)):'—',flLog(a).length?money(flCost(a)):'—',val(a,'Remarks')]}));
+  const cfg={tabs:[{key:'*',label:T('All'),n:list.length},...keys.map(k=>({key:k,label:k,n:by[k]}))],rows,hdr:['Asset tag','Type','Brand / model','Serial','Location','Status','Faulty since','Days faulty','Repair cost','Remarks'].map(h=>T(h)),
+    chart:{type:'bars',title:T('By status')+' · '+T('Repair cost of these assets')+': '+money(list.reduce((n,a)=>n+flCost(a),0)),items:keys.map(k=>[k,by[k],'#e4572e'])},L:{search:T('Search records…'),shown:T('{n} of {t} shown'),none:T('No matching records.')}};
   openReportWindow(T('Needs-Attention Report'),interactiveListBody(cfg),{css:`
 .pill{display:inline-block;padding:2px 9px;border-radius:20px;font-size:8.5pt;font-weight:700;background:#e8eeea;color:#456}.pill.ok{background:#d9f3e4;color:#006b45}.pill.warn{background:#fff0cc;color:#8a5a00}.pill.bad{background:#fde0e3;color:#b52b3b}.pill.info{background:#dfeaff;color:#1f4fa8}
 .asum{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:0 0 8px}.asub{color:#567467;font-size:9pt}.agz{margin-left:auto;min-width:200px}.agb{display:block;height:7px;background:#e6efe9;border-radius:6px;overflow:hidden}.agb i{display:block;height:100%;border-radius:6px;background:#6c8a7b}.agb i.ok{background:#1f9d62}.agb i.warn{background:#f3b61f}.agb i.bad{background:#e4572e}.agz small{font-size:8pt;color:#567467}
@@ -1802,7 +1862,6 @@ tr.sec td{cursor:pointer;user-select:none}tr.sec td::after{content:" ▾";float:
 @media screen{body.one .sheet:not(.cur){display:none}body.he tr.empty{display:none}tr.hid{display:none}}
 @media print{.rtools,.chips{display:none!important}tr.hid,tr.empty{display:table-row!important}.sheet{display:block!important}tr.sec td::after{content:""!important}}
 .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin:10px 0}.kpis .tile{min-width:0}.cbox{border:1px solid #cfe6d7;border-radius:8px;padding:10px 12px}.cbox h2{margin:0 0 6px;font-size:11pt}.hb{font-size:8.5pt}.hb div.r{display:grid;grid-template-columns:105px 1fr 36px;gap:6px;align-items:center;padding:2px 3px;border-radius:4px;cursor:pointer}.hb div.r:hover,.hb div.r.on{background:#eaf6ee}.hb .t{height:11px;background:#eef3f0;border-radius:6px;overflow:hidden}.hb .t i{display:block;height:100%;border-radius:6px}.hb .n{text-align:right;font-weight:700}.fbar{display:flex;gap:8px;align-items:center;margin:10px 0 6px}.fbar input{flex:1;padding:7px 10px;border:1px solid #cfe6d7;border-radius:6px;font:inherit}.cnt{color:#567467;font-size:8.5pt}@media print{.fbar input{display:none}}`})};
-$('attentionReportBtn').onclick=()=>{const list=assets.filter(needsAttention);openReportWindow(T('Needs-Attention Report'),`<div class="summary"><div class="tile">${T('Assets needing attention')}<strong>${list.length}</strong></div></div>${breakdown(countBy('Status',list))}<h2>${T('Assets ({n})',{n:list.length})}</h2>${shortTable(list,[['Remarks',a=>a.Remarks]])}`)};
 $('backupDbBtn').onclick=()=>{backupJson();toast(T('JSON backup downloaded'))};
 $('backupExcelBtn').onclick=()=>{if(writeXlsx(assets,`SYSHHB_IT_Inventory_Backup_${stamp()}.xlsx`,'Asset Inventory'))toast(T('Excel backup downloaded'))};
 $('backupSystemBtn').onclick=()=>{backupJson();setTimeout(()=>{if(writeXlsx(assets,`SYSHHB_IT_Inventory_Backup_${stamp()}.xlsx`,'Asset Inventory'))toast(T('JSON + Excel backups downloaded'))},400)};
