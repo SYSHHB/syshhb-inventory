@@ -207,7 +207,7 @@ table.grid input[type=checkbox]{width:16px;height:16px;accent-color:var(--brand)
 .timeline.fl li::before{border-color:#c53f4e}.timeline.fl li.fx::before{border-color:var(--brand);background:var(--brand)}.timeline.fl li span{display:block}.timeline.fl li em{color:#c53f4e;font-style:normal;font-weight:600}.fl-act{margin-top:2px}.fl-act .link{background:none;border:0;color:var(--brand);cursor:pointer;font-size:12px;padding:0 10px 0 0}
 .fl-form{display:grid;gap:8px;background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:12px;margin-top:8px}.fl-form label{display:grid;gap:3px;font-size:12px;color:var(--muted);font-weight:600}.fl-form input{padding:8px 10px;border:1px solid var(--line);border-radius:8px;font:inherit;background:var(--panel);color:inherit}.fl-btns{display:flex;gap:8px}
 .fl-days{display:inline-block;min-width:30px;text-align:center;border-radius:12px;padding:1px 8px;font-weight:700;background:#e3f6ec;color:#14915a}.fl-days.warn{background:#fff5dd;color:#b7791f}.fl-days.bad{background:#fdecee;color:#c53f4e}
-.att-row{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line)}.att-row>div:first-child{min-width:0}.att-row b{display:block;overflow-wrap:anywhere}.att-row .btn{margin-left:4px}
+.att-row{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line)}.att-row>div:first-child{min-width:0}.ph-strip{display:flex;gap:8px;flex-wrap:wrap}.ph-badge{font-size:11px;opacity:.7}.att-th{width:64px;height:64px;object-fit:cover;border-radius:8px;border:1px solid var(--line);background:var(--soft);cursor:zoom-in;flex:none}.att-row{align-items:center}.att-row b{display:block;overflow-wrap:anywhere}.att-row .btn{margin-left:4px}
 .timeline{list-style:none;margin:0;padding:0;border-left:2px solid var(--line);margin-left:6px}
 .timeline li{position:relative;padding:0 0 12px 16px;font-size:12.5px}
 .timeline li::before{content:"";position:absolute;left:-6px;top:4px;width:10px;height:10px;border-radius:50%;background:#fff;border:2px solid var(--brand)}
@@ -776,8 +776,8 @@ td.bp-act{white-space:nowrap;text-align:right}td.bp-act .btn{margin-left:4px}
 /* ================= ONLINE (Microsoft 365) SETTINGS =================
    Fill these in once — see the setup guide. Nothing else needs editing. */
 const CONFIG={
-  clientId:'598ea952-e9df-4684-a109-85832dc34e59',   // Entra ID > App registrations > Application (client) ID
-  tenantId:'d3ab4c65-3ba1-4c04-98fd-66a0c7730cdf',     // Entra ID > App registrations > Directory (tenant) ID
+  clientId:'PASTE_APPLICATION_CLIENT_ID_HERE',   // Entra ID > App registrations > Application (client) ID
+  tenantId:'PASTE_DIRECTORY_TENANT_ID_HERE',     // Entra ID > App registrations > Directory (tenant) ID
   // SharePoint / OneDrive folder that holds the shared database files
   folderUrl:'https://syayasanedu-my.sharepoint.com/personal/zulfa_zaini_syayasan_edu_bn/Documents/SYSHHB-IT-Inventory',
   // Exact location of that folder (owner: zulfa.zaini). folderUrl is only a fallback.
@@ -1122,7 +1122,7 @@ const MS={
 'Excel file downloaded':'Fail Excel dimuat turun','JSON backup downloaded':'Sandaran JSON dimuat turun','Excel backup downloaded':'Sandaran Excel dimuat turun','JSON + Excel backups downloaded':'Sandaran JSON + Excel dimuat turun','Tick one or more assets in the table first.':'Tandakan satu atau lebih aset dalam jadual dahulu.','Allow pop-ups for this site to open reports.':'Benarkan pop-up untuk laman ini bagi membuka laporan.',
 'Inventory is up to date':'Inventori terkini','Refresh failed: ':'Gagal memuat semula: ',
 // printable reports
-'All brands':'Semua jenama','All ages':'Semua umur','Less than 1 year':'Kurang 1 tahun','1 to 3 years':'1 hingga 3 tahun','3 to 5 years':'3 hingga 5 tahun','5 to 8 years':'5 hingga 8 tahun','8 years and older':'8 tahun dan lebih','Year not set':'Tahun tiada','Age':'Umur','Total repair cost':'Jumlah kos pembaikan','Fault records':'Rekod kerosakan','Days faulty now':'Hari rosak kini','Fault':'Kerosakan','Reported':'Dilaporkan','Fixed':'Dibaiki','{n} day(s) down':'{n} hari rosak','Still faulty':'Masih rosak','Repair cost':'Kos pembaikan','Edit':'Sunting','Delete':'Padam','Fault & repair timeline':'Garis masa kerosakan & pembaikan','No fault records yet.':'Belum ada rekod kerosakan.','Add fault record':'Tambah rekod kerosakan','Date reported faulty':'Tarikh dilaporkan rosak','What is wrong?':'Apa kerosakannya?','e.g. No power, lamp blown':'cth. Tiada kuasa, lampu terbakar','Date fixed (leave empty if still faulty)':'Tarikh dibaiki (kosongkan jika masih rosak)','Save':'Simpan','Cancel':'Batal','Enter the date it became faulty.':'Masukkan tarikh ia mula rosak.','Fixed date cannot be before the reported date.':'Tarikh dibaiki tidak boleh sebelum tarikh dilaporkan.','Fault record saved':'Rekod kerosakan disimpan','Delete this fault record?':'Padam rekod kerosakan ini?','This cannot be undone.':'Ini tidak boleh dibatalkan.','Fault record added':'Rekod kerosakan ditambah','Fault record edited':'Rekod kerosakan disunting','Fault record deleted':'Rekod kerosakan dipadam','Repair cost of these assets':'Kos pembaikan aset ini','Repair cost, all assets':'Kos pembaikan, semua aset','With an open fault record':'Dengan rekod rosak terbuka','Average days faulty':'Purata hari rosak','Faulty since':'Rosak sejak','Days faulty':'Hari rosak','Signed copy / attachments':'Salinan bertandatangan / lampiran','Signed copy':'Salinan bertandatangan','Open':'Buka','Delete':'Padam','File not found in the folder.':'Fail tidak dijumpai dalam folder.','No signed copy uploaded yet.':'Belum ada salinan bertandatangan dimuat naik.','Upload signed copy':'Muat naik salinan bertandatangan','PDF, photo or Word/Excel file, up to 25 MB each.':'Fail PDF, gambar atau Word/Excel, sehingga 25 MB setiap satu.','This file type is not allowed: ':'Jenis fail ini tidak dibenarkan: ','File is larger than 25 MB: ':'Fail lebih besar daripada 25 MB: ','Upload failed: ':'Muat naik gagal: ','Uploaded':'Dimuat naik','Could not save: ':'Tidak dapat disimpan: ','Delete this file?':'Padam fail ini?','Attachment uploaded':'Lampiran dimuat naik','Attachment deleted':'Lampiran dipadam','Save as image':'Simpan sebagai imej','Print / Save as PDF':'Cetak / Simpan sebagai PDF','Generated {d} by {u}':'Dijana {d} oleh {u}','Overall Inventory Report':'Laporan Inventori Keseluruhan','Warranty Report':'Laporan Waranti','Needs-Attention Report':'Laporan Perlu Perhatian','Asset Report':'Laporan Aset','Selected Asset Report · {n} asset(s)':'Laporan Aset Terpilih · {n} aset',
+'All brands':'Semua jenama','All ages':'Semua umur','Less than 1 year':'Kurang 1 tahun','1 to 3 years':'1 hingga 3 tahun','3 to 5 years':'3 hingga 5 tahun','5 to 8 years':'5 hingga 8 tahun','8 years and older':'8 tahun dan lebih','Year not set':'Tahun tiada','Age':'Umur','Total repair cost':'Jumlah kos pembaikan','Fault records':'Rekod kerosakan','Days faulty now':'Hari rosak kini','Fault':'Kerosakan','Reported':'Dilaporkan','Fixed':'Dibaiki','{n} day(s) down':'{n} hari rosak','Still faulty':'Masih rosak','Repair cost':'Kos pembaikan','Edit':'Sunting','Delete':'Padam','Fault & repair timeline':'Garis masa kerosakan & pembaikan','No fault records yet.':'Belum ada rekod kerosakan.','Add fault record':'Tambah rekod kerosakan','Date reported faulty':'Tarikh dilaporkan rosak','What is wrong?':'Apa kerosakannya?','e.g. No power, lamp blown':'cth. Tiada kuasa, lampu terbakar','Date fixed (leave empty if still faulty)':'Tarikh dibaiki (kosongkan jika masih rosak)','Save':'Simpan','Cancel':'Batal','Enter the date it became faulty.':'Masukkan tarikh ia mula rosak.','Fixed date cannot be before the reported date.':'Tarikh dibaiki tidak boleh sebelum tarikh dilaporkan.','Fault record saved':'Rekod kerosakan disimpan','Delete this fault record?':'Padam rekod kerosakan ini?','This cannot be undone.':'Ini tidak boleh dibatalkan.','Fault record added':'Rekod kerosakan ditambah','Fault record edited':'Rekod kerosakan disunting','Fault record deleted':'Rekod kerosakan dipadam','Repair cost of these assets':'Kos pembaikan aset ini','Repair cost, all assets':'Kos pembaikan, semua aset','With an open fault record':'Dengan rekod rosak terbuka','Average days faulty':'Purata hari rosak','Faulty since':'Rosak sejak','Days faulty':'Hari rosak','Signed copy / attachments':'Salinan bertandatangan / lampiran','Signed copy':'Salinan bertandatangan','Open':'Buka','Delete':'Padam','File not found in the folder.':'Fail tidak dijumpai dalam folder.','No signed copy uploaded yet.':'Belum ada salinan bertandatangan dimuat naik.','Upload signed copy':'Muat naik salinan bertandatangan','PDF, photo or Word/Excel file, up to 25 MB each.':'Fail PDF, gambar atau Word/Excel, sehingga 25 MB setiap satu.','This file type is not allowed: ':'Jenis fail ini tidak dibenarkan: ','File is larger than 25 MB: ':'Fail lebih besar daripada 25 MB: ','Upload failed: ':'Muat naik gagal: ','Uploaded':'Dimuat naik','Could not save: ':'Tidak dapat disimpan: ','Delete this file?':'Padam fail ini?','Attachment uploaded':'Lampiran dimuat naik','Attachment deleted':'Lampiran dipadam','Fault photos':'Gambar kerosakan','Upload photos':'Muat naik gambar','No fault photos uploaded yet.':'Belum ada gambar kerosakan dimuat naik.','Photos':'Gambar','Photos or PDF, up to 25 MB each.':'Gambar atau PDF, sehingga 25 MB setiap satu.','Asset photos':'Gambar aset','No photos uploaded yet.':'Belum ada gambar dimuat naik.','Save as image':'Simpan sebagai imej','Print / Save as PDF':'Cetak / Simpan sebagai PDF','Generated {d} by {u}':'Dijana {d} oleh {u}','Overall Inventory Report':'Laporan Inventori Keseluruhan','Warranty Report':'Laporan Waranti','Needs-Attention Report':'Laporan Perlu Perhatian','Asset Report':'Laporan Aset','Selected Asset Report · {n} asset(s)':'Laporan Aset Terpilih · {n} aset',
 'Category':'Kategori','Count':'Bilangan','By type':'Mengikut jenis','By status':'Mengikut status','All records ({n})':'Semua rekod ({n})','Expiring within 90 days ({n})':'Tamat dalam 90 hari ({n})','Expired ({n})':'Tamat tempoh ({n})','Assets needing attention':'Aset perlu perhatian','Assets ({n})':'Aset ({n})','Asset {n}: ':'Aset {n}: '
 };
 const MONTHS_MS=['Jan','Feb','Mac','Apr','Mei','Jun','Jul','Ogo','Sep','Okt','Nov','Dis'];
@@ -1255,7 +1255,7 @@ function applyQuick(q){clearFilters();quick=q;showView('inventory')}
 
 /* ---------- inventory table ---------- */
 const COLS=[
-  {k:'Asset Tag',label:'Asset tag',cls:'tag'},
+  {k:'Asset Tag',label:'Asset tag',cls:'tag',html:a=>escapeHtml(val(a,'Asset Tag')||'—')+((a['Photos']||[]).length?' <span class="ph-badge" title="'+(a['Photos']||[]).length+'">📷</span>':'')},
   {k:'Asset Type',label:'Type',sub:'Sub-type'},
   {k:'Brand',label:'Brand / model',sub:'Model'},
   {k:'Serial Number',label:'Serial no.',m:'Serial'},
@@ -1328,8 +1328,8 @@ function renderWarranty(){
   const att=wTab==='attention';
   const fs=$('flStrip');if(fs){fs.hidden=!att;if(att){const wl=list.filter(a=>flLog(a).length),open=list.filter(flOpen),tot=list.reduce((n,a)=>n+flCost(a),0),dd=open.map(a=>flDays(flOpen(a).date)).filter(x=>x!==null),avg=dd.length?Math.round(dd.reduce((x,y)=>x+y,0)/dd.length):0,all=assets.reduce((n,a)=>n+flCost(a),0);
     fs.innerHTML=`<div><b>${money(tot)}</b><span>${T('Repair cost of these assets')}</span></div><div><b>${money(all)}</b><span>${T('Repair cost, all assets')}</span></div><div><b>${open.length}</b><span>${T('With an open fault record')}</span></div><div><b>${avg}</b><span>${T('Average days faulty')}</span></div>`}}
-  $('wHead').innerHTML=(att?['Asset tag','Type / model','Location','Status','Faulty since','Days faulty','Repair cost']:['Asset tag','Type / model','Location','Assigned to','Status','Warranty end','Remaining']).map(h=>`<th>${T(h)}</th>`).join('');
-  $('wBody').innerHTML=att?list.slice(0,300).map(a=>{const op=flOpen(a),dd=op?flDays(op.date):null;return `<tr data-id="${escapeHtml(a._id)}"><td class="tag">${escapeHtml(val(a,'Asset Tag')||'—')}</td><td data-label="${T('Type')}">${escapeHtml(val(a,'Asset Type')||'—')}<span class="sub">${escapeHtml([val(a,'Brand'),val(a,'Model')].filter(Boolean).join(' '))}</span></td><td data-label="${T('Location')}">${escapeHtml(val(a,'Location')||'—')}</td><td data-label="${T('Status')}">${badge(val(a,'Status'))}</td><td data-label="${T('Faulty since')}">${op?escapeHtml(formatDisplayDate(op.date)):'<span class="muted">—</span>'}</td><td data-label="${T('Days faulty')}">${dd===null?'<span class="muted">—</span>':`<span class="fl-days ${dd>30?'bad':dd>7?'warn':''}">${dd}</span>`}</td><td data-label="${T('Repair cost')}">${flLog(a).length?money(flCost(a)):'<span class="muted">—</span>'}</td></tr>`}).join(''):list.slice(0,300).map(a=>{const w=wInfo(a);return `<tr data-id="${escapeHtml(a._id)}"><td class="tag">${escapeHtml(val(a,'Asset Tag')||'—')}</td><td data-label="${T('Type')}">${escapeHtml(val(a,'Asset Type')||'—')}<span class="sub">${escapeHtml([val(a,'Brand'),val(a,'Model')].filter(Boolean).join(' '))}</span></td><td data-label="${T('Location')}">${escapeHtml(val(a,'Location')||'—')}</td><td data-label="${T('Assigned to')}">${escapeHtml(val(a,'Assigned User')||'—')}</td><td data-label="${T('Status')}">${badge(val(a,'Status'))}</td><td data-label="${T('Warranty end')}">${escapeHtml(w.end?formatDisplayDate(w.end):'—')}</td><td data-label="${T('Remaining')}">${wPill(a)}</td></tr>`}).join('');
+  $('wHead').innerHTML=(att?['Asset tag','Type / model','Location','Status','Faulty since','Days faulty','Repair cost','Photos']:['Asset tag','Type / model','Location','Assigned to','Status','Warranty end','Remaining']).map(h=>`<th>${T(h)}</th>`).join('');
+  $('wBody').innerHTML=att?list.slice(0,300).map(a=>{const op=flOpen(a),dd=op?flDays(op.date):null;return `<tr data-id="${escapeHtml(a._id)}"><td class="tag">${escapeHtml(val(a,'Asset Tag')||'—')}</td><td data-label="${T('Type')}">${escapeHtml(val(a,'Asset Type')||'—')}<span class="sub">${escapeHtml([val(a,'Brand'),val(a,'Model')].filter(Boolean).join(' '))}</span></td><td data-label="${T('Location')}">${escapeHtml(val(a,'Location')||'—')}</td><td data-label="${T('Status')}">${badge(val(a,'Status'))}</td><td data-label="${T('Faulty since')}">${op?escapeHtml(formatDisplayDate(op.date)):'<span class="muted">—</span>'}</td><td data-label="${T('Days faulty')}">${dd===null?'<span class="muted">—</span>':`<span class="fl-days ${dd>30?'bad':dd>7?'warn':''}">${dd}</span>`}</td><td data-label="${T('Repair cost')}">${flLog(a).length?money(flCost(a)):'<span class="muted">—</span>'}</td><td data-label="${T('Photos')}"><button class="btn sm" data-att="as:${escapeHtml(a._id)}">📷${(a['Fault Photos']||[]).length?' <b>'+a['Fault Photos'].length+'</b>':''}</button></td></tr>`}).join(''):list.slice(0,300).map(a=>{const w=wInfo(a);return `<tr data-id="${escapeHtml(a._id)}"><td class="tag">${escapeHtml(val(a,'Asset Tag')||'—')}</td><td data-label="${T('Type')}">${escapeHtml(val(a,'Asset Type')||'—')}<span class="sub">${escapeHtml([val(a,'Brand'),val(a,'Model')].filter(Boolean).join(' '))}</span></td><td data-label="${T('Location')}">${escapeHtml(val(a,'Location')||'—')}</td><td data-label="${T('Assigned to')}">${escapeHtml(val(a,'Assigned User')||'—')}</td><td data-label="${T('Status')}">${badge(val(a,'Status'))}</td><td data-label="${T('Warranty end')}">${escapeHtml(w.end?formatDisplayDate(w.end):'—')}</td><td data-label="${T('Remaining')}">${wPill(a)}</td></tr>`}).join('');
   $('wEmpty').hidden=list.length>0;$('wEmpty').textContent=T({soon:'🎉 No warranties ending in the next 90 days.',expired:'No expired warranties.',attention:'🎉 Nothing needs attention.',active:'No assets with more than 90 days of warranty.',none:'Every asset has warranty information.'}[wTab]);
   drawerList=list.map(a=>a._id);
 }
@@ -1345,7 +1345,7 @@ function openDrawer(id,list){
   $('drPills').innerHTML=badge(val(a,'Status'))+wPill(a)+(requestsCache.some(q=>q.status==='pending'&&q.assetId===id)?`<span class="pill warn">${T('Pending request')}</span>`:'')+(val(a,'Ownership')?`<span class="pill info plain">${escapeHtml(val(a,'Ownership'))}</span>`:'');
   const wBar=w.end?`<div class="wbar"><span style="width:${w.pct===null?100:w.pct}%;background:${w.cls==='bad'?'var(--bad)':w.cls==='warn'?'#d99a28':'var(--ok)'}"></span></div><div class="small muted">${w.start?`${formatDisplayDate(w.start)} → `:''}${formatDisplayDate(w.end)} · <b>${escapeHtml(w.label)}</b></div>`:`<div class="small muted">${T('No warranty dates recorded. Add a start date and period to track it.')}</div>`;
   const hist=readAuditLogs().filter(x=>x.assetId===id||(!x.assetId&&x.detail&&val(a,'Asset Tag')&&x.detail===val(a,'Asset Tag')&&/Asset/.test(x.event))).sort((p,q)=>String(q.time).localeCompare(String(p.time)));
-  $('drBody').innerHTML=
+  $('drBody').innerHTML=drawerPhotos(a)+
     `<div class="dr-sec"><h4>${T('Identification')}</h4>${kv(fk(a,["Brand","Model","Serial Number","Computer Name / Linked PC","IP Address","Connection"]),a)}</div>`+
     `<div class="dr-sec"><h4>${T('Location & assignment')}</h4>${kv(["School / Division","Location","Room Code","Assigned User","Previous Location"],a)}</div>`+
     `<div class="dr-sec"><h4>${T('Warranty')}</h4>${wBar}<div style="margin-top:10px">${kv(["Warranty Start Date","Warranty Period","Warranty End Date"],a)}</div></div>`+
@@ -1354,7 +1354,7 @@ function openDrawer(id,list){
     flSection(a)+
     `<div class="dr-sec"><h4>${T('History')}</h4>${hist.length?`<ul class="timeline">${hist.slice(0,20).map(x=>`<li><b>${escapeHtml(T(x.event))}</b><span>${escapeHtml(x.username)} · ${escapeHtml(new Date(x.time).toLocaleString())}</span></li>`).join('')}</ul>`:`<div class="small muted">${T('No changes recorded since the system went online.')}</div>`}</div>`;
   const i=drawerList.indexOf(id);$('drPrev').disabled=i<=0;$('drNext').disabled=i<0||i>=drawerList.length-1;
-  $('drawer').classList.add('on');$('scrim').classList.add('on');$('drBody').scrollTop=0;
+  drawerPhotosLoad(a);$('drawer').classList.add('on');$('scrim').classList.add('on');$('drBody').scrollTop=0;
 }
 function closeDrawer(){$('drawer').classList.remove('on');$('scrim').classList.remove('on');drawerId=null}
 
@@ -1371,7 +1371,7 @@ function flSection(a){
   if(!log.length&&!needsAttention(a)&&!flCanAdd())return '';
   const chips=`<div class="fl-sum"><div><b>${money(flCost(a))}</b><span>${T('Total repair cost')}</span></div><div><b>${log.length}</b><span>${T('Fault records')}</span></div>${op?`<div class="bad"><b>${flDays(op.date)}</b><span>${T('Days faulty now')}</span></div>`:''}</div>`;
   const items=log.map(e=>{const d=flDays(e.date,e.fixed);return `<li class="${e.fixed?'fx':'op'}"><b>${escapeHtml(e.issue||T('Fault'))}</b><span>${T('Reported')}: ${escapeHtml(formatDisplayDate(e.date)||'—')} · ${e.fixed?`${T('Fixed')}: ${escapeHtml(formatDisplayDate(e.fixed))} · ${T('{n} day(s) down',{n:d})}`:`<em>${T('Still faulty')} · ${T('{n} day(s) down',{n:d})}</em>`}</span><span>${T('Repair cost')}: <b>${money(e.cost)}</b>${e.by?' · '+escapeHtml(e.by):''}</span>${flCanAdd()?`<div class="fl-act"><button type="button" class="link" data-fl-edit="${escapeHtml(e.id)}">${T('Edit')}</button>${currentRole==='admin'?`<button type="button" class="link" data-fl-del="${escapeHtml(e.id)}">${T('Delete')}</button>`:''}</div>`:''}</li>`}).join('');
-  return `<div class="dr-sec" id="flSec"><h4>${T('Fault & repair timeline')}</h4>${chips}${log.length?`<ul class="timeline fl">${items}</ul>`:`<div class="small muted">${T('No fault records yet.')}</div>`}${flCanAdd()?`<div id="flForm"></div><button type="button" class="btn sm" data-fl-add style="margin-top:8px">+ ${T('Add fault record')}</button>`:''}</div>`;
+  return `<div class="dr-sec" id="flSec"><h4>${T('Fault & repair timeline')}</h4>${chips}${log.length?`<ul class="timeline fl">${items}</ul>`:`<div class="small muted">${T('No fault records yet.')}</div>`}<div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap">${flCanAdd()?`<button type="button" class="btn sm" data-fl-add>+ ${T('Add fault record')}</button>`:''}<button type="button" class="btn sm" data-att="as:${escapeHtml(a._id)}">📷 ${T('Fault photos')}${(a['Fault Photos']||[]).length?' ('+a['Fault Photos'].length+')':''}</button></div>${flCanAdd()?'<div id="flForm"></div>':''}</div>`;
 }
 function flFormOpen(eid){
   const a=byId(drawerId);if(!a)return;const e=eid?flLog(a).find(x=>x.id===eid)||{}:{};
@@ -1491,7 +1491,7 @@ async function saveAsset(e){
     return;
   }
   let ev='Asset added';
-  if(editId!==null){const c0=byId(editId);if(c0&&c0['Fault Log'])obj['Fault Log']=c0['Fault Log']}
+  if(editId!==null){const c0=byId(editId);if(c0&&c0['Fault Log'])obj['Fault Log']=c0['Fault Log'];if(c0&&c0['Fault Photos'])obj['Fault Photos']=c0['Fault Photos'];if(c0&&c0['Photos'])obj['Photos']=c0['Photos']}
   if(editId===null){obj._id=newId();assets.unshift(obj)}else{const ix=assets.findIndex(x=>x._id===editId);obj._id=editId;ev='Asset edited';if(ix>=0)assets[ix]=obj;else assets.unshift(obj)}
   persist();addAuditEvent(ev,currentUsername,currentRole,{detail:obj['Asset Tag']||obj['Serial Number']||'',assetId:obj._id});
   closeModal();render();toast(ev==='Asset added'?T('Asset added'):T('Changes saved'));openDrawer(obj._id);
@@ -1699,7 +1699,7 @@ document.addEventListener('click',e=>{
   const f=e.target.closest('[data-filter-field]');if(f){e.preventDefault();closeDrawer();applyFilter(f.dataset.filterField,f.dataset.filterValue);return}
   const wt=e.target.closest('[data-wtab]');if(wt){wTab=wt.dataset.wtab;renderWarranty()}
 });
-$('wBody').onclick=e=>{const tr=e.target.closest('tr[data-id]');if(tr)openDrawer(tr.dataset.id)};
+$('wBody').onclick=e=>{if(e.target.closest('[data-att]'))return;const tr=e.target.closest('tr[data-id]');if(tr)openDrawer(tr.dataset.id)};
 const syncSearch=debounce(()=>{page=1;renderTable()},150);
 $('search').addEventListener('input',()=>{$('globalSearch').value=$('search').value;syncSearch()});
 $('globalSearch').addEventListener('input',()=>{$('search').value=$('globalSearch').value;quick=quick;if(currentView!=='inventory')showView('inventory');syncSearch()});
@@ -2167,57 +2167,72 @@ $('bpPreview').onclick=()=>bpPrint([{...bpCollect(),no:0}]);
 
 /* ---------- attachments (signed copies) – shared by Handover and Disposal forms ---------- */
 const ATT_MAX=25*1024*1024,ATT_OK=/\.(pdf|png|jpe?g|webp|heic|docx?|xlsx?)$/i;
-const ATT={bp:{list:()=>bpForms,upd:bpUpdate,render:()=>renderBorang(),name:'Handover'},dp:{list:()=>dpForms,upd:dpUpdate,render:()=>renderDisposal(),name:'Disposal'}};
-const attOf=f=>Array.isArray(f.attachments)?f.attachments:[];
-function attBtn(k,f){const n=attOf(f).length;return `<button class="btn sm" data-att="${k}:${f.id}" title="${escapeHtml(T('Signed copy / attachments'))}">📎${n?` <b>${n}</b>`:''}</button>`}
+const ATT={
+  bp:{list:()=>bpForms,upd:bpUpdate,render:()=>renderBorang(),name:'Handover',idk:'id',field:'attachments',title:f=>T('Signed copy')+' · #'+(f.no||''),btn:'Upload signed copy',empty:'No signed copy uploaded yet.'},
+  dp:{list:()=>dpForms,upd:dpUpdate,render:()=>renderDisposal(),name:'Disposal',idk:'id',field:'attachments',title:f=>T('Signed copy')+' · #'+(f.no||''),btn:'Upload signed copy',empty:'No signed copy uploaded yet.'},
+  ap:{list:()=>assets,upd:async fn=>{fn(assets);persist()},render:()=>{if(typeof render==='function')render();if(drawerId&&byId(drawerId)&&document.getElementById('drawer').classList.contains('on'))openDrawer(drawerId)},name:'Asset',idk:'_id',field:'Photos',title:f=>T('Asset photos')+' · '+(val(f,'Asset Tag')||val(f,'Serial Number')),btn:'Upload photos',empty:'No photos uploaded yet.'},
+  as:{list:()=>assets,upd:async fn=>{fn(assets);persist()},render:()=>{if(typeof renderWarranty==='function')renderWarranty();if(typeof drawerId!=='undefined'&&drawerId&&byId(drawerId)&&document.getElementById('drawer').classList.contains('on'))openDrawer(drawerId)},name:'Asset',idk:'_id',field:'Fault Photos',title:f=>T('Fault photos')+' · '+(val(f,'Asset Tag')||val(f,'Serial Number')),btn:'Upload photos',empty:'No fault photos uploaded yet.'}
+};
+const attOf=(f,k)=>Array.isArray(f[ATT[k].field])?f[ATT[k].field]:[];
+function attBtn(k,f){const n=attOf(f,k).length;return `<button class="btn sm" data-att="${k}:${f.id}" title="${escapeHtml(T('Signed copy / attachments'))}">📎${n?` <b>${n}</b>`:''}</button>`}
 const attSize=n=>n>1048576?(n/1048576).toFixed(1)+' MB':Math.max(1,Math.round(n/1024))+' KB';
 let attCur=null;
+const attFind=()=>{const c=ATT[attCur.k];return c.list().find(x=>x[c.idk]===attCur.id)};
 function attModal(){
   let m=document.getElementById('attModal');if(m)return m;
   m=document.createElement('div');m.className='modal';m.id='attModal';m.style.zIndex=65;
-  m.innerHTML=`<div class="dialog" style="max-width:560px"><div class="dialog-head"><h2 id="attTitle" data-noi18n></h2><button class="icon-btn" id="attClose" aria-label="Close">✕</button></div><div class="dialog-body"><div id="attList"></div><div id="attAdd" style="margin-top:12px"><label class="btn primary" style="cursor:pointer;display:inline-flex;gap:6px">📎 <span data-noi18n id="attLbl"></span><input type="file" id="attFile" accept=".pdf,.png,.jpg,.jpeg,.webp,.heic,.doc,.docx,.xls,.xlsx" multiple hidden></label><div class="small muted" id="attHint" style="margin-top:6px" data-noi18n></div><div class="wbar" id="attBar" hidden><span style="width:0"></span></div></div></div></div>`;
+  m.innerHTML=`<div class="dialog" style="max-width:600px"><div class="dialog-head"><h2 id="attTitle" data-noi18n></h2><button class="icon-btn" id="attClose" aria-label="Close">✕</button></div><div class="dialog-body"><div id="attList"></div><div id="attAdd" style="margin-top:12px"><label class="btn primary" style="cursor:pointer;display:inline-flex;gap:6px">📎 <span data-noi18n id="attLbl"></span><input type="file" id="attFile" accept=".pdf,.png,.jpg,.jpeg,.webp,.heic,.doc,.docx,.xls,.xlsx" multiple hidden></label><div class="small muted" id="attHint" style="margin-top:6px" data-noi18n></div><div class="wbar" id="attBar" hidden><span style="width:0"></span></div></div></div></div>`;
   document.body.appendChild(m);
   m.querySelector('#attClose').onclick=()=>m.classList.remove('open');
   m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open')});
   m.querySelector('#attFile').onchange=e=>{const fs=[...e.target.files];e.target.value='';attUpload(fs)};
   m.addEventListener('click',async e=>{
-    const o=e.target.closest('[data-att-open]');if(o){try{const f=attFind();const a=attOf(f).find(x=>x.id===o.dataset.attOpen);const u=await store.fileUrl(a.path);if(!u)throw new Error(T('File not found in the folder.'));window.open(u,'_blank')}catch(err){toast(err.message,'error',6000)}return}
+    const o=e.target.closest('[data-att-open]');if(o){try{const f=attFind();const a=attOf(f,attCur.k).find(x=>x.id===o.dataset.attOpen);const u=await store.fileUrl(a.path);if(!u)throw new Error(T('File not found in the folder.'));window.open(u,'_blank')}catch(err){toast(err.message,'error',6000)}return}
     const d=e.target.closest('[data-att-del]');if(d)attDelete(d.dataset.attDel)});
   return m;
 }
-const attFind=()=>ATT[attCur.k].list().find(x=>x.id===attCur.id);
+const attIsImg=a=>/\.(png|jpe?g|webp)$/i.test(a.name||'');
 function attRender(){
-  const f=attFind(),m=attModal();if(!f)return;const can=bpCanEdit();
-  m.querySelector('#attTitle').textContent=T('Signed copy')+' · #'+(f.no||'');
-  m.querySelector('#attList').innerHTML=attOf(f).length?attOf(f).map(a=>`<div class="att-row"><div><b>📄 ${escapeHtml(a.name)}</b><span class="small muted">${attSize(a.size||0)} · ${escapeHtml(new Date(a.at).toLocaleString())} · ${escapeHtml(a.by||'')}</span></div><div><button type="button" class="btn sm" data-att-open="${escapeHtml(a.id)}">${T('Open')}</button>${currentRole==='admin'?`<button type="button" class="btn sm danger" data-att-del="${escapeHtml(a.id)}">${T('Delete')}</button>`:''}</div></div>`).join(''):`<div class="small muted">${T('No signed copy uploaded yet.')}</div>`;
-  m.querySelector('#attAdd').hidden=!can;m.querySelector('#attLbl').textContent=T('Upload signed copy');m.querySelector('#attHint').textContent=T('PDF, photo or Word/Excel file, up to 25 MB each.');
+  const f=attFind(),m=attModal();if(!f)return;const k=attCur.k,c=ATT[k],can=bpCanEdit(),list=attOf(f,k);
+  m.querySelector('#attTitle').textContent=c.title(f);
+  m.querySelector('#attList').innerHTML=list.length?list.map(a=>`<div class="att-row">${attIsImg(a)?`<img class="att-th" data-att-th="${escapeHtml(a.id)}" alt="" data-att-open="${escapeHtml(a.id)}">`:''}<div style="flex:1"><b>${attIsImg(a)?'':'📄 '}${escapeHtml(a.name)}</b><span class="small muted">${attSize(a.size||0)} · ${escapeHtml(new Date(a.at).toLocaleString())} · ${escapeHtml(a.by||'')}</span></div><div><button type="button" class="btn sm" data-att-open="${escapeHtml(a.id)}">${T('Open')}</button>${currentRole==='admin'?`<button type="button" class="btn sm danger" data-att-del="${escapeHtml(a.id)}">${T('Delete')}</button>`:''}</div></div>`).join(''):`<div class="small muted">${T(c.empty)}</div>`;
+  m.querySelector('#attAdd').hidden=!can;m.querySelector('#attLbl').textContent=T(c.btn);m.querySelector('#attHint').textContent=(k==='as'||k==='ap')?T('Photos or PDF, up to 25 MB each.'):T('PDF, photo or Word/Excel file, up to 25 MB each.');
+  m.querySelector('#attFile').accept=(k==='as'||k==='ap')?'image/*,.pdf':'.pdf,.png,.jpg,.jpeg,.webp,.heic,.doc,.docx,.xls,.xlsx';
+  list.filter(attIsImg).forEach(async a=>{try{const u=await store.fileUrl(a.path),im=m.querySelector(`[data-att-th="${a.id}"]`);if(u&&im)im.src=u}catch(e){}});
 }
 function attOpen(k,id){attCur={k,id};attRender();attModal().classList.add('open')}
 async function attUpload(files){
-  if(!files.length||!bpCanEdit())return;const {k,id}=attCur,bar=document.getElementById('attBar'),sp=bar.firstChild;let done=[];
+  if(!files.length||!bpCanEdit())return;const {k,id}=attCur,c=ATT[k],bar=document.getElementById('attBar'),sp=bar.firstChild;let done=[];
   bar.hidden=false;
   for(const file of files){
     if(!ATT_OK.test(file.name)){toast(T('This file type is not allowed: ')+file.name,'warn',5000);continue}
     if(file.size>ATT_MAX){toast(T('File is larger than 25 MB: ')+file.name,'warn',5000);continue}
-    const safe=file.name.replace(/[^\w.\- ()]+/g,'_').slice(-80),path=`${k}-${id.slice(0,8)}-${Date.now()}-${safe}`;
+    const safe=file.name.replace(/[^\w.\- ()]+/g,'_').slice(-80),path=`${k}-${String(id).slice(0,8)}-${Date.now()}-${safe}`;
     try{sp.style.width='5%';await store.putFile(path,file,p=>sp.style.width=Math.round(p*100)+'%');done.push({id:newId(),name:file.name,path,size:file.size,type:file.type,at:new Date().toISOString(),by:currentUsername})}
     catch(err){console.error(err);toast(T('Upload failed: ')+err.message,'error',7000)}
   }
   bar.hidden=true;sp.style.width='0';
   if(!done.length)return;
-  try{await ATT[k].upd(list=>{const ix=list.findIndex(x=>x.id===id);if(ix<0)throw new Error(T('This form was deleted by someone else.'));list[ix]={...list[ix],attachments:[...attOf(list[ix]),...done]};return list});
-    addAuditEvent('Attachment uploaded',currentUsername,currentRole,{detail:`${ATT[k].name} #${attFind()?.no||''} · ${done.map(x=>x.name).join(', ')}`.slice(0,140)});toast(T('Uploaded'));attRender();ATT[k].render()}
+  try{await c.upd(list=>{const ix=list.findIndex(x=>x[c.idk]===id);if(ix<0)throw new Error(T('This form was deleted by someone else.'));list[ix]={...list[ix],[c.field]:[...attOf(list[ix],k),...done]};return list});
+    addAuditEvent('Attachment uploaded',currentUsername,currentRole,{detail:`${c.name} ${(k==='as'||k==='ap')?(val(attFind(),'Asset Tag')||''):'#'+(attFind()?.no||'')} · ${done.map(x=>x.name).join(', ')}`.slice(0,140),...(k==='as'||k==='ap'?{assetId:id}:{})});toast(T('Uploaded'));attRender();c.render()}
   catch(err){toast(T('Could not save: ')+err.message,'error',6000)}
 }
 async function attDelete(aid){
-  if(currentRole!=='admin')return;const {k,id}=attCur,a=attOf(attFind()).find(x=>x.id===aid);if(!a)return;
+  if(currentRole!=='admin')return;const {k,id}=attCur,c=ATT[k],a=attOf(attFind(),k).find(x=>x.id===aid);if(!a)return;
   if(!await confirmDialog(T('Delete this file?'),a.name,T('Delete'),true))return;
-  try{await ATT[k].upd(list=>{const ix=list.findIndex(x=>x.id===id);if(ix>=0)list[ix]={...list[ix],attachments:attOf(list[ix]).filter(x=>x.id!==aid)};return list});
+  try{await c.upd(list=>{const ix=list.findIndex(x=>x[c.idk]===id);if(ix>=0)list[ix]={...list[ix],[c.field]:attOf(list[ix],k).filter(x=>x.id!==aid)};return list});
     try{await store.delFile(a.path)}catch(e){console.warn(e)}
-    addAuditEvent('Attachment deleted',currentUsername,currentRole,{detail:a.name});attRender();ATT[k].render()}
+    addAuditEvent('Attachment deleted',currentUsername,currentRole,{detail:a.name});attRender();c.render()}
   catch(err){toast(err.message,'error',6000)}
 }
-document.addEventListener('click',e=>{const b=e.target.closest('[data-att]');if(!b)return;const [k,id]=b.dataset.att.split(':');attOpen(k,id)});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-att]');if(!b)return;e.stopPropagation();const [k,id]=b.dataset.att.split(':');attOpen(k,id)},true);
+
+function drawerPhotos(a){
+  const ph=Array.isArray(a['Photos'])?a['Photos']:[];
+  const strip=ph.filter(attIsImg).slice(0,4).map(x=>`<img class="att-th" data-ph="${escapeHtml(x.id)}" alt="" data-att="ap:${escapeHtml(a._id)}">`).join('');
+  return `<div class="dr-sec"><h4>${T('Photos')}</h4>${strip?`<div class="ph-strip">${strip}</div>`:''}<button type="button" class="btn sm" data-att="ap:${escapeHtml(a._id)}" style="margin-top:${strip?8:0}px">📷 ${T('Asset photos')}${ph.length?' ('+ph.length+')':''}</button></div>`;
+}
+function drawerPhotosLoad(a){const ph=Array.isArray(a['Photos'])?a['Photos']:[];ph.filter(attIsImg).slice(0,4).forEach(async x=>{try{const u=await store.fileUrl(x.path),im=document.querySelector(`#drBody [data-ph="${x.id}"]`);if(u&&im)im.src=u}catch(e){}})}
 
 /* =================== Borang Penghapusan / Disposal Form (BORANG 1) =================== */
 const DP_FILE='disposal.json';let dpForms=[],dpEditId=null,dpSel=new Set(),dpLoaded=false,dpBusy=false;
@@ -2241,7 +2256,27 @@ function dpTypeOf(a){
 }
 function dpKey(i){const sr=(i.siri||'').toUpperCase().replace(/\s+/g,'');if(sr&&sr!=='-'&&sr!=='N/A')return 's:'+sr;const tg=(i.tag||'').toUpperCase().replace(/\s+/g,'');if(tg&&!/\/$/.test(tg))return 't:'+tg;return 'k:'+((i.ket||'')+'|'+(i.catatan||'')).toLowerCase().replace(/\s+/g,'')}
 function dpUniq(items){const seen=new Set();return (items||[]).filter(i=>{if(!(i.ket||i.siri||i.tag))return true;const k=dpKey(i);if(seen.has(k))return false;seen.add(k);return true})}
-function dpClean(list){let ch=0;const seenAuto=new Set();list.slice().sort((a,b)=>(a.no||0)-(b.no||0)).forEach(f=>{let its=dpUniq(f.items);if(f.auto)its=its.filter(i=>{if(!(i.ket||i.siri||i.tag))return true;const k=dpKey(i);if(seenAuto.has(k))return false;seenAuto.add(k);return true});if(its.length!==(f.items||[]).length){f.items=its.length?its:dpBlank().items;ch++}if(f.ketua===DP_KETUA_OLD){f.ketua=DP_KETUA;ch++}});return ch}
+const DP_FOLLOW=['tag','ket','siri','rujukan','tarikh','pembekal','catatan'];
+function dpFollow(list){
+  if(!assets||!assets.length)return 0;let ch=0;
+  for(let x=list.length-1;x>=0;x--){const f=list[x];if(f.status==='submitted'||f.status==='disposed')continue;
+    const keep=[];let changed=false;
+    (f.items||[]).forEach(i=>{
+      const a=i.aid&&byId(i.aid);if(!a){keep.push(i);return}
+      if(!dpIsDispose(a)){changed=true;return}                       // status changed: no longer Faulty / To Dispose
+      if(f.auto){const k=dpTypeOf(a)[0];if(k!==f.jenis){changed=true;return}}   // type changed: re-filed into the right form
+      const cur=dpItemFrom(a),src=i.src||{};let c=false;const o={...i};
+      DP_FOLLOW.forEach(k=>{if(cur[k]!==src[k]){if(i.src){o[k]=cur[k];c=true}}});
+      if(c||!i.src){o.src=Object.fromEntries(DP_FOLLOW.map(k=>[k,cur[k]]));if(c)changed=true;else if(!i.src)changed=true}
+      keep.push(o);
+    });
+    if(!changed)continue;ch++;
+    if(!keep.some(i=>i.ket||i.siri||i.tag)&&f.auto)list.splice(x,1);
+    else f.items=keep.length?keep:dpBlank().items;
+  }
+  return ch;
+}
+function dpClean(list){let ch=dpFollow(list);const seenAuto=new Set();list.slice().sort((a,b)=>(a.no||0)-(b.no||0)).forEach(f=>{let its=dpUniq(f.items);if(f.auto)its=its.filter(i=>{if(!(i.ket||i.siri||i.tag))return true;const k=dpKey(i);if(seenAuto.has(k))return false;seenAuto.add(k);return true});if(its.length!==(f.items||[]).length){f.items=its.length?its:dpBlank().items;ch++}if(f.ketua===DP_KETUA_OLD){f.ketua=DP_KETUA;ch++}});return ch}
 function dpTypeName(k){const x=DP_TYPES.find(t=>t[0]===k);return x?x[1]:'LAIN-LAIN'}
 function dpItemFrom(a){return {aid:a._id,tag:val(a,'Asset Tag'),ket:[val(a,'Brand'),val(a,'Model')].filter(Boolean).join(' ')||val(a,'Asset Type'),siri:val(a,'Serial Number'),rujukan:val(a,'PO No.'),tarikh:val(a,'Year Acquired'),jumlah:'1',pembekal:val(a,'Vendor'),harga:'',catatan:val(a,'Location')}}
 function dpMeta(items){
