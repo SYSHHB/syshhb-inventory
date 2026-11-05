@@ -695,6 +695,7 @@ td.bp-act{white-space:nowrap;text-align:right}td.bp-act .btn{margin-left:4px}
           <select id="subtypeFilter" data-noi18n data-field="Sub-type"></select>
           <select id="brandFilter" data-noi18n data-field="Brand"></select>
           <select id="ageFilter" data-noi18n data-field="Age"></select>
+          <select id="userTypeFilter" data-noi18n data-field="User Type"></select>
           <select id="schoolFilter" data-noi18n data-field="School / Division"></select>
           <select id="statusFilter" data-noi18n data-field="Status"></select>
           <select id="locationFilter" data-noi18n data-field="Location"></select>
@@ -1134,7 +1135,7 @@ const MS={
 
 'Data entry (add only)':'Kemasukan data (tambah sahaja)','Data entry':'Kemasukan data','Data entry · add only':'Kemasukan data · tambah sahaja',
 'Admin: full access and manages users. Data entry: can add and import new assets; edits and deletions need admin approval. View only: search, view and print.':'Admin: akses penuh dan mengurus pengguna. Kemasukan data: boleh tambah dan import aset baharu; ubah dan padam perlu kelulusan admin. Lihat sahaja: cari, lihat dan cetak.',
-'Deleted Assets':'Aset Dipadam','Restore assets that were deleted':'Pulihkan aset yang telah dipadam','Undo':'Buat asal','Restore':'Pulihkan','Delete forever':'Padam selama-lamanya','Delete forever?':'Padam selama-lamanya?','This copy will be removed and can no longer be restored.':'Salinan ini akan dibuang dan tidak boleh dipulihkan lagi.','No deleted assets':'Tiada aset dipadam','Assets you delete will appear here so you can restore them.':'Aset yang dipadam akan dipaparkan di sini supaya boleh dipulihkan.','Deleted':'Dipadam','{t} restored':'{t} telah dipulihkan','Deleted copy not found':'Salinan dipadam tidak dijumpai','Could not keep a copy for restore: ':'Tidak dapat menyimpan salinan untuk pemulihan: ','Asset restored':'Aset dipulihkan','Requests':'Permohonan','Edit and delete requests that need admin approval':'Permohonan ubah dan padam yang perlu kelulusan admin','Request edit':'Mohon ubah','Request delete':'Mohon padam','Send request':'Hantar permohonan',
+'Deleted Assets':'Aset Dipadam','Restore assets that were deleted':'Pulihkan aset yang telah dipadam','Undo':'Buat asal','Restore':'Pulihkan','Delete forever':'Padam selama-lamanya','Delete forever?':'Padam selama-lamanya?','This copy will be removed and can no longer be restored.':'Salinan ini akan dibuang dan tidak boleh dipulihkan lagi.','No deleted assets':'Tiada aset dipadam','Assets you delete will appear here so you can restore them.':'Aset yang dipadam akan dipaparkan di sini supaya boleh dipulihkan.','Deleted':'Dipadam','{t} restored':'{t} telah dipulihkan','Deleted copy not found':'Salinan dipadam tidak dijumpai','Could not keep a copy for restore: ':'Tidak dapat menyimpan salinan untuk pemulihan: ','Asset restored':'Aset dipulihkan','AI Assistant':'Pembantu AI','Ask questions about your inventory (Claude)':'Tanya soalan tentang inventori anda (Claude)','AI summary':'Ringkasan AI','AI can make mistakes. Please check.':'AI boleh membuat kesilapan. Sila semak.','Thinking…':'Sedang berfikir…','Reading…':'Membaca…','Fill the form':'Isi borang','Send':'Hantar','Clear':'Kosongkan','Save key':'Simpan kunci','Remove key':'Buang kunci','API key saved in this browser':'Kunci API disimpan dalam pelayar ini','No API key yet':'Belum ada kunci API','API key removed':'Kunci API dibuang','The API key was not accepted.':'Kunci API tidak diterima.','Could not reach Claude. Check the internet connection.':'Tidak dapat menghubungi Claude. Semak sambungan internet.','Add your Claude API key first (AI Assistant page).':'Tambah kunci API Claude dahulu (halaman Pembantu AI).','Nothing new to fill in.':'Tiada maklumat baharu untuk diisi.','{n} field(s) filled. Please check them before saving.':'{n} medan diisi. Sila semak sebelum menyimpan.','User Type':'Jenis Pengguna','All user types':'Semua jenis pengguna','Non-Teaching Staff':'Kakitangan Bukan Pengajar','Teaching Staff':'Kakitangan Pengajar','Student':'Pelajar','Requests':'Permohonan','Edit and delete requests that need admin approval':'Permohonan ubah dan padam yang perlu kelulusan admin','Request edit':'Mohon ubah','Request delete':'Mohon padam','Send request':'Hantar permohonan',
 'No changes to request.':'Tiada perubahan untuk dimohon.','Request sent to admin for approval':'Permohonan dihantar kepada admin untuk kelulusan','Could not send the request: ':'Tidak dapat menghantar permohonan: ',
 'Request deletion?':'Mohon pemadaman?','An admin must approve before {t} is deleted.':'Admin perlu meluluskan sebelum {t} dipadam.','Pending request':'Permohonan menunggu',
 'Pending':'Menunggu','Approved':'Diluluskan','Rejected':'Ditolak','Cancelled':'Dibatalkan','Delete request':'Permohonan padam','Edit request':'Permohonan ubah',
@@ -1265,10 +1266,10 @@ function setTheme(t){document.documentElement.dataset.theme=t;try{localStorage.s
 document.addEventListener('click',e=>{const l=e.target.closest('[data-lang]');if(l){setLang(l.dataset.lang);return}if(e.target.closest('[data-theme-btn]'))setTheme(currentTheme()==='dark'?'light':'dark')});
 
 /* =================== SYSHHB IT Asset Inventory – app =================== */
-const FIELDS=["Asset Tag","Asset Type","Sub-type","Brand","Model","Serial Number","Ownership","Vendor","Year Acquired","PO No.","Invoice No.","DO No.","School / Division","Location","Room Code","Computer Name / Linked PC","Assigned User","IP Address","Connection","Status","Warranty Start Date","Warranty Period","Warranty End Date","Warranty Remaining","Remarks","Previous Location"];
+const FIELDS=["Asset Tag","Asset Type","Sub-type","Brand","Model","Serial Number","Ownership","Vendor","Year Acquired","PO No.","Invoice No.","DO No.","School / Division","Location","Room Code","Computer Name / Linked PC","Assigned User","User Type","IP Address","Connection","Status","Warranty Start Date","Warranty Period","Warranty End Date","Warranty Remaining","Remarks","Previous Location"];
 const GROUPS=[
   ['Identification',["Asset Tag","Asset Type","Sub-type","Brand","Model","Serial Number","Computer Name / Linked PC","IP Address","Connection","Status"]],
-  ['Location & assignment',["School / Division","Location","Room Code","Assigned User","Previous Location"]],
+  ['Location & assignment',["School / Division","Location","Room Code","Assigned User","User Type","Previous Location"]],
   ['Purchase',["Ownership","Vendor","Year Acquired","PO No.","Invoice No.","DO No."]],
   ['Warranty',["Warranty Start Date","Warranty Period","Warranty End Date","Warranty Remaining"]],
   ['Notes',["Remarks"]]
@@ -1277,7 +1278,7 @@ const KEY='it_asset_inventory_v2_excel_master', AUDIT_KEY='syshhb_inventory_audi
 function periodLabel(p){const m=String(p).match(/^(\d+)\s*Years?$/i);if(!m)return p;const y=Number(m[1]),ms=LANG==='ms';return ms?`${y*12} Bulan atau ${y} Tahun`:`${y*12} Months or ${y} ${y===1?'Year':'Years'}`}
 const PERIODS=['1 Month','3 Months','6 Months','9 Months','1 Year','2 Years','3 Years','4 Years','5 Years'];
 const PERIOD_MONTHS={'1 Month':1,'3 Months':3,'6 Months':6,'9 Months':9,'1 Year':12,'2 Years':24,'3 Years':36,'4 Years':48,'5 Years':60};
-const FILTER_IDS=['typeFilter','subtypeFilter','brandFilter','ageFilter','schoolFilter','statusFilter','locationFilter','ownershipFilter'];
+const FILTER_IDS=['typeFilter','subtypeFilter','brandFilter','ageFilter','userTypeFilter','schoolFilter','statusFilter','locationFilter','ownershipFilter'];
 const VIEWS={dashboard:['Dashboard','Overview of all IT assets'],inventory:['Inventory','Search, filter and manage asset records'],warranty:['Warranty & Alerts','Warranties ending soon and assets that need attention'],map:['Location Map','Floor plan and room finder'],reports:['Reports & Export','Printable reports, Excel export and backups'],audit:['Audit Logs','Sign-ins and changes by every user'],access:['Manage Access','Add users and choose Admin or View access'],requests:['Requests','Edit and delete requests that need admin approval'],borang:['Handover Form','IT equipment handover forms (BTM-02 V.2)'],disposal:['Disposal Form','Disposal requests (Borang 1) for Faulty and To Dispose assets'],trash:['Deleted Assets','Restore assets that were deleted']};
 let assets=[], page=1, pageSize=25, sortKey='Asset Tag', sortDir=1, selectedAssets=new Set(), quick='', charts={}, editId=null, currentView='dashboard', drawerId=null, drawerList=[], wTab='soon', activeSessionId=null;
 
@@ -1351,7 +1352,7 @@ const AGE_B=[['lt1','Less than 1 year'],['1-3','1 to 3 years'],['3-5','3 to 5 ye
 function assetAge(a){const y=parseInt(String(val(a,'Year Acquired')).match(/\d{4}/),10);return y?new Date().getFullYear()-y:null}
 function ageKey(a){const g=assetAge(a);if(g===null)return 'unk';if(g<1)return 'lt1';if(g<3)return '1-3';if(g<5)return '3-5';if(g<8)return '5-8';return '8p'}
 function fillAge(){const el=$('ageFilter'),old=el.value;el.innerHTML=`<option value="">${T('All ages')}</option>`+AGE_B.map(([k,l])=>`<option value="${k}">${T(l)}</option>`).join('');el.value=old}
-function fillFilters(){const L={typeFilter:'All types',subtypeFilter:'All sub-types',schoolFilter:'All schools',statusFilter:'All statuses',locationFilter:'All locations',ownershipFilter:'All ownership',brandFilter:'All brands'};FILTER_IDS.forEach(id=>{const k=$(id).dataset.field;if(id==='ageFilter'){fillAge();return}options(id,unique(k),T(L[id]),assets.some(a=>!val(a,k)))})}
+function fillFilters(){const L={typeFilter:'All types',subtypeFilter:'All sub-types',schoolFilter:'All schools',statusFilter:'All statuses',locationFilter:'All locations',ownershipFilter:'All ownership',brandFilter:'All brands',userTypeFilter:'All user types'};FILTER_IDS.forEach(id=>{const k=$(id).dataset.field;if(id==='ageFilter'){fillAge();return}options(id,id==='userTypeFilter'?[...new Set([...USER_TYPES,...unique(k)])]:unique(k),T(L[id]),assets.some(a=>!val(a,k)))})}
 const QUICK={active:'Active / in use',attention:'Needs attention',expiring:'Warranty ≤ 90 days',expired:'Warranty expired'};
 function filtered(){
   const q=norm($('search').value),fs=FILTER_IDS.map(id=>[$(id).dataset.field,$(id).value]).filter(x=>x[1]);
@@ -1459,7 +1460,7 @@ function renderWarranty(){
 }
 
 /* ---------- drawer ---------- */
-function kv(keys,a){return `<div class="kv">${keys.map(k=>{let v=val(a,k);const link=['Location','Assigned User','Asset Type','School / Division','Room Code'].includes(k)&&v;if(k==='Warranty Start Date'||k==='Warranty End Date')v=formatDisplayDate(toISO(v)||v);return `<div>${escapeHtml(T(k))}</div><div>${link?`<a href="#" data-filter-field="${escapeHtml(k)}" data-filter-value="${escapeHtml(v)}" title="${T('Show all assets with this field')}">${escapeHtml(v)}</a>`:escapeHtml(v||'—')}</div>`}).join('')}</div>`}
+function kv(keys,a){return `<div class="kv">${keys.map(k=>{let v=val(a,k);const link=['Location','Assigned User','Asset Type','School / Division','Room Code','User Type'].includes(k)&&v;if(k==='Warranty Start Date'||k==='Warranty End Date')v=formatDisplayDate(toISO(v)||v);return `<div>${escapeHtml(T(k))}</div><div>${link?`<a href="#" data-filter-field="${escapeHtml(k)}" data-filter-value="${escapeHtml(v)}" title="${T('Show all assets with this field')}">${escapeHtml(v)}</a>`:escapeHtml(v||'—')}</div>`}).join('')}</div>`}
 function fk(a,keys){const t=val(a,'Asset Type')||'';return keys.filter(k=>k==='IP Address'?/printer/i.test(t)&&!/3\s*-?d/i.test(t):k==='Connection'?!NO_CONN.test(t):k==='Computer Name / Linked PC'?PC_TYPES.test(t):true)}
 function openDrawer(id,list){
   const a=byId(id);if(!a)return;drawerId=id;if(list)drawerList=list;
@@ -1471,7 +1472,7 @@ function openDrawer(id,list){
   const hist=readAuditLogs().filter(x=>x.assetId===id||(!x.assetId&&x.detail&&val(a,'Asset Tag')&&x.detail===val(a,'Asset Tag')&&/Asset/.test(x.event))).sort((p,q)=>String(q.time).localeCompare(String(p.time)));
   $('drBody').innerHTML=drawerPhotos(a)+
     `<div class="dr-sec"><h4>${T('Identification')}</h4>${kv(fk(a,["Brand","Model","Serial Number","Computer Name / Linked PC","IP Address","Connection"]),a)}</div>`+
-    `<div class="dr-sec"><h4>${T('Location & assignment')}</h4>${kv(["School / Division","Location","Room Code","Assigned User","Previous Location"],a)}</div>`+
+    `<div class="dr-sec"><h4>${T('Location & assignment')}</h4>${kv(["School / Division","Location","Room Code","Assigned User","User Type","Previous Location"],a)}</div>`+
     `<div class="dr-sec"><h4>${T('Warranty')}</h4>${wBar}<div style="margin-top:10px">${kv(["Warranty Start Date","Warranty Period","Warranty End Date"],a)}</div></div>`+
     `<div class="dr-sec"><h4>${T('Purchase')}</h4>${kv(["Ownership","Vendor","Year Acquired","PO No.","Invoice No.","DO No."],a)}</div>`+
     `<div class="dr-sec"><h4>${T('Remarks')}</h4><div class="small" style="white-space:pre-wrap;background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:10px 12px">${escapeHtml(val(a,'Remarks')||T('No remarks.'))}</div></div>`+
@@ -1535,13 +1536,14 @@ function fieldHtml(k){
   const noList=['Asset Tag','Serial Number','IP Address','PO No.','Invoice No.','DO No.'].includes(k);
   let opts=noList?[]:unique(k).slice(0,400);
   if(k==='Status')opts=[...new Set([...['Active','In Use','In Storage','To Verify','Under Repair','Faulty','To Dispose','Pulled Out'],...opts])];
+  if(k==='User Type')opts=[...new Set([...USER_TYPES,...opts])];
   comboOpts[i]=opts;
   if(k==='PO No.'&&!editId&&!v)v=PO_PREFIX;
   if(k==='Asset Tag'&&!editId&&!v)v=TAG_PREFIX;
   if(noList)return `<div class="field"><label for="f${i}">${lbl}</label><input id="f${i}" name="${name}" value="${escapeHtml(v)}" autocomplete="off"></div>`;
   return `<div class="field"><label for="f${i}">${lbl}${k==='Asset Type'?' *':''}</label><div class="combo"><input id="f${i}" name="${name}" value="${escapeHtml(v)}" autocomplete="off" role="combobox" aria-expanded="false" ${k==='Asset Type'?'required':''} placeholder="${T('Choose or type new')}" data-combo="${i}"><button type="button" class="combo-btn" tabindex="-1" aria-label="Show options" data-combo-btn="${i}"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button><div class="combo-list" hidden></div></div></div>`;
 }
-const comboOpts={};
+const comboOpts={};const USER_TYPES=['Non-Teaching Staff','Teaching Staff','Student'];
 const PO_PREFIX='YSHHB-PO-S-',TAG_PREFIX='YSHHB/';
 document.addEventListener('focusin',e=>{const el=e.target;if(el&&(el.name==='PO No.'&&el.value===PO_PREFIX||el.name==='Asset Tag'&&el.value===TAG_PREFIX))setTimeout(()=>el.setSelectionRange(el.value.length,el.value.length),0)});
 /* ---------- dropdown + editable (combobox) ---------- */
@@ -1739,7 +1741,7 @@ function assetPage(a,i,n){
   return `<div class="asset-title"><h2>${rEsc(val(a,'Asset Tag')||val(a,'Serial Number'))}</h2><span>${n>1?escapeHtml(T('Asset {n}: ',{n:i+1}).replace(/:\s*$/,''))+' / '+n:''}</span></div>
 ${assetSummary(a)}<table class="kv"><tbody>
 ${rows('Identification',fk(a,['Asset Tag','Asset Type','Sub-type','Brand','Model','Serial Number','Status','Computer Name / Linked PC','IP Address','Connection']))}
-${rows('Location & assignment',['School / Division','Location','Room Code','Assigned User','Previous Location'])}
+${rows('Location & assignment',['School / Division','Location','Room Code','Assigned User','User Type','Previous Location'])}
 ${rows('Purchase',['Ownership','Vendor','Year Acquired','PO No.','Invoice No.','DO No.'])}
 ${rows('Warranty',['Warranty Start Date','Warranty Period','Warranty End Date','Warranty Remaining'])}
 <tr class="sec"><td colspan="4">${escapeHtml(T('Remarks'))}</td></tr><tr><td colspan="4" class="remarks">${escapeHtml(val(a,'Remarks')||'—')}</td></tr>
