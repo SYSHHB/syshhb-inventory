@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.sharepoint.com https://*.microsoft.com https://*.microsoftonline.com; font-src 'self' data:; connect-src 'self' https://graph.microsoft.com https://login.microsoftonline.com https://*.sharepoint.com https://*.microsoft.com https://*.microsoftonline.com https://*.1drv.com https://*.svc.ms https://*.live.com blob:; frame-src https://login.microsoftonline.com blob:; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.sharepoint.com https://*.microsoft.com https://*.microsoftonline.com; font-src 'self' data:; connect-src 'self' https://graph.microsoft.com https://login.microsoftonline.com https://*.sharepoint.com https://*.microsoft.com https://*.microsoftonline.com https://*.1drv.com https://*.svc.ms https://*.live.com blob: data:; frame-src https://login.microsoftonline.com blob:; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SYSHHB IT Asset Inventory</title>
 <script>(function(){try{var t=localStorage.getItem("syshhb_theme");if(!t)t=window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.dataset.theme=t}catch(e){}})()</script>
@@ -358,6 +358,12 @@ table.grid input[type=checkbox]{width:16px;height:16px;accent-color:var(--brand)
 /* ---------- toasts ---------- */
 .toasts{position:fixed;right:18px;bottom:18px;display:flex;flex-direction:column;gap:9px;z-index:90;max-width:min(380px,calc(100vw - 36px))}
 .toast{display:flex;gap:10px;align-items:flex-start;background:#132a22;color:#fff;padding:12px 14px;border-radius:11px;box-shadow:var(--shadow-lg);font-size:13px;animation:tin .25s ease;border-left:4px solid #42d392}
+.toast span{flex:1}.toast-act{background:#42d392;color:#07281b;border:0;border-radius:8px;padding:6px 14px;font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap}.toast-act:hover{filter:brightness(1.08)}
+.trash-row{display:flex;gap:14px;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.trash-row .tr-main{display:flex;flex-direction:column;gap:2px;min-width:0}
+.trash-row .tr-act{display:flex;gap:8px;flex-wrap:wrap}
+.trash-row .btn.danger{color:#c0334a}
+.empty-trash{display:flex;flex-direction:column;align-items:center;gap:6px;padding:48px 18px;color:var(--muted,#667);text-align:center}.empty-trash .et-ico{font-size:34px}
 .toast.error{border-left-color:#ff6b7a}
 .toast.warn{border-left-color:var(--gold)}
 .toast.out{animation:tout .25s ease forwards}
@@ -638,6 +644,7 @@ td.bp-act{white-space:nowrap;text-align:right}td.bp-act .btn{margin-left:4px}
       <button class="nav-item" data-view="disposal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>Disposal Form</button>
       <button class="nav-item" data-view="reports"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h8"/></svg>Reports &amp; Export</button>
       <button class="nav-item entry-ok" data-view="requests"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Requests<span class="count" id="navCountReq" hidden>0</span></button>
+      <button class="nav-item admin-only" data-view="trash"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>Deleted Assets<span class="count" id="trashCount" hidden>0</span></button>
       <button class="nav-item admin-only" data-view="audit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>Audit Logs</button>
       <button class="nav-item admin-only" data-view="access"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>Manage Access</button>
     </nav>
@@ -771,6 +778,12 @@ td.bp-act{white-space:nowrap;text-align:right}td.bp-act .btn{margin-left:4px}
       <section class="view card" data-view="requests" hidden>
         <div class="card-h" style="padding-bottom:12px;border-bottom:1px solid var(--line)"><div class="seg" id="reqTabs" data-noi18n></div><button class="btn sm" id="reqRefreshBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.5 9a9 9 0 0 1 14.9-3.4L23 10M1 14l4.6 4.4A9 9 0 0 0 20.5 15"/></svg>Refresh</button></div>
         <div id="reqList" data-noi18n></div>
+      </section>
+
+      <!-- DELETED ASSETS -->
+      <section class="view card" data-view="trash" hidden>
+        <div class="card-h" style="padding-bottom:12px;border-bottom:1px solid var(--line)"><h3>Deleted Assets</h3><button class="btn sm" id="trashRefreshBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.5 9a9 9 0 0 1 14.9-3.4L23 10M1 14l4.6 4.4A9 9 0 0 0 20.5 15"/></svg>Refresh</button></div>
+        <div id="trashList" data-noi18n></div>
       </section>
 
       <!-- ACCESS -->
@@ -990,13 +1003,17 @@ function mergeOnto(remote,local,changed,deleted){
 }
 async function loadInventory(){
   const r=await store.read(INV_FILE);
+  return applyInventory(r);
+}
+function applyInventory(r){
   const list=r&&r.data&&Array.isArray(r.data.assets)?r.data.assets:[];
   ensureIds(list);assets=list;invEtag=r?r.etag:null;baseline=snapshot(list);
   selectedAssets.clear();
   $('savedAt').textContent=r&&r.data.updatedAt?new Date(r.data.updatedAt).toLocaleString()+(r.data.updatedBy?' by '+r.data.updatedBy:''):(window.T?T('not saved yet'):'not saved yet');
   $('emptyDbNotice').hidden=list.length>0||currentRole!=='admin';
 }
-function persist(){if(typeof dpAuto==="function")dpAuto();ensureIds(assets);invDirty=true;setSync('saving','Saving…');saveChain=saveChain.then(saveInventory).catch(err=>{console.error(err);setSync('error','⚠ Not saved – retrying');setTimeout(()=>{if(invDirty)persist()},15000)})}
+let localSeq=0;
+function persist(){localSeq++;if(typeof dpAuto==="function")dpAuto();ensureIds(assets);invDirty=true;setSync('saving','Saving…');saveChain=saveChain.then(saveInventory).catch(err=>{console.error(err);setSync('error','⚠ Not saved – retrying');setTimeout(()=>{if(invDirty)persist()},15000)})}
 async function saveInventory(){
   if(!invDirty)return;saving=true;
   try{
@@ -1024,8 +1041,11 @@ async function saveInventory(){
   }finally{saving=false}
 }
 async function pollRemote(){
-  if(!store||saving||invDirty||document.hidden||$('assetModal').classList.contains('open'))return;
-  try{const et=await store.stat(INV_FILE);if(et&&et!==invEtag){const keepPage=page;await loadInventory();page=keepPage;render();setSync('ok','✓ Updated with latest changes')}}catch(e){console.warn(e)}
+  if(!store||saving||invDirty||document.hidden||$('assetModal').classList.contains('open')||window.attBusy)return;
+  const seq=localSeq;
+  try{const et=await store.stat(INV_FILE);if(et&&et!==invEtag){const r=await store.read(INV_FILE);
+    if(saving||invDirty||window.attBusy||seq!==localSeq)return;      // you changed something while this was loading: never overwrite it
+    const keepPage=page;applyInventory(r);page=keepPage;render();setSync('ok','✓ Updated with latest changes')}}catch(e){console.warn(e)}
 }
 
 /* ---------- audit log (shared) ---------- */
@@ -1096,7 +1116,7 @@ async function afterLogin(){
     setInterval(pollRemote,45000);window.addEventListener('focus',pollRemote);
   }catch(e){console.error(e);$('msSignInBtn').hidden=false;authMsg(e.message,true)}
 }
-window.addEventListener('beforeunload',e=>{if(invDirty||saving){e.preventDefault();e.returnValue=''}});
+window.addEventListener('beforeunload',e=>{if(invDirty||saving||window.attBusy){e.preventDefault();e.returnValue=''}});
 
 </script>
 <script>
@@ -1114,7 +1134,7 @@ const MS={
 
 'Data entry (add only)':'Kemasukan data (tambah sahaja)','Data entry':'Kemasukan data','Data entry · add only':'Kemasukan data · tambah sahaja',
 'Admin: full access and manages users. Data entry: can add and import new assets; edits and deletions need admin approval. View only: search, view and print.':'Admin: akses penuh dan mengurus pengguna. Kemasukan data: boleh tambah dan import aset baharu; ubah dan padam perlu kelulusan admin. Lihat sahaja: cari, lihat dan cetak.',
-'Requests':'Permohonan','Edit and delete requests that need admin approval':'Permohonan ubah dan padam yang perlu kelulusan admin','Request edit':'Mohon ubah','Request delete':'Mohon padam','Send request':'Hantar permohonan',
+'Deleted Assets':'Aset Dipadam','Restore assets that were deleted':'Pulihkan aset yang telah dipadam','Undo':'Buat asal','Restore':'Pulihkan','Delete forever':'Padam selama-lamanya','Delete forever?':'Padam selama-lamanya?','This copy will be removed and can no longer be restored.':'Salinan ini akan dibuang dan tidak boleh dipulihkan lagi.','No deleted assets':'Tiada aset dipadam','Assets you delete will appear here so you can restore them.':'Aset yang dipadam akan dipaparkan di sini supaya boleh dipulihkan.','Deleted':'Dipadam','{t} restored':'{t} telah dipulihkan','Deleted copy not found':'Salinan dipadam tidak dijumpai','Could not keep a copy for restore: ':'Tidak dapat menyimpan salinan untuk pemulihan: ','Asset restored':'Aset dipulihkan','Requests':'Permohonan','Edit and delete requests that need admin approval':'Permohonan ubah dan padam yang perlu kelulusan admin','Request edit':'Mohon ubah','Request delete':'Mohon padam','Send request':'Hantar permohonan',
 'No changes to request.':'Tiada perubahan untuk dimohon.','Request sent to admin for approval':'Permohonan dihantar kepada admin untuk kelulusan','Could not send the request: ':'Tidak dapat menghantar permohonan: ',
 'Request deletion?':'Mohon pemadaman?','An admin must approve before {t} is deleted.':'Admin perlu meluluskan sebelum {t} dipadam.','Pending request':'Permohonan menunggu',
 'Pending':'Menunggu','Approved':'Diluluskan','Rejected':'Ditolak','Cancelled':'Dibatalkan','Delete request':'Permohonan padam','Edit request':'Permohonan ubah',
@@ -1223,7 +1243,7 @@ const MS={
 'Excel file downloaded':'Fail Excel dimuat turun','JSON backup downloaded':'Sandaran JSON dimuat turun','Excel backup downloaded':'Sandaran Excel dimuat turun','JSON + Excel backups downloaded':'Sandaran JSON + Excel dimuat turun','Tick one or more assets in the table first.':'Tandakan satu atau lebih aset dalam jadual dahulu.','Allow pop-ups for this site to open reports.':'Benarkan pop-up untuk laman ini bagi membuka laporan.',
 'Inventory is up to date':'Inventori terkini','Refresh failed: ':'Gagal memuat semula: ',
 // printable reports
-'All brands':'Semua jenama','All ages':'Semua umur','Less than 1 year':'Kurang 1 tahun','1 to 3 years':'1 hingga 3 tahun','3 to 5 years':'3 hingga 5 tahun','5 to 8 years':'5 hingga 8 tahun','8 years and older':'8 tahun dan lebih','Year not set':'Tahun tiada','Age':'Umur','Total repair cost':'Jumlah kos pembaikan','Fault records':'Rekod kerosakan','Days faulty now':'Hari rosak kini','Fault':'Kerosakan','Reported':'Dilaporkan','Fixed':'Dibaiki','{n} day(s) down':'{n} hari rosak','Still faulty':'Masih rosak','Repair cost':'Kos pembaikan','Edit':'Sunting','Delete':'Padam','Fault & repair timeline':'Garis masa kerosakan & pembaikan','No fault records yet.':'Belum ada rekod kerosakan.','Add fault record':'Tambah rekod kerosakan','Date reported faulty':'Tarikh dilaporkan rosak','What is wrong?':'Apa kerosakannya?','e.g. No power, lamp blown':'cth. Tiada kuasa, lampu terbakar','Date fixed (leave empty if still faulty)':'Tarikh dibaiki (kosongkan jika masih rosak)','Save':'Simpan','Cancel':'Batal','Enter the date it became faulty.':'Masukkan tarikh ia mula rosak.','Fixed date cannot be before the reported date.':'Tarikh dibaiki tidak boleh sebelum tarikh dilaporkan.','Fault record saved':'Rekod kerosakan disimpan','Delete this fault record?':'Padam rekod kerosakan ini?','This cannot be undone.':'Ini tidak boleh dibatalkan.','Fault record added':'Rekod kerosakan ditambah','Fault record edited':'Rekod kerosakan disunting','Fault record deleted':'Rekod kerosakan dipadam','Repair cost of these assets':'Kos pembaikan aset ini','Repair cost, all assets':'Kos pembaikan, semua aset','With an open fault record':'Dengan rekod rosak terbuka','Average days faulty':'Purata hari rosak','Faulty since':'Rosak sejak','Days faulty':'Hari rosak','Signed copy / attachments':'Salinan bertandatangan / lampiran','Signed copy':'Salinan bertandatangan','Open':'Buka','Delete':'Padam','File not found in the folder.':'Fail tidak dijumpai dalam folder.','No signed copy uploaded yet.':'Belum ada salinan bertandatangan dimuat naik.','Upload signed copy':'Muat naik salinan bertandatangan','PDF, photo or Word/Excel file, up to 25 MB each.':'Fail PDF, gambar atau Word/Excel, sehingga 25 MB setiap satu.','This file type is not allowed: ':'Jenis fail ini tidak dibenarkan: ','File is larger than 25 MB: ':'Fail lebih besar daripada 25 MB: ','Upload failed: ':'Muat naik gagal: ','Uploaded':'Dimuat naik','Could not save: ':'Tidak dapat disimpan: ','Delete this file?':'Padam fail ini?','Attachment uploaded':'Lampiran dimuat naik','Attachment deleted':'Lampiran dipadam','Fault photos':'Gambar kerosakan','Upload photos':'Muat naik gambar','No fault photos uploaded yet.':'Belum ada gambar kerosakan dimuat naik.','Photos':'Gambar','Photos or PDF, up to 25 MB each.':'Gambar atau PDF, sehingga 25 MB setiap satu.','Asset photos':'Gambar aset','No photos uploaded yet.':'Belum ada gambar dimuat naik.','Download':'Muat turun','Add / manage':'Tambah / urus','Details':'Butiran','Add':'Tambah','This file type cannot be previewed. Use Download.':'Jenis fail ini tidak boleh dipratonton. Gunakan Muat turun.','Could not open the file':'Tidak dapat membuka fail','Save as image':'Simpan sebagai imej','Print / Save as PDF':'Cetak / Simpan sebagai PDF','Generated {d} by {u}':'Dijana {d} oleh {u}','Overall Inventory Report':'Laporan Inventori Keseluruhan','Warranty Report':'Laporan Waranti','Needs-Attention Report':'Laporan Perlu Perhatian','Asset Report':'Laporan Aset','Selected Asset Report · {n} asset(s)':'Laporan Aset Terpilih · {n} aset',
+'All brands':'Semua jenama','All ages':'Semua umur','Less than 1 year':'Kurang 1 tahun','1 to 3 years':'1 hingga 3 tahun','3 to 5 years':'3 hingga 5 tahun','5 to 8 years':'5 hingga 8 tahun','8 years and older':'8 tahun dan lebih','Year not set':'Tahun tiada','Age':'Umur','Total repair cost':'Jumlah kos pembaikan','Fault records':'Rekod kerosakan','Days faulty now':'Hari rosak kini','Fault':'Kerosakan','Reported':'Dilaporkan','Fixed':'Dibaiki','{n} day(s) down':'{n} hari rosak','Still faulty':'Masih rosak','Repair cost':'Kos pembaikan','Edit':'Sunting','Delete':'Padam','Fault & repair timeline':'Garis masa kerosakan & pembaikan','No fault records yet.':'Belum ada rekod kerosakan.','Add fault record':'Tambah rekod kerosakan','Date reported faulty':'Tarikh dilaporkan rosak','What is wrong?':'Apa kerosakannya?','e.g. No power, lamp blown':'cth. Tiada kuasa, lampu terbakar','Date fixed (leave empty if still faulty)':'Tarikh dibaiki (kosongkan jika masih rosak)','Save':'Simpan','Cancel':'Batal','Enter the date it became faulty.':'Masukkan tarikh ia mula rosak.','Fixed date cannot be before the reported date.':'Tarikh dibaiki tidak boleh sebelum tarikh dilaporkan.','Fault record saved':'Rekod kerosakan disimpan','Delete this fault record?':'Padam rekod kerosakan ini?','This cannot be undone.':'Ini tidak boleh dibatalkan.','Fault record added':'Rekod kerosakan ditambah','Fault record edited':'Rekod kerosakan disunting','Fault record deleted':'Rekod kerosakan dipadam','Repair cost of these assets':'Kos pembaikan aset ini','Repair cost, all assets':'Kos pembaikan, semua aset','With an open fault record':'Dengan rekod rosak terbuka','Average days faulty':'Purata hari rosak','Faulty since':'Rosak sejak','Days faulty':'Hari rosak','Signed copy / attachments':'Salinan bertandatangan / lampiran','Signed copy':'Salinan bertandatangan','Open':'Buka','Delete':'Padam','File not found in the folder.':'Fail tidak dijumpai dalam folder.','No signed copy uploaded yet.':'Belum ada salinan bertandatangan dimuat naik.','Upload signed copy':'Muat naik salinan bertandatangan','PDF, photo or Word/Excel file, up to 25 MB each.':'Fail PDF, gambar atau Word/Excel, sehingga 25 MB setiap satu.','This file type is not allowed: ':'Jenis fail ini tidak dibenarkan: ','File is larger than 25 MB: ':'Fail lebih besar daripada 25 MB: ','Upload failed: ':'Muat naik gagal: ','Uploaded':'Dimuat naik','Could not save: ':'Tidak dapat disimpan: ','Delete this file?':'Padam fail ini?','Attachment uploaded':'Lampiran dimuat naik','Attachment deleted':'Lampiran dipadam','Fault photos':'Gambar kerosakan','Upload photos':'Muat naik gambar','No fault photos uploaded yet.':'Belum ada gambar kerosakan dimuat naik.','Photos':'Gambar','Photos or PDF, up to 25 MB each.':'Gambar atau PDF, sehingga 25 MB setiap satu.','Asset photos':'Gambar aset','No photos uploaded yet.':'Belum ada gambar dimuat naik.','Download':'Muat turun','Add / manage':'Tambah / urus','Details':'Butiran','Add':'Tambah','This file type cannot be previewed. Use Download.':'Jenis fail ini tidak boleh dipratonton. Gunakan Muat turun.','Could not open the file':'Tidak dapat membuka fail','Uploaded and saved':'Dimuat naik dan disimpan','The photo was uploaded but the list could not be saved. Please try again.':'Gambar dimuat naik tetapi senarai tidak dapat disimpan. Sila cuba lagi.','Save as image':'Simpan sebagai imej','Print / Save as PDF':'Cetak / Simpan sebagai PDF','Generated {d} by {u}':'Dijana {d} oleh {u}','Overall Inventory Report':'Laporan Inventori Keseluruhan','Warranty Report':'Laporan Waranti','Needs-Attention Report':'Laporan Perlu Perhatian','Asset Report':'Laporan Aset','Selected Asset Report · {n} asset(s)':'Laporan Aset Terpilih · {n} aset',
 'Category':'Kategori','Count':'Bilangan','By type':'Mengikut jenis','By status':'Mengikut status','All records ({n})':'Semua rekod ({n})','Expiring within 90 days ({n})':'Tamat dalam 90 hari ({n})','Expired ({n})':'Tamat tempoh ({n})','Assets needing attention':'Aset perlu perhatian','Assets ({n})':'Aset ({n})','Asset {n}: ':'Aset {n}: '
 };
 const MONTHS_MS=['Jan','Feb','Mac','Apr','Mei','Jun','Jul','Ogo','Sep','Okt','Nov','Dis'];
@@ -1258,7 +1278,7 @@ function periodLabel(p){const m=String(p).match(/^(\d+)\s*Years?$/i);if(!m)retur
 const PERIODS=['1 Month','3 Months','6 Months','9 Months','1 Year','2 Years','3 Years','4 Years','5 Years'];
 const PERIOD_MONTHS={'1 Month':1,'3 Months':3,'6 Months':6,'9 Months':9,'1 Year':12,'2 Years':24,'3 Years':36,'4 Years':48,'5 Years':60};
 const FILTER_IDS=['typeFilter','subtypeFilter','brandFilter','ageFilter','schoolFilter','statusFilter','locationFilter','ownershipFilter'];
-const VIEWS={dashboard:['Dashboard','Overview of all IT assets'],inventory:['Inventory','Search, filter and manage asset records'],warranty:['Warranty & Alerts','Warranties ending soon and assets that need attention'],map:['Location Map','Floor plan and room finder'],reports:['Reports & Export','Printable reports, Excel export and backups'],audit:['Audit Logs','Sign-ins and changes by every user'],access:['Manage Access','Add users and choose Admin or View access'],requests:['Requests','Edit and delete requests that need admin approval'],borang:['Handover Form','IT equipment handover forms (BTM-02 V.2)'],disposal:['Disposal Form','Disposal requests (Borang 1) for Faulty and To Dispose assets']};
+const VIEWS={dashboard:['Dashboard','Overview of all IT assets'],inventory:['Inventory','Search, filter and manage asset records'],warranty:['Warranty & Alerts','Warranties ending soon and assets that need attention'],map:['Location Map','Floor plan and room finder'],reports:['Reports & Export','Printable reports, Excel export and backups'],audit:['Audit Logs','Sign-ins and changes by every user'],access:['Manage Access','Add users and choose Admin or View access'],requests:['Requests','Edit and delete requests that need admin approval'],borang:['Handover Form','IT equipment handover forms (BTM-02 V.2)'],disposal:['Disposal Form','Disposal requests (Borang 1) for Faulty and To Dispose assets'],trash:['Deleted Assets','Restore assets that were deleted']};
 let assets=[], page=1, pageSize=25, sortKey='Asset Tag', sortDir=1, selectedAssets=new Set(), quick='', charts={}, editId=null, currentView='dashboard', drawerId=null, drawerList=[], wTab='soon', activeSessionId=null;
 
 const $=id=>document.getElementById(id);
@@ -1312,6 +1332,7 @@ function wInfo(a){
 function wPill(a){const w=wInfo(a);return `<span class="pill ${w.cls}">${escapeHtml(w.label)}</span>`}
 
 /* ---------- toasts & dialogs ---------- */
+function toastUndo(msg,label,fn,ms=10000){const el=document.createElement('div');el.className='toast warn';const sp=document.createElement('span');sp.textContent=msg;const b=document.createElement('button');b.type='button';b.className='toast-act';b.textContent=label;b.onclick=async()=>{b.disabled=true;el.remove();try{await fn()}catch(e){toast(e.message,'error',6000)}};el.append(sp,b);$('toasts').appendChild(el);setTimeout(()=>{el.classList.add('out');setTimeout(()=>el.remove(),260)},ms)}
 function toast(msg,type='ok',ms=3800){const el=document.createElement('div');el.className='toast '+(type||'');el.textContent=msg;$('toasts').appendChild(el);setTimeout(()=>{el.classList.add('out');setTimeout(()=>el.remove(),260)},ms)}
 function choiceDialog(title,body,buttons){
   return new Promise(res=>{
@@ -1412,7 +1433,7 @@ function renderDashboard(){
   const sc=top(countBy('School / Division'),10);chart('schoolChart','bar',sc.map(x=>x[0]==='Not set'?T('Not set'):x[0]),sc.map(x=>x[1]),{horizontal:true,field:'School / Division'});
   $('attentionList').innerHTML=att.slice(0,6).map(a=>`<div class="list-item" data-open="${escapeHtml(a._id)}"><div class="li-dot" style="background:var(--bad-soft)">⚠️</div><div class="li-main"><b>${escapeHtml(val(a,'Asset Tag')||val(a,'Serial Number')||T('Untagged asset'))} · ${escapeHtml(val(a,'Asset Type'))}</b><span>${escapeHtml([val(a,'Brand'),val(a,'Model')].filter(Boolean).join(' '))} — ${escapeHtml(val(a,'Location')||T('No location'))}</span></div>${badge(val(a,'Status'))}</div>`).join('')||`<div class="empty-state">${T('🎉 Nothing needs attention right now.')}</div>`;
   const ev=readAuditLogs().filter(x=>/Asset|Import/.test(x.event)).sort((a,b)=>String(b.time).localeCompare(String(a.time))).slice(0,7);
-  const ico={'Asset added':'➕','Asset edited':'✏️','Asset deleted':'🗑️','Import':'📥'};
+  const ico={'Asset added':'➕','Asset edited':'✏️','Asset deleted':'🗑️','Asset restored':'♻️','Import':'📥'};
   $('recentList').innerHTML=ev.map(x=>`<div class="list-item" ${x.assetId&&byId(x.assetId)?`data-open="${escapeHtml(x.assetId)}"`:''}><div class="li-dot">${ico[x.event]||'•'}</div><div class="li-main"><b>${escapeHtml(T(x.event))}${x.detail?': '+escapeHtml(x.detail):''}</b><span>${escapeHtml(x.username)} · ${escapeHtml(timeAgo(x.time))}</span></div></div>`).join('')||`<div class="empty-state">${T('No changes recorded yet.')}</div>`;
 }
 function timeAgo(t){const s=(Date.now()-new Date(t))/1000;if(s<60)return T('just now');if(s<3600)return T('{n} min ago',{n:Math.floor(s/60)});if(s<86400)return T('{n} h ago',{n:Math.floor(s/3600)});if(s<86400*7)return T('{n} d ago',{n:Math.floor(s/86400)});return new Date(t).toLocaleDateString()}
@@ -1609,7 +1630,8 @@ async function deleteAsset(id){
   if(!await confirmDialog(T('Delete asset?'),T('{t} will be removed for everyone. This cannot be undone (except from a backup).',{t:val(a,'Asset Tag')||val(a,'Serial Number')||T('This asset')}),T('Delete'),true))return;
   assets=assets.filter(x=>x._id!==id);selectedAssets.delete(id);persist();
   addAuditEvent('Asset deleted',currentUsername,currentRole,{detail:val(a,'Asset Tag')||val(a,'Serial Number'),assetId:id});
-  closeDrawer();render();toast(T('Asset deleted'),'warn');
+  trashAdd(a).catch(e=>toast(T('Could not keep a copy for restore: ')+e.message,'error',6000));
+  closeDrawer();render();toastUndo(T('Asset deleted'),T('Undo'),()=>trashRestore(id));
 }
 
 /* ---------- import / export ---------- */
@@ -1746,6 +1768,7 @@ function showView(v){
   if(v==='access')renderAccess(true);
   if(v==='borang'){renderBorang();bpLoad().then(renderBorang)}
   if(v==='disposal'){renderDisposal();dpLoad().then(()=>{renderDisposal();dpRunAuto(false)})}
+  if(v==='trash'){renderTrash();loadTrash().then(renderTrash)}
   if(v==='requests'){renderRequests();loadRequests().then(renderRequests)}
   render();window.scrollTo({top:0});
 }
@@ -1787,7 +1810,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('planWrap').class
   v.addEventListener('touchend',e=>{if(e.touches.length<2)p0=null});
   let lastTap=0;v.addEventListener('touchend',e=>{if(e.changedTouches.length!==1||e.touches.length)return;const now=Date.now();if(now-lastTap<300){setZoom(planZoom>=2.5?1:planZoom*1.8);lastTap=0}else lastTap=now});
 })();
-function onRoleChange(){const u=currentUsername||'';$('roleBadge').textContent=currentRole==='admin'?T('Editor · full access'):currentRole==='dataentry'?T('Data entry · add only'):T('View only');if(currentRole!=='viewer'&&!window.__reqTimer){window.__reqTimer=setInterval(()=>{if(store)loadRequests().then(()=>{if(currentView==='requests')renderRequests()})},60000);loadRequests()}$('userName').textContent=u||T('Not signed in');$('avatar').textContent=(u[0]||'?').toUpperCase();if(typeof dpAuto==='function')dpAuto();let v='dashboard';try{v=sessionStorage.getItem('syshhb_view')||'dashboard'}catch(e){}showView(v)}
+function onRoleChange(){const u=currentUsername||'';$('roleBadge').textContent=currentRole==='admin'?T('Editor · full access'):currentRole==='dataentry'?T('Data entry · add only'):T('View only');if(currentRole!=='viewer'&&!window.__reqTimer){window.__reqTimer=setInterval(()=>{if(store)loadRequests().then(()=>{if(currentView==='requests')renderRequests()})},60000);loadRequests()}$('userName').textContent=u||T('Not signed in');$('avatar').textContent=(u[0]||'?').toUpperCase();if(typeof dpAuto==='function')dpAuto();if(currentRole==='admin')loadTrash().then(renderTrash);let v='dashboard';try{v=sessionStorage.getItem('syshhb_view')||'dashboard'}catch(e){}showView(v)}
 
 /* ---------- events ---------- */
 document.querySelectorAll('.nav-item[data-view],.bottom-nav [data-view]').forEach(b=>b.onclick=()=>showView(b.dataset.view));
@@ -2088,7 +2111,7 @@ $('reqList').addEventListener('click',async e=>{
       if(q.type==='delete'&&!await confirmDialog(T('Approve deletion?'),T('{t} will be removed for everyone.',{t:q.assetTag||T('This asset')}),T('Delete'),true)){btn.disabled=false;return}
       const t=await decideRequest(q.id,'approved');const a=byId(t.assetId);
       if(a&&t.type==='edit'){const upd={...a};Object.entries(t.changes||{}).forEach(([k,c])=>upd[k]=c.to);const w=warrantyDetails(upd['Warranty Start Date'],upd['Warranty Period']);if(w.end){upd['Warranty End Date']=w.end;upd['Warranty Remaining']=w.remaining}assets=assets.map(x=>x._id===a._id?upd:x);persist();addAuditEvent('Asset edited',currentUsername,currentRole,{detail:`${t.assetTag||''} (request by ${t.requestedBy})`,assetId:a._id})}
-      if(a&&t.type==='delete'){assets=assets.filter(x=>x._id!==a._id);selectedAssets.delete(a._id);persist();addAuditEvent('Asset deleted',currentUsername,currentRole,{detail:`${t.assetTag||''} (request by ${t.requestedBy})`,assetId:a._id})}
+      if(a&&t.type==='delete'){trashAdd(a).catch(console.warn);assets=assets.filter(x=>x._id!==a._id);selectedAssets.delete(a._id);persist();addAuditEvent('Asset deleted',currentUsername,currentRole,{detail:`${t.assetTag||''} (request by ${t.requestedBy})`,assetId:a._id})}
       addAuditEvent('Request approved',currentUsername,currentRole,{detail:`${t.type} · ${t.assetTag||''} · ${t.requestedBy}`,assetId:t.assetId});toast(T('Request approved'));render();
     }else if(rj){
       const t=await decideRequest(rj.dataset.reqReject,'rejected');addAuditEvent('Request rejected',currentUsername,currentRole,{detail:`${t.type} · ${t.assetTag||''} · ${t.requestedBy}`,assetId:t.assetId});toast(T('Request rejected'),'warn');
@@ -2306,7 +2329,7 @@ function attRender(){
 function attOpen(k,id){attCur={k,id};attRender();attModal().classList.add('open')}
 async function attUpload(files){
   if(!files.length||!bpCanEdit())return;const {k,id}=attCur,c=ATT[k],bar=document.getElementById('attBar'),sp=bar.firstChild;let done=[];
-  bar.hidden=false;
+  window.attBusy=true;bar.hidden=false;
   for(const file of files){
     if(!ATT_OK.test(file.name)){toast(T('This file type is not allowed: ')+file.name,'warn',5000);continue}
     if(file.size>ATT_MAX){toast(T('File is larger than 25 MB: ')+file.name,'warn',5000);continue}
@@ -2315,10 +2338,23 @@ async function attUpload(files){
     catch(err){console.error(err);toast(T('Upload failed: ')+err.message,'error',7000)}
   }
   bar.hidden=true;sp.style.width='0';
-  if(!done.length)return;
+  if(!done.length){window.attBusy=false;return}
   try{await c.upd(list=>{const ix=list.findIndex(x=>x[c.idk]===id);if(ix<0)throw new Error(T('This form was deleted by someone else.'));list[ix]={...list[ix],[c.field]:[...attOf(list[ix],k),...done]};return list});
-    addAuditEvent('Attachment uploaded',currentUsername,currentRole,{detail:`${c.name} ${(k==='as'||k==='ap')?(val(attFind(),'Asset Tag')||''):'#'+(attFind()?.no||'')} · ${done.map(x=>x.name).join(', ')}`.slice(0,140),...(k==='as'||k==='ap'?{assetId:id}:{})});toast(T('Uploaded'));attRender();c.render()}
-  catch(err){toast(T('Could not save: ')+err.message,'error',6000)}
+    addAuditEvent('Attachment uploaded',currentUsername,currentRole,{detail:`${c.name} ${(k==='as'||k==='ap')?(val(attFind(),'Asset Tag')||''):'#'+(attFind()?.no||'')} · ${done.map(x=>x.name).join(', ')}`.slice(0,140),...(k==='as'||k==='ap'?{assetId:id}:{})});if(k==='as'||k==='ap')await attVerifySaved(id,c.field,done);toast(T('Uploaded and saved'));attRender();c.render()}
+  catch(err){toast(T('Could not save: ')+err.message,'error',7000)}
+  finally{window.attBusy=false}
+}
+/* make sure the photo list really reached OneDrive (no extra Save click needed) */
+async function attVerifySaved(id,field,added){
+  for(let t=0;t<3;t++){
+    await saveChain;
+    const r=await store.read(INV_FILE),a=r&&r.data&&(r.data.assets||[]).find(x=>x._id===id);
+    const ids=new Set(((a&&a[field])||[]).map(x=>x.id));
+    if(added.every(x=>ids.has(x.id)))return;
+    const cur=byId(id);if(cur&&!(cur[field]||[]).some(x=>x.id===added[0].id))cur[field]=[...(cur[field]||[]),...added];   // re-apply if something replaced it
+    persist();
+  }
+  throw new Error(T('The photo was uploaded but the list could not be saved. Please try again.'));
 }
 async function attDelete(aid){
   if(currentRole!=='admin')return;const {k,id}=attCur,c=ATT[k],a=attOf(attFind(),k).find(x=>x.id===aid);if(!a)return;
@@ -2702,6 +2738,35 @@ if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostnam
 applyStaticI18n();setTheme(currentTheme());
 window.addEventListener('load',chartDefaults);
 cloudStart();
+
+/* ---------- Deleted assets (restore) ---------- */
+const TRASH_FILE='trash.json';let trashCache=[];
+async function loadTrash(){try{const r=await store.read(TRASH_FILE);trashCache=r&&Array.isArray(r.data.items)?r.data.items:[]}catch(e){console.warn(e)}return trashCache}
+async function updateTrash(fn){for(let i=0;i<5;i++){const r=await store.read(TRASH_FILE);const list=r&&Array.isArray(r.data.items)?r.data.items:[];const next=fn(list.slice());try{await store.write(TRASH_FILE,{format:'SYSHHB_TRASH',items:next.slice(-500)},r?r.etag:null);trashCache=next;return next}catch(e){if(e.status===412||e.status===409)continue;throw e}}throw new Error('Could not save')}
+async function trashAdd(a){const copy=JSON.parse(JSON.stringify(a));await updateTrash(l=>l.filter(x=>x.id!==a._id).concat([{id:a._id,at:new Date().toISOString(),by:currentUsername||'',asset:copy}]))}
+async function trashRestore(id){
+  let it=trashCache.find(x=>x.id===id);if(!it){await loadTrash();it=trashCache.find(x=>x.id===id)}
+  if(!it){toast(T('Deleted copy not found'),'error');return}
+  if(currentRole!=='admin')return;
+  const tag=val(it.asset,'Asset Tag')||val(it.asset,'Serial Number')||T('This asset');
+  if(!assets.some(x=>x._id===id))assets.push(it.asset);
+  persist();
+  addAuditEvent('Asset restored',currentUsername,currentRole,{detail:tag,assetId:id});
+  await updateTrash(l=>l.filter(x=>x.id!==id));
+  render();if(currentView==='trash')renderTrash();toast(T('{t} restored',{t:tag}))
+}
+function renderTrash(){
+  const box=$('trashList');if(!box)return;
+  const n=trashCache.length;$('trashCount').textContent=n?String(n):'';$('trashCount').hidden=!n;
+  if(!n){box.innerHTML=`<div class="empty-trash"><div class="et-ico">🗑️</div><b>${T('No deleted assets')}</b><span>${T('Assets you delete will appear here so you can restore them.')}</span></div>`;return}
+  box.innerHTML=trashCache.slice().reverse().map(x=>{const a=x.asset||{};const exists=assets.some(y=>y._id===x.id);return `<div class="trash-row"><div class="tr-main"><b>${escapeHtml(val(a,'Asset Tag')||val(a,'Serial Number')||T('Untagged asset'))}</b><span class="muted small">${escapeHtml([val(a,'Asset Type'),val(a,'Brand'),val(a,'Model')].filter(Boolean).join(' · '))}</span><span class="muted small">${T('Deleted')}: ${escapeHtml(new Date(x.at).toLocaleString())}${x.by?' · '+escapeHtml(x.by):''}</span></div><div class="tr-act"><button type="button" class="btn primary sm" data-restore="${escapeHtml(x.id)}" ${exists?'disabled':''}>♻️ ${T('Restore')}</button><button type="button" class="btn sm danger" data-purge="${escapeHtml(x.id)}">${T('Delete forever')}</button></div></div>`}).join('')
+}
+document.addEventListener('click',async e=>{
+  const r=e.target.closest('[data-restore]'),p=e.target.closest('[data-purge]');
+  if(r){r.disabled=true;try{await trashRestore(r.dataset.restore)}catch(err){toast(err.message,'error',6000);r.disabled=false}}
+  else if(p){if(!await confirmDialog(T('Delete forever?'),T('This copy will be removed and can no longer be restored.'),T('Delete forever'),true))return;try{await updateTrash(l=>l.filter(x=>x.id!==p.dataset.purge));renderTrash()}catch(err){toast(err.message,'error',6000)}}
+});
+$('trashRefreshBtn').onclick=()=>loadTrash().then(renderTrash);
 
 </script>
 </body></html>
