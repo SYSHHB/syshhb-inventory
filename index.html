@@ -712,6 +712,38 @@ td.bp-act{white-space:nowrap;text-align:right}td.bp-act .btn{margin-left:4px}
   .content{padding:14px 14px 90px}
 }
 :root[data-theme=dark] .auth-card.loading,:root[data-theme=light] .auth-card.loading,.auth-card.loading{background:none!important;box-shadow:none!important;border:0!important}
+
+/* ---------- fine-tune to match Document Storage proportions ---------- */
+:root{--side:204px}
+.side-brand{padding:18px 0 12px}.side-brand img{width:74px;height:74px}
+.nav-item{padding:10px 12px;font-size:13px;gap:11px;border-radius:11px}.nav-item svg{width:17px;height:17px}
+.nav-item.active{background:#5cb97f!important;box-shadow:0 3px 10px #0005}
+.nav{display:flex;flex-direction:column;gap:5px;padding:8px 8px}
+.side-foot{padding:12px 14px;gap:6px}.user-chip .who b{font-size:12.5px}.user-chip .who span{font-size:10.5px}
+.side-refresh{display:flex;align-items:center;gap:7px;border:0;background:none;color:#9fb5a8;font-size:11.5px;padding:4px 0;cursor:pointer}.side-refresh svg{width:14px;height:14px}.side-refresh:hover{color:#fff}
+.hero{margin:16px 24px 0;padding:16px 20px 18px;border-radius:22px}
+.hero-title{font-size:29px;font-weight:800;text-shadow:0 2px 5px #0008}
+.hero-sub{font-size:13px;margin:2px 0 12px}
+.hero-btns{top:12px;right:14px;gap:7px}.hbtn{min-width:34px;height:34px;border-radius:9px;font-size:11px;padding:0 8px}.hbtn svg{width:16px;height:16px}
+.hero-dates{gap:12px}.hero-card{padding:9px 14px;gap:11px;border-radius:12px}.hero-card .hc-ico{width:28px;height:28px;font-size:13px}
+.hero-card small{font-size:9.5px}.hero-card b{font-size:12.5px}
+.hero-clock{margin-top:10px;padding:13px;border-radius:12px;gap:8px}.hero-clock b{font-size:19px}.hero-clock small{font-size:9px;margin-bottom:3px}.hero-clock>span{font-size:13px}
+.pagehead{padding:24px 24px 0}.pagehead h2{font-size:29px;font-weight:800;letter-spacing:-.3px}.pagehead p{font-size:12.5px;margin:4px 0 14px}
+.pagehead .top-search input#globalSearch{padding:13px 14px 13px 42px;font-size:13.5px;border-radius:12px}
+.content{padding:14px 24px 40px}
+.kpis{gap:10px}
+.kpi{display:flex;flex-direction:column;padding:14px 14px 12px;border-radius:12px}
+.kpi::after{display:none}
+.kpi .k-num{order:1;font-size:25px;font-weight:800;margin-top:0;letter-spacing:-.5px}
+.kpi .k-top{order:2;font-size:11px;font-weight:600;margin-top:2px;justify-content:flex-start}
+.kpi .k-sub{order:3;font-size:10.5px}.kpi .k-go{order:4;margin-top:4px}
+.kpi .k-ico{position:absolute;top:10px;right:10px;width:30px;height:30px;border-radius:8px;background:#ffffff12;color:#e6d23a}
+.kpi .k-ico svg{width:15px;height:15px}
+:root[data-theme=dark] .kpi{background:#18241f!important}
+@media(max-width:900px){.hero{margin:10px 10px 0;padding:50px 12px 14px}.hero-title{font-size:21px}.pagehead{padding:16px 12px 0}.pagehead h2{font-size:24px}.content{padding:12px 12px 90px}}
+:root{--side:214px}.nav-item{white-space:nowrap}
+:root[data-theme=dark] .pagehead .top-search input#globalSearch{background:#18241f!important;border-color:#2a3d32!important}
+.hero-sub{font-size:14px}
 </style></head>
 <body>
 <div class="auth-overlay" id="authOverlay">
@@ -748,6 +780,7 @@ td.bp-act{white-space:nowrap;text-align:right}td.bp-act .btn{margin-left:4px}
     <div class="side-foot">
       <div class="user-chip"><div class="avatar" id="avatar">?</div><div class="who"><b id="userName" data-noi18n>Not signed in</b><span id="roleBadge" data-noi18n>—</span></div></div>
       <span id="syncStatus" data-state="ok" data-noi18n>Offline</span>
+      <button type="button" class="side-refresh" id="refreshBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.5 9a9 9 0 0 1 14.9-3.4L23 10M1 14l4.6 4.4A9 9 0 0 0 20.5 15"/></svg><span>Refresh</span></button>
     </div>
   </aside>
 
@@ -757,7 +790,6 @@ td.bp-act{white-space:nowrap;text-align:right}td.bp-act .btn{margin-left:4px}
       <div class="hero-btns">
         <button type="button" class="hbtn" id="langToggle" title="Language" data-noi18n>BM</button>
         <button type="button" class="hbtn theme-btn" data-theme-btn title="Dark mode"><span class="ti">🌙</span></button>
-        <button type="button" class="hbtn" id="refreshBtn" title="Refresh" aria-label="Refresh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.5 9a9 9 0 0 1 14.9-3.4L23 10M1 14l4.6 4.4A9 9 0 0 0 20.5 15"/></svg></button>
         <button type="button" class="hbtn" id="logoutBtn" title="Sign out" aria-label="Sign out"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg></button>
       </div>
       <h1 class="hero-title">SYSHHB IT Asset Inventory</h1>
