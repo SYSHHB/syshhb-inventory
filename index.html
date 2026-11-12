@@ -784,6 +784,30 @@ td.bp-act{white-space:nowrap;text-align:right}td.bp-act .btn{margin-left:4px}
 .auth-overlay:has(.auth-card.loading) .al-left{display:none}
 @media(max-width:900px){.auth-overlay{grid-template-columns:1fr}.al-left{display:none}.al-right{min-height:100vh}.wl-tiles{gap:8px}}
 .auth-overlay:has(.auth-card.loading) .al-right{background:none;width:100%;height:100%}
+/* sign-in colours sampled from the Helpdesk welcome page */
+.al-left{background:radial-gradient(560px 360px at 0% 0%,#7bb663dd,transparent 72%),radial-gradient(520px 320px at 0% 100%,#44b457aa,transparent 72%),radial-gradient(520px 380px at 100% 25%,#34b955aa,transparent 72%),linear-gradient(180deg,#25a047 0%,#22a048 55%,#1f8a3d 100%)!important}
+.al-mark{mix-blend-mode:multiply;opacity:.3;filter:grayscale(1) contrast(1.25) brightness(.9);left:2%;width:94%;max-width:920px}
+.al-right{background:radial-gradient(520px 380px at 0% 100%,#3a3a1fcc,transparent 72%),#132114!important}
+.auth-overlay{background:#132114}
+.auth-card:not(.loading){background:#1f2a22!important;border-color:#2a382d!important}
+.auth-card:not(.loading) .ms-btn{background:linear-gradient(180deg,#76dc86,#43b156)!important}
+.wl-tile{background:#243628;border-color:#2d4231}
+.auth-prefs .lang-seg{background:#1b261d;border-color:#29372a}.auth-prefs .lang-seg button.on{background:#29372a}
+.al-big{font-weight:900;letter-spacing:-7px;font-family:'Segoe UI Black','Arial Black','Segoe UI',system-ui,sans-serif}.al-big.yel{color:#fff23a}
+/* responsive alignment */
+.al-left{display:flex!important;flex-direction:column;padding:clamp(20px,4.2vh,40px) clamp(32px,4.4vw,72px)!important}
+.al-dates{margin-top:clamp(40px,12vh,130px)!important;align-self:stretch}
+.al-big{font-size:clamp(72px,12.5vh,120px)!important;margin-bottom:clamp(10px,2.4vh,22px)!important;letter-spacing:-.06em!important}
+.al-d.al-sep{padding-left:clamp(24px,3vw,44px)}
+.al-row{position:relative;margin-top:auto;display:flex;justify-content:space-between;align-items:baseline;gap:20px}
+.al-greet,.al-clock{margin:0!important;font-size:clamp(16px,2.2vh,20px)!important}
+.al-note{margin:auto 0 0!important;padding-top:clamp(16px,6vh,60px);max-width:380px;font-size:clamp(14px,1.9vh,16px)!important}
+.al-brand{flex:none}
+.auth-card:not(.loading){padding:clamp(24px,4vh,38px) clamp(24px,2.4vw,38px) clamp(18px,3vh,26px)!important}
+.wl-desc{margin-bottom:clamp(14px,2.6vh,24px)!important}
+.wl-sub{margin-bottom:clamp(8px,1.6vh,14px)}
+.auth-card:not(.loading) .ms-btn{height:clamp(48px,6.2vh,58px);margin-bottom:clamp(14px,2.4vh,20px)}
+.wl-tiles{margin-bottom:clamp(12px,2vh,18px)}
 </style></head>
 <body>
 <div class="auth-overlay" id="authOverlay">
@@ -796,7 +820,7 @@ td.bp-act{white-space:nowrap;text-align:right}td.bp-act .btn{margin-left:4px}
       <div class="al-d"><div class="al-big yel" id="alDay" data-noi18n>--</div><b id="alMonth" data-noi18n></b><span id="alGregL">Gregorian</span></div>
       <div class="al-d al-sep"><div class="al-big" id="alHDay" data-noi18n>--</div><b id="alHMonth" data-noi18n></b><span>Hijri</span></div>
     </div>
-    <div class="al-greet" id="alGreet" data-noi18n></div><div class="al-clock" id="alClock" data-noi18n></div>
+    <div class="al-row"><div class="al-greet" id="alGreet" data-noi18n></div><div class="al-clock" id="alClock" data-noi18n></div></div>
     <p class="al-note">Manage IT assets, follow faults and handovers, and keep every record up to date in one place.</p>
   </section>
   <div class="al-right">
