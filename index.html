@@ -886,6 +886,20 @@ td.bp-act{white-space:nowrap;text-align:right}td.bp-act .btn{margin-left:4px}
 .auth-overlay:has(.auth-card.loading) .al-right{background:none!important}
 .auth-overlay:has(.auth-card.loading) .al-left{display:none!important}
 .auth-overlay:has(.auth-card.loading){display:flex!important;align-items:center;justify-content:center}
+/* hero dates: Helpdesk style (white time, yellow seconds) */
+.hero-clock b{color:#fff!important;font-weight:800}.hero-clock b .ss{color:#f4e033}
+.hero-clock small{color:#cfe3d5!important}.hero-clock .hc-clk{font-size:24px;display:inline-flex}
+.hero-card b{font-weight:800}
+@media(max-width:900px){
+  .hero-dates{gap:12px!important}
+  .hero-card{padding:14px 14px!important;border-radius:22px!important}
+  .hero-card small{font-size:14px!important;font-weight:500!important}
+  .hero-card b{font-size:clamp(14px,3.85vw,17px)!important;white-space:nowrap}.hero-card small{white-space:nowrap}
+  .hero-clock{margin-top:12px!important;padding:20px!important;border-radius:22px!important;gap:14px!important}
+  .hero-clock b{font-size:36px!important;letter-spacing:1px}
+  .hero-clock small{font-size:16px!important;margin-bottom:5px!important}
+  .hero-clock .hc-clk{font-size:26px}
+}
 </style></head>
 <body>
 <div class="auth-overlay" id="authOverlay">
@@ -964,7 +978,7 @@ td.bp-act{white-space:nowrap;text-align:right}td.bp-act .btn{margin-left:4px}
         <div class="hero-card"><span class="hc-ico">📅</span><div><small id="hdGregL">Gregorian</small><b id="hdGreg" data-noi18n>—</b></div></div>
         <div class="hero-card"><span class="hc-ico">🌙</span><div><small>Hijri</small><b id="hdHijri" data-noi18n>—</b></div></div>
       </div>
-      <div class="hero-clock"><span>🕒</span><b id="hdClock" data-noi18n>--:--:--</b><small>BNT</small></div>
+      <div class="hero-clock"><span class="hc-clk"><svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="#f4e033" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 7v5.5l3.5 2"/></svg></span><b id="hdClock" data-noi18n>--:--:--</b><small>BNT</small></div>
     </header>
     <div class="pagehead">
       <div class="ph-text"><h2 id="viewTitle" data-noi18n>Dashboard</h2><p id="viewSub" data-noi18n>Overview of all IT assets</p></div>
@@ -3107,7 +3121,7 @@ $('trashRefreshBtn').onclick=()=>loadTrash().then(renderTrash);
     let mon=g('month');if(ms||LANG==='ms'){const n=Number(new Intl.DateTimeFormat('en-u-ca-islamic-umalqura-nu-latn',{month:'numeric',timeZone:tz}).formatToParts(d).find(x=>x.type==='month').value);if(HM[n-1])mon=HM[n-1]}
     return g('day')+' '+mon+' '+g('year').replace(/\D/g,'')+'H'}catch(e){return ''}}
   function tick(){const d=new Date(),loc=LANG==='ms'?'ms-MY':'en-GB';
-    $('hdClock').textContent=new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false,timeZone:tz}).format(d);
+    {const ck=new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false,timeZone:tz}).format(d);$('hdClock').innerHTML=ck.slice(0,5)+'<span class="ss">'+ck.slice(5)+'</span>'}
     $('hdGreg').textContent=new Intl.DateTimeFormat('en-GB',{day:'numeric',month:'short',year:'numeric',timeZone:tz}).format(d);
     $('hdHijri').textContent=hijri(d);$('hdGregL').textContent=T('Gregorian')+' · '+new Intl.DateTimeFormat(loc,{weekday:'short',timeZone:tz}).format(d).replace('.','');
     $('langToggle').textContent=LANG==='ms'?'EN':'BM';
