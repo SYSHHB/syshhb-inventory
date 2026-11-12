@@ -869,6 +869,23 @@ td.bp-act{white-space:nowrap;text-align:right}td.bp-act .btn{margin-left:4px}
   .al-left{padding-left:24px!important}
 }
 .al-brand img{image-rendering:auto}
+/* all-green sign-in (swatch #1a933f), no watermark */
+.auth-overlay:not(:has(.auth-card.loading)){background:#1a933f!important}
+.auth-overlay:not(:has(.auth-card.loading)) .al-left,.auth-overlay:not(:has(.auth-card.loading)) .al-right{background:#1a933f!important}
+.al-mark,.al-fly,.al-left i{display:none!important}
+.auth-overlay:not(:has(.auth-card.loading)) .auth-card{background:rgba(0,0,0,.2)!important;border-color:rgba(255,255,255,.14)!important}
+.auth-overlay:not(:has(.auth-card.loading)) .wl-tile{background:rgba(0,0,0,.16)!important;border-color:rgba(255,255,255,.12)!important}
+.auth-overlay:not(:has(.auth-card.loading)) .auth-prefs .lang-seg{background:rgba(0,0,0,.2)!important;border-color:rgba(255,255,255,.14)!important}
+.auth-overlay:not(:has(.auth-card.loading)) .auth-prefs .lang-seg button.on{background:rgba(0,0,0,.3)!important}
+@media(max-width:900px){
+  .auth-overlay:not(:has(.auth-card.loading)) .auth-card{background:none!important;border:0!important}
+  .auth-overlay:not(:has(.auth-card.loading)) .al-right{border-top:0}
+}
+.auth-overlay:not(:has(.auth-card.loading)) .wl-desc{color:#eaf6ec!important}
+.auth-overlay:has(.auth-card.loading){background:#1a933f!important}
+.auth-overlay:has(.auth-card.loading) .al-right{background:none!important}
+.auth-overlay:has(.auth-card.loading) .al-left{display:none!important}
+.auth-overlay:has(.auth-card.loading){display:flex!important;align-items:center;justify-content:center}
 </style></head>
 <body>
 <div class="auth-overlay" id="authOverlay">
