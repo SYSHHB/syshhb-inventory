@@ -837,6 +837,29 @@ td.bp-act{white-space:nowrap;text-align:right}td.bp-act .btn{margin-left:4px}
   .auth-overlay:has(.auth-card.loading) .auth-prefs{display:none}
 }
 @media(max-width:900px){.al-d b{font-size:clamp(14px,4.2vw,19px)!important;white-space:nowrap}.al-d.al-sep{padding-left:16px}.al-dates{grid-template-columns:1fr 1.15fr}}
+/* phone sign-in: exact proportions of the Helpdesk phone view */
+@media(max-width:900px){
+  .auth-overlay:not(:has(.auth-card.loading)){height:100vh;height:100svh;overflow-y:auto}
+  .auth-overlay:not(:has(.auth-card.loading)) .al-left{flex:0 0 67svh!important;min-height:0!important;padding:calc(14px + env(safe-area-inset-top)) 24px 22px!important}
+  .al-fly,.al-left .fly,.al-left i{display:none!important}
+  .al-mark{width:90%!important;top:56%!important;opacity:.16!important;mix-blend-mode:normal!important;filter:none!important}
+  .al-brand{font-size:clamp(15px,4.4vw,18px)!important;gap:10px!important;line-height:1.2;font-weight:700}
+  .al-brand img{width:38px!important;height:38px!important;border:1.5px solid #d9c98a!important;box-shadow:0 0 0 4px #ffffff2e!important;margin:4px}
+  .al-dates{margin-top:auto!important;grid-template-columns:1fr 1fr!important}
+  .al-big{font-size:clamp(48px,13vw,56px)!important;font-weight:900!important;margin-bottom:8px!important}
+  .al-d.al-sep{padding-left:18px!important}
+  .al-d b{font-size:clamp(14px,4.2vw,17px)!important}.al-d span{font-size:clamp(13px,3.7vw,15px)!important}
+  .al-row{margin-top:auto!important}
+  .al-greet,.al-clock{font-size:clamp(17px,4.9vw,20px)!important;font-weight:700}
+  .al-note{margin:auto 0 0!important;padding-top:20px!important;font-size:clamp(14px,3.95vw,16px)!important;line-height:1.5!important}
+  .auth-prefs{margin:13px 24px 0!important}
+  .auth-prefs .lang-seg{padding:4px!important;border:0!important;background:#2b342d!important;border-radius:16px!important}
+  .auth-prefs .lang-seg button{font-size:clamp(15px,4.3vw,17px)!important;padding:9px 18px!important;border-radius:12px!important;font-weight:600}
+  .auth-prefs .lang-seg button.on{background:#1d2520!important;color:#fff!important}
+  .al-right{padding:12px 24px calc(20px + env(safe-area-inset-bottom))!important}
+  .wl-desc{font-size:clamp(15px,4.1vw,17px)!important;margin:4px 0 14px!important;line-height:1.55!important}
+  .auth-card:not(.loading) .ms-btn{height:clamp(50px,7.2svh,56px)!important;font-size:clamp(16px,4.6vw,19px)!important;border-radius:16px!important}
+}
 </style></head>
 <body>
 <div class="auth-overlay" id="authOverlay">
