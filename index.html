@@ -3117,9 +3117,8 @@ $('trashRefreshBtn').onclick=()=>loadTrash().then(renderTrash);
 (function(){
   const tz='Asia/Brunei';
   const HM=['Muharram','Safar','Rabiulawal','Rabiulakhir','Jamadilawal','Jamadilakhir','Rejab','Syaaban','Ramadan','Syawal','Zulkaedah','Zulhijjah'];
-  function hijri(d,ms){try{const p=new Intl.DateTimeFormat('en-u-ca-islamic-umalqura',{day:'numeric',month:'long',year:'numeric',timeZone:tz}).formatToParts(d),g=t=>(p.find(x=>x.type===t)||{}).value||'';
-    let mon=g('month');if(ms||LANG==='ms'){const n=Number(new Intl.DateTimeFormat('en-u-ca-islamic-umalqura-nu-latn',{month:'numeric',timeZone:tz}).formatToParts(d).find(x=>x.type==='month').value);if(HM[n-1])mon=HM[n-1]}
-    return g('day')+' '+mon+' '+g('year').replace(/\D/g,'')+'H'}catch(e){return ''}}
+  function hijri(d){try{const p=new Intl.DateTimeFormat('en-u-ca-islamic-umalqura-nu-latn',{day:'numeric',month:'numeric',year:'numeric',timeZone:tz}).formatToParts(d),g=t=>((p.find(x=>x.type===t)||{}).value||'').replace(/\D/g,'');
+    const n=Number(g('month'));return g('day')+' '+(HM[n-1]||'')+' '+g('year')+'H'}catch(e){return ''}}
   function tick(){const d=new Date(),loc=LANG==='ms'?'ms-MY':'en-GB';
     {const ck=new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false,timeZone:tz}).format(d);$('hdClock').innerHTML=ck.slice(0,5)+'<span class="ss">'+ck.slice(5)+'</span>'}
     $('hdGreg').textContent=new Intl.DateTimeFormat('en-GB',{day:'numeric',month:'short',year:'numeric',timeZone:tz}).format(d);
