@@ -953,6 +953,82 @@ td.bp-act{white-space:nowrap;text-align:right}td.bp-act .btn{margin-left:4px}
 }
 @media(min-width:901px) and (max-width:1220px){.hero-dates .hero-card:nth-child(2){display:none!important}.gb-search{margin-left:8px}}
 @media(min-width:901px) and (max-width:1020px){.hero-title{font-size:16px!important}.hero-dates{display:none!important}}
+</style><style id="portal-theme">
+/* ===== SYSHHB portal theme: shared look (green gradient header, glass controls, rounded cards) ===== */
+:root{
+  --p-pine:#0d3b26;--p-green:#27a047;--p-green-d:#157a35;--p-sun:#f8f038;--p-gold:#a8946a;
+  --p-bg:#eef4ee;--p-card:#ffffff;--p-text:#10241a;--p-muted:#5f7466;--p-line:rgba(16,36,26,.08);
+  --p-shadow:0 1px 2px rgba(16,36,26,.06),0 10px 28px -10px rgba(16,60,30,.25);
+  --p-hero:radial-gradient(120% 70% at 100% 0%,rgba(248,240,56,.28),transparent 55%),radial-gradient(90% 60% at 0% 100%,rgba(255,255,255,.14),transparent 60%),linear-gradient(180deg,#27a047 0%,#1b8a3c 55%,#0f6b30 100%);
+  --p-font:"Inter","SF Pro Display",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+:root[data-theme="dark"]{--p-bg:#09130d;--p-card:#14231a;--p-text:#eaf4ec;--p-muted:#93aa9a;--p-line:rgba(255,255,255,.08);--p-shadow:0 1px 2px rgba(0,0,0,.4),0 12px 30px -12px rgba(0,0,0,.7)}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+/* ---- IT asset inventory ---- */
+:root{--bg:#eef4ee;--panel:#ffffff;--ink:#10241a;--muted:#5f7466;--line:rgba(16,36,26,.10);--line-2:rgba(16,36,26,.16);--soft:#f3f8f3;
+  --brand:#157a35;--brand-2:#27a047;--brand-dark:#0f6b30;--brand-soft:#dff3e4;--shadow:var(--p-shadow);--gbh:68px}
+:root[data-theme=dark]{--bg:#09130d;--panel:#14231a;--ink:#eaf4ec;--muted:#93aa9a;--line:rgba(255,255,255,.09);--line-2:rgba(255,255,255,.16);--soft:#1a2e21;
+  --brand:#27a047;--brand-2:#2fb653;--brand-dark:#157a35;--brand-soft:#173327}
+html body,:root[data-theme=dark] body{background:var(--bg)!important;font-family:var(--p-font)}
+/* header: portal hero */
+.hero{background:var(--p-hero)!important;color:#fff;border:0!important;box-shadow:0 14px 30px -14px rgba(10,70,30,.65)!important;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(rgba(255,255,255,.11) 1.2px,transparent 1.4px) 0 0/22px 22px;-webkit-mask-image:linear-gradient(180deg,#000 55%,transparent);mask-image:linear-gradient(180deg,#000 55%,transparent)}
+.hero>*:not(.hero-btns):not(.menu-btn){position:relative}
+.hero-title{font-weight:800;letter-spacing:-.4px;text-shadow:none!important}
+.hero-sub{color:rgba(255,255,255,.85)!important;font-weight:500!important}
+.hero-card,.hero-clock{background:rgba(255,255,255,.13)!important;border:1px solid rgba(255,255,255,.26)!important;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:inset 0 1px 0 rgba(255,255,255,.25)}
+.hero-card small,.hero-clock small{color:rgba(255,255,255,.8)!important}
+.hero-clock b .ss,.hero-clock b.ss{color:var(--p-sun)}
+.hero-card .hc-ico{background:rgba(255,255,255,.2)}
+.hbtn,.hero .menu-btn{background:rgba(255,255,255,.16)!important;border:1px solid rgba(255,255,255,.28)!important;color:#fff!important;border-radius:999px!important;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.hbtn:hover{background:rgba(255,255,255,.28)!important}
+.top-search input#globalSearch{border-radius:999px!important}
+.gb-search .top-search input#globalSearch{background:rgba(255,255,255,.16)!important;border-color:rgba(255,255,255,.28)!important}
+/* sidebar: light, pill navigation */
+.sidebar{background:var(--panel)!important;color:var(--ink);border-right:1px solid var(--line)!important}
+.side-brand{border-bottom:1px solid var(--line)}
+.side-brand b{color:var(--ink)}.side-brand span{color:var(--muted)}
+.nav-label{color:var(--muted)!important}
+.nav-item{color:var(--muted)!important;border-radius:999px!important}
+.nav-item:hover{background:var(--brand-soft);color:var(--ink)!important}
+.nav-item.active{background:linear-gradient(160deg,#27a047,#157a35)!important;color:#fff!important;box-shadow:0 6px 12px -6px #27a047!important}
+.side-foot{border-top:1px solid var(--line)!important}
+.user-chip .who b{color:var(--ink)!important}
+#roleBadge,.user-chip .who span{color:var(--muted)!important}
+#syncStatus{color:var(--muted)}
+.btn.side{background:var(--soft);border-color:var(--line-2);color:var(--ink)}
+.btn.side:hover{background:var(--brand-soft)}
+/* cards and controls */
+.card,.kpi,.req,.rcard{border-radius:26px!important;border:1px solid var(--line)!important;box-shadow:var(--p-shadow)!important}
+.kpi,:root[data-theme=dark] .kpi{border-top:1px solid var(--line)!important}
+.kpi:hover{box-shadow:var(--p-shadow)!important;border-color:var(--brand-2)!important;transform:translateY(-2px)!important}
+:root[data-theme=dark] .card,:root[data-theme=dark] .kpi{background:var(--panel)!important;border-color:var(--line)!important;box-shadow:var(--p-shadow)!important}
+.kpi .k-ico{border-radius:14px}
+.kpi::after{display:none}
+.dialog{border-radius:26px}
+.btn,:root[data-theme=dark] .btn{border-radius:14px}
+:root .btn.primary,:root[data-theme=dark] .btn.primary{background:linear-gradient(160deg,#27a047,#157a35)!important;border-color:transparent!important;color:#fff;box-shadow:0 6px 12px -6px #27a047}
+.chip,.pill{border-radius:999px}
+input,select,textarea{border-radius:12px}
+:focus-visible{outline:3px solid var(--p-sun);outline-offset:2px}
+@media(min-width:901px){
+  .hero{border-radius:0 0 24px 24px!important;padding:0 22px!important}
+  .gb-search .top-search input#globalSearch{border-radius:999px!important}
+  .hero-card,.hero-clock{border-radius:999px!important}
+  .hbtn{border-radius:999px!important}
+  .sidebar{border-radius:0 26px 0 0}
+  .nav-item{padding:9px 14px}
+}
+@media(max-width:900px){
+  .hero{margin:0!important;padding:56px 16px 18px!important;border-radius:0 0 30px 30px!important}
+  .hero-card{border-radius:20px!important}
+  .hero-clock{border-radius:20px!important}
+  .sidebar{border-radius:0 26px 26px 0}
+  .topbar{background:var(--p-hero)!important;border-radius:0 0 26px 26px}
+  .bottom-nav,:root[data-theme=dark] .bottom-nav{background:var(--panel)!important;border:1px solid var(--line)!important;border-radius:26px;margin:0 10px calc(8px + env(safe-area-inset-bottom,0px));left:0!important;right:0!important;box-shadow:var(--p-shadow);padding:6px}
+  .bottom-nav button{color:var(--muted)!important;border-radius:20px!important}
+  .bottom-nav button.active{background:linear-gradient(160deg,#27a047,#157a35)!important;color:#fff!important}
+}
 </style></head>
 <body>
 <div class="auth-overlay" id="authOverlay">
